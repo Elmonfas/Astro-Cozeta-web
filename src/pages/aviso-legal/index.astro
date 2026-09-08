@@ -16,9 +16,9 @@ import { site, fullAddress } from '../../lib/site';
   <h2>1. Datos identificativos</h2>
   <ul>
     <li><strong>Denominación social:</strong> {site.legalName}</li>
-    <li><strong>CIF:</strong> [CIF]</li>
+    <li><strong>CIF:</strong> {site.cif}</li>
     <li><strong>Domicilio social:</strong> {fullAddress}</li>
-    <li><strong>Inscripción registral:</strong> [Registro Mercantil]</li>
+    <li><strong>Inscripción registral:</strong> {site.registryInfo}</li>
     <li><strong>Email:</strong> {site.email}</li>
     <li><strong>Teléfono:</strong> {site.phoneDisplay}</li>
   </ul>

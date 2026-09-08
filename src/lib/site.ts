@@ -1,6 +1,8 @@
 export const site = {
   name: 'COZETA',
-  legalName: 'COZETA Instalaciones Petrolíferas',
+  legalName: 'COZETA Tecnología y Construcción SL',
+  cif: 'B97651905',
+  registryInfo: 'Registro Mercantil de Valencia, Tomo 8407, Libro 5697, Folio 43, Hoja V-112321, inscripción 1ª',
   claim: 'Instalaciones de transferencia de carburantes',
   foundedYear: 1996,
   founder: 'Luis Joaquín Cuenca',

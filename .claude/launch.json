@@ -3,8 +3,8 @@
   "configurations": [
     {
       "name": "cozeta-dev",
-      "runtimeExecutable": "/home/cozeta/COZETA WEB/dev.sh",
-      "runtimeArgs": [],
+      "runtimeExecutable": "/Users/monfas/.nvm/versions/node/v22.12.0/bin/node",
+      "runtimeArgs": ["node_modules/.bin/astro", "dev"],
       "port": 4321
     }
   ]

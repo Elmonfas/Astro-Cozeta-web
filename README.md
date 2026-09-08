@@ -134,3 +134,7 @@ Todas las fotos del sitio son ya reales (equipo, flota, obra ejecutada). Ver `pu
 
 - No se usa ningún framework de UI (React, Vue…); toda la interactividad (menú móvil, banner de cookies, envío del formulario) es JavaScript vanilla incluido directamente en los componentes `.astro`.
 - El aviso de cookies solo guarda la elección del usuario en `localStorage`; no carga ningún script de analítica ni de terceros, así que no hay nada que bloquear técnicamente al rechazar.
+
+---
+
+<p align="center">Desarrollado por <strong>Pedro Monfort Caro</strong></p>

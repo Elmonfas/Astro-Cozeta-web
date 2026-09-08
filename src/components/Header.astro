@@ -1,0 +1,414 @@
+---
+import Icon from './Icon.astro';
+import { site, navLinks } from '../lib/site';
+
+const currentPath = Astro.url.pathname;
+
+function isActive(href: string) {
+  if (href === '/') return currentPath === '/';
+  return currentPath.startsWith(href);
+}
+---
+
+<header class="site-header">
+  <div class="header-strip">
+    <div class="container header-strip-inner">
+      <span>Bétera (Valencia) — Instalando desde 1996</span>
+      <span class="header-strip-contact">
+        <a href={`mailto:${site.email}`}>{site.email}</a>
+        <a href={`tel:+34${site.phone}`}>{site.phoneDisplay}</a>
+      </span>
+    </div>
+  </div>
+  <div class="container header-inner">
+    <a href="/" class="logo" aria-label={`${site.name} — Inicio`}>
+      <img src="/logos/cozeta-logo-horizontal.svg" alt="COZETA Instalaciones Petrolíferas" width="1033" height="260" />
+    </a>
+
+    <nav class="main-nav" aria-label="Navegación principal">
+      <ul>
+        {navLinks.map((link, index) => (
+          <li>
+            <a href={link.href} aria-current={isActive(link.href) ? 'page' : undefined}>
+              <span class="nav-index">{String(index + 1).padStart(2, '0')}</span>
+              {link.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <a href={`tel:+34${site.phone}`} class="header-phone">
+        <Icon name="phone" class="icon-sm" />
+        <span>{site.phoneDisplay}</span>
+      </a>
+      <a href="/contacto/" class="btn btn-primary btn-sm header-cta">Pedir presupuesto</a>
+      <button
+        id="menu-toggle"
+        class="menu-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="mobile-nav"
+      >
+        <span class="hamburger" aria-hidden="true">
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+        </span>
+        <span class="visually-hidden">Abrir menú</span>
+      </button>
+    </div>
+  </div>
+
+  <div id="mobile-nav" class="mobile-nav" data-open="false">
+    <ul>
+      {navLinks.map((link) => (
+        <li>
+          <a href={link.href}>{link.label}</a>
+        </li>
+      ))}
+      <li>
+        <a href={`tel:+34${site.phone}`} class="mobile-nav-phone">
+          <Icon name="phone" class="icon-sm" /> {site.phoneDisplay}
+        </a>
+      </li>
+      <li>
+        <a href="/contacto/" class="btn btn-primary btn-sm">Pedir presupuesto</a>
+      </li>
+    </ul>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--color-bg);
+    border-bottom: 1px solid var(--color-border);
+    box-shadow: 0 0 0 rgba(10, 39, 64, 0);
+    transition: box-shadow 0.3s ease;
+  }
+
+  .site-header.is-scrolled {
+    box-shadow: 0 6px 20px rgba(10, 39, 64, 0.08);
+  }
+
+  .header-strip {
+    background: var(--color-primary-dark);
+  }
+
+  .header-strip-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding-block: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.02em;
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .header-strip-contact {
+    display: flex;
+    gap: var(--space-4);
+  }
+
+  .header-strip a {
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+  }
+
+  .header-strip a:hover {
+    color: var(--color-secondary-light);
+    text-decoration: underline;
+  }
+
+  .header-inner {
+    height: var(--header-height);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    flex-shrink: 0;
+  }
+
+  .logo img {
+    height: 40px;
+    width: auto;
+  }
+
+  .main-nav ul {
+    list-style: none;
+    display: flex;
+    gap: var(--space-5);
+    margin: 0;
+    padding: 0;
+  }
+
+  .main-nav a {
+    position: relative;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.4em;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--color-text);
+    text-decoration: none;
+    padding: var(--space-2) 0;
+    transition: color 0.2s ease;
+  }
+
+  .main-nav a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--color-secondary);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .nav-index {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 0.7rem;
+    color: var(--color-secondary);
+    opacity: 0.75;
+  }
+
+  .main-nav a:hover,
+  .main-nav a[aria-current='page'] {
+    color: var(--color-secondary);
+  }
+
+  .main-nav a:hover::after,
+  .main-nav a[aria-current='page']::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .header-phone {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-body);
+    font-weight: 700;
+    color: var(--color-primary-dark);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .header-phone :global(.icon-sm) {
+    width: 18px;
+    height: 18px;
+    color: var(--color-secondary);
+  }
+
+  .menu-toggle {
+    display: none;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    background: none;
+    border: none;
+    border-radius: 50%;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  .menu-toggle::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: var(--color-secondary);
+    transform: scale(0);
+    transition: transform 0.45s cubic-bezier(0.65, -0.15, 0.35, 1.25);
+  }
+
+  .menu-toggle[aria-expanded='true']::before {
+    transform: scale(1);
+  }
+
+  .hamburger {
+    position: relative;
+    z-index: 1;
+    width: 22px;
+    height: 16px;
+    display: inline-block;
+  }
+
+  .hamburger-bar {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2.5px;
+    border-radius: 2px;
+    background: var(--color-primary-dark);
+    transition:
+      transform 0.35s cubic-bezier(0.65, -0.15, 0.35, 1.25),
+      opacity 0.2s ease,
+      background-color 0.3s ease,
+      top 0.35s ease,
+      width 0.25s ease,
+      left 0.25s ease;
+  }
+
+  .hamburger-bar:nth-child(1) {
+    top: 0;
+  }
+
+  .hamburger-bar:nth-child(2) {
+    top: 7px;
+  }
+
+  .hamburger-bar:nth-child(3) {
+    top: 14px;
+  }
+
+  .menu-toggle:hover:not([aria-expanded='true']) .hamburger-bar:nth-child(1) {
+    width: 65%;
+  }
+
+  .menu-toggle:hover:not([aria-expanded='true']) .hamburger-bar:nth-child(3) {
+    width: 65%;
+    left: 35%;
+  }
+
+  .menu-toggle[aria-expanded='true'] .hamburger-bar {
+    background: #fff;
+  }
+
+  .menu-toggle[aria-expanded='true'] .hamburger-bar:nth-child(1) {
+    top: 7px;
+    transform: rotate(45deg);
+  }
+
+  .menu-toggle[aria-expanded='true'] .hamburger-bar:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+
+  .menu-toggle[aria-expanded='true'] .hamburger-bar:nth-child(3) {
+    top: 7px;
+    transform: rotate(-45deg);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .menu-toggle::before,
+    .hamburger-bar {
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  .mobile-nav {
+    display: none;
+  }
+
+  @media (max-width: 860px) {
+    .header-strip,
+    .main-nav,
+    .header-phone,
+    .header-cta {
+      display: none;
+    }
+
+    .menu-toggle {
+      display: flex;
+    }
+
+    .mobile-nav {
+      display: block;
+      max-height: 0;
+      overflow: hidden;
+      background: var(--color-bg);
+      border-top: 1px solid var(--color-border);
+      transition: max-height 0.25s ease;
+    }
+
+    .mobile-nav[data-open='true'] {
+      max-height: 420px;
+    }
+
+    .mobile-nav ul {
+      list-style: none;
+      margin: 0;
+      padding: var(--space-4);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+    }
+
+    .mobile-nav a {
+      font-family: var(--font-body);
+      font-weight: 600;
+      color: var(--color-text);
+      text-decoration: none;
+      font-size: 1.05rem;
+    }
+
+    .mobile-nav-phone {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      color: var(--color-primary-dark) !important;
+    }
+
+    .mobile-nav-phone :global(.icon-sm) {
+      width: 18px;
+      height: 18px;
+      color: var(--color-secondary);
+    }
+  }
+</style>
+
+<script>
+  const toggle = document.getElementById('menu-toggle');
+  const mobileNav = document.getElementById('mobile-nav');
+
+  if (toggle && mobileNav) {
+    toggle.addEventListener('click', () => {
+      const isOpen = mobileNav.getAttribute('data-open') === 'true';
+      mobileNav.setAttribute('data-open', String(!isOpen));
+      toggle.setAttribute('aria-expanded', String(!isOpen));
+    });
+
+    mobileNav.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        mobileNav.setAttribute('data-open', 'false');
+        toggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
+
+  const header = document.querySelector('.site-header');
+
+  if (header) {
+    const updateScrolled = () => {
+      header.classList.toggle('is-scrolled', window.scrollY > 8);
+    };
+    updateScrolled();
+    window.addEventListener('scroll', updateScrolled, { passive: true });
+  }
+</script>

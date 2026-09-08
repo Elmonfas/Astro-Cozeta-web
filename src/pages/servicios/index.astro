@@ -1,0 +1,37 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/PageHero.astro';
+import ServiceCard from '../../components/ServiceCard.astro';
+import CtaBanner from '../../components/CtaBanner.astro';
+
+const servicios = (await getCollection('servicios')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<Layout
+  title="Servicios"
+  description="Gasolineras, gasocentros, consumos propios, puertos, medios de pago, ingeniería y mantenimiento. Instalaciones de carburantes llave en mano."
+>
+  <PageHero
+    eyebrow="Servicios"
+    title="Instalaciones de carburantes llave en mano"
+    intro="Desde el proyecto técnico hasta la legalización final. Estos son los servicios que ofrecemos a operadores, flotas, cooperativas y administraciones."
+  />
+
+  <section class="section">
+    <div class="container">
+      <div class="grid grid-3">
+        {servicios.map((servicio) => (
+          <ServiceCard
+            href={`/servicios/${servicio.id}/`}
+            icon={servicio.data.icon}
+            title={servicio.data.shortTitle}
+            description={servicio.data.description}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CtaBanner />
+</Layout>

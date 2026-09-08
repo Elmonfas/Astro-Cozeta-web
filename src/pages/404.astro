@@ -1,0 +1,50 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { site } from '../lib/site';
+---
+
+<Layout title="Página no encontrada" description="La página que buscas no existe o se ha movido." noindex>
+  <section class="not-found section">
+    <div class="container">
+      <p class="eyebrow">Error 404</p>
+      <h1>No hemos encontrado esta página</h1>
+      <p>
+        Puede que el enlace esté roto o que la página se haya movido. Prueba a volver al inicio o
+        consulta nuestros servicios.
+      </p>
+      <div class="not-found-actions">
+        <a href="/" class="btn btn-primary">Volver al inicio</a>
+        <a href="/servicios/" class="btn btn-outline">Ver servicios</a>
+      </div>
+      <p class="not-found-phone">
+        ¿Prefieres hablar con nosotros? Llámanos al
+        <a href={`tel:+34${site.phone}`}>{site.phoneDisplay}</a>
+      </p>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .not-found {
+    text-align: center;
+    padding-block: var(--space-8);
+  }
+
+  .not-found h1 {
+    max-width: 30ch;
+    margin-inline: auto;
+  }
+
+  .not-found p {
+    max-width: 50ch;
+    margin-inline: auto;
+  }
+
+  .not-found-actions {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-3);
+    margin-block: var(--space-5);
+    flex-wrap: wrap;
+  }
+</style>

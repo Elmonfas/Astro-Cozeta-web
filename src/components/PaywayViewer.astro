@@ -1,0 +1,78 @@
+---
+interface Props {
+  class?: string;
+  height?: string;
+}
+
+const { class: className = '', height = '440px' } = Astro.props;
+---
+
+<model-viewer
+  class:list={['payway-model', className]}
+  src="/models/payway-classic.glb"
+  poster="/images/payway-poster.png"
+  alt="Terminal de pago desatendido PAYWAY Classic"
+  camera-controls
+  camera-orbit="-25deg 82deg 1.1m"
+  min-camera-orbit="-45deg 65deg auto"
+  max-camera-orbit="-5deg 95deg auto"
+  field-of-view="28deg"
+  shadow-intensity="1"
+  shadow-softness="0.8"
+  exposure="1.05"
+  environment-image="neutral"
+  interaction-prompt="none"
+  loading="lazy"
+  style={`height:${height};`}
+>
+</model-viewer>
+
+<script>
+  import '@google/model-viewer';
+
+  // auto-rotate de model-viewer ignora min/max-camera-orbit y da la vuelta
+  // entera; por eso el balanceo se controla a mano, siempre dentro del rango
+  // frontal (-45deg a -5deg) fijado en los atributos del elemento.
+  const AZIMUTH_MIN = -45;
+  const AZIMUTH_MAX = -5;
+  const POLAR = '82deg';
+  const RADIUS = '1.1m';
+  const PERIOD = 12000;
+
+  function startRock(viewer: any) {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const center = (AZIMUTH_MIN + AZIMUTH_MAX) / 2;
+    const amplitude = (AZIMUTH_MAX - AZIMUTH_MIN) / 2;
+    const start = performance.now();
+    let paused = false;
+
+    viewer.addEventListener('camera-change', (e: CustomEvent) => {
+      if (e.detail?.source === 'user-interaction') paused = true;
+    });
+
+    function tick(now: number) {
+      if (!paused) {
+        const t = (now - start) / PERIOD;
+        const azimuth = center + amplitude * Math.sin(t * Math.PI * 2);
+        viewer.cameraOrbit = `${azimuth.toFixed(2)}deg ${POLAR} ${RADIUS}`;
+      }
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  document.querySelectorAll('model-viewer.payway-model').forEach((viewer: any) => {
+    if (viewer.loaded) startRock(viewer);
+    else viewer.addEventListener('load', () => startRock(viewer), { once: true });
+  });
+</script>
+
+<style>
+  .payway-model {
+    display: block;
+    width: 100%;
+    background-color: transparent;
+    --poster-color: transparent;
+  }
+</style>

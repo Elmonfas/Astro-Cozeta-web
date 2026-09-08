@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "cozeta-dev",
+      "runtimeExecutable": "/home/cozeta/COZETA WEB/dev.sh",
+      "runtimeArgs": [],
+      "port": 4321
+    }
+  ]
+}

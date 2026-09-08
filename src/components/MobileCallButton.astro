@@ -1,0 +1,66 @@
+---
+import Icon from './Icon.astro';
+import { site } from '../lib/site';
+---
+
+<a href={`tel:+34${site.phone}`} class="mobile-call-btn" aria-label={`Llamar a COZETA al ${site.phoneDisplay}`}>
+  <Icon name="phone" class="icon" />
+</a>
+
+<style>
+  .mobile-call-btn {
+    display: none;
+  }
+
+  @media (max-width: 860px) {
+    .mobile-call-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: fixed;
+      right: var(--space-4);
+      bottom: var(--space-4);
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-secondary-dark) 100%);
+      color: #fff;
+      box-shadow: 0 6px 18px rgba(49, 95, 69, 0.4);
+      z-index: 150;
+      isolation: isolate;
+    }
+
+    .mobile-call-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: var(--color-secondary);
+      z-index: -1;
+      animation: call-pulse 2.4s ease-out infinite;
+    }
+
+    .mobile-call-btn :global(.icon) {
+      width: 26px;
+      height: 26px;
+    }
+  }
+
+  @keyframes call-pulse {
+    0% {
+      opacity: 0.55;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1.7);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-call-btn::before {
+      animation: none;
+      display: none;
+    }
+  }
+</style>

@@ -1,0 +1,39 @@
+---
+// Marcas de esquina tipo plano técnico: sustituyen a los glows decorativos
+// en las secciones de fondo oscuro. Sin blur, sin parallax, sin animación:
+// referencian las marcas de registro de un plano, no decoración genérica.
+---
+
+<span class="blueprint-marks" aria-hidden="true">
+  <span class="bp-corner bp-tl"></span>
+  <span class="bp-corner bp-br"></span>
+</span>
+
+<style>
+  .blueprint-marks {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .bp-corner {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    border-color: rgba(127, 176, 105, 0.45);
+  }
+
+  .bp-tl {
+    top: var(--space-5);
+    left: var(--space-5);
+    border-top: 1.5px solid;
+    border-left: 1.5px solid;
+  }
+
+  .bp-br {
+    bottom: var(--space-5);
+    right: var(--space-5);
+    border-bottom: 1.5px solid;
+    border-right: 1.5px solid;
+  }
+</style>

@@ -1,0 +1,72 @@
+export const site = {
+  name: 'COZETA',
+  legalName: 'COZETA Instalaciones Petrolíferas',
+  claim: 'Instalaciones de transferencia de carburantes',
+  foundedYear: 1996,
+  founder: 'Luis Joaquín Cuenca',
+  phone: '963808762',
+  phoneDisplay: '96 380 87 62',
+  email: 'info@cozeta.es',
+  address: {
+    line1: 'Calle 6, nave 12',
+    line2: "P.I. L'Horta Vella",
+    postalCode: '46117',
+    city: 'Bétera',
+    province: 'Valencia',
+    country: 'España',
+  },
+  mapsEmbedQuery: "COZETA Instalaciones Petrolíferas, Calle 6, nave 12, P.I. L'Horta Vella, 46117 Bétera, Valencia",
+  social: {
+    // Sin redes sociales activas por el momento.
+  },
+} as const;
+
+export const fullAddress = `${site.address.line1}, ${site.address.line2}, ${site.address.postalCode} ${site.address.city} (${site.address.province})`;
+
+export const team = [
+  { name: 'Luis Cuenca', role: 'Gerente' },
+  { name: 'Daniel Laínez', role: 'Ejecución' },
+  { name: 'Begoña Urizar', role: 'Finanzas' },
+  { name: 'Mª Ángeles Ibáñez', role: 'Proyectos' },
+] as const;
+
+export const navLinks = [
+  { href: '/', label: 'Inicio' },
+  { href: '/servicios/', label: 'Servicios' },
+  { href: '/proyectos/', label: 'Proyectos' },
+  { href: '/empresa/', label: 'Empresa' },
+  { href: '/contacto/', label: 'Contacto' },
+] as const;
+
+export const stats = [
+  { target: 30, suffix: '+', label: 'años de experiencia', icon: 'clock' },
+  { target: 55, suffix: '+', label: 'estaciones realizadas', icon: 'gasolinera' },
+  { target: 100, suffix: '%', label: 'instalaciones legalizadas', icon: 'shield' },
+] as const;
+
+// Se usa una sola vez, en la home (fusionado con los servicios). No repetir en /empresa/.
+export const whyCozeta = [
+  {
+    title: 'Cumplimiento normativo',
+    text: 'Proyectos y ejecución conforme a la ITC MI-IP04 y la normativa autonómica, con toda la documentación en regla desde el primer día.',
+  },
+  {
+    title: 'Plazos que se cumplen',
+    text: 'Planificamos cada obra con calendario cerrado y un único interlocutor, para que sepáis en todo momento en qué fase está vuestra instalación.',
+  },
+  {
+    title: 'Equipo técnico propio',
+    text: 'No subcontratamos la parte crítica de la obra: nuestros propios técnicos ejecutan la instalación y responden ante cualquier incidencia.',
+  },
+] as const;
+
+// Marcas reales para las que hemos construido instalaciones — franja de prueba social en la home.
+export const clientBrands = [
+  'LOWCOST',
+  'SOEX 2',
+  'Autoil',
+  'Benzoil',
+  'Dieself',
+  'Gasoprix',
+  'Cooperativa Sant Josep',
+] as const;

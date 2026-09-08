@@ -1,0 +1,150 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import CookieBanner from '../components/CookieBanner.astro';
+import MobileCallButton from '../components/MobileCallButton.astro';
+import { site } from '../lib/site';
+
+interface Props {
+  title: string;
+  description: string;
+  noindex?: boolean;
+}
+
+const { title, description, noindex = false } = Astro.props;
+const pageTitle = title === site.name ? `${site.name} — ${site.claim}` : `${title} | ${site.name}`;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL('/images/og-cozeta.png', Astro.site);
+
+const localBusinessSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  '@id': `${Astro.site}#organizacion`,
+  name: site.legalName,
+  alternateName: site.name,
+  description: 'Empresa de instalaciones de transferencia de carburantes: gasolineras, gasocentros, consumos propios y puertos.',
+  url: Astro.site,
+  telephone: `+34${site.phone}`,
+  email: site.email,
+  foundingDate: String(site.foundedYear),
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: `${site.address.line1}, ${site.address.line2}`,
+    addressLocality: site.address.city,
+    addressRegion: site.address.province,
+    postalCode: site.address.postalCode,
+    addressCountry: 'ES',
+  },
+  areaServed: 'ES',
+};
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="canonical" href={canonicalURL} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content="es_ES" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <meta name="theme-color" content="#0F3A5F" />
+    <meta name="generator" content={Astro.generator} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(localBusinessSchema)} />
+  </head>
+  <body>
+    <a href="#contenido" class="skip-link">Saltar al contenido</a>
+    <Header />
+    <main id="contenido">
+      <slot />
+    </main>
+    <Footer />
+    <CookieBanner />
+    <MobileCallButton />
+    <script>
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const parallaxEls = Array.from(document.querySelectorAll<HTMLElement>('[data-parallax]'));
+
+      if (parallaxEls.length && !prefersReducedMotion) {
+        // documentTop se mide una sola vez, ANTES de aplicar ningún transform:
+        // si midiéramos con getBoundingClientRect() en cada scroll, el propio
+        // desplazamiento ya aplicado falsearía la siguiente medición (bucle que
+        // anula el efecto casi por completo).
+        const items = parallaxEls.map((el) => {
+          const rect = el.getBoundingClientRect();
+          const clampAttr = el.dataset.parallaxClamp;
+          return {
+            el,
+            speed: parseFloat(el.dataset.parallax ?? '0'),
+            axis: el.dataset.parallaxAxis === 'x' ? 'x' : 'y',
+            clamp: clampAttr ? parseFloat(clampAttr) : null,
+            documentTop: rect.top + window.scrollY,
+            height: rect.height,
+          };
+        });
+
+        let ticking = false;
+
+        function updateParallax() {
+          const viewportCenter = window.innerHeight / 2;
+          const scrollY = window.scrollY;
+          for (const item of items) {
+            const viewportTop = item.documentTop - scrollY;
+            if (viewportTop + item.height < -400 || viewportTop > window.innerHeight + 400) continue;
+            const distance = viewportTop + item.height / 2 - viewportCenter;
+            let offset = distance * item.speed;
+            if (item.clamp !== null) {
+              offset = Math.max(-item.clamp, Math.min(item.clamp, offset));
+            }
+            item.el.style.transform =
+              item.axis === 'x'
+                ? `translate3d(${offset.toFixed(1)}px, 0, 0)`
+                : `translate3d(0, ${offset.toFixed(1)}px, 0)`;
+          }
+          ticking = false;
+        }
+
+        function onScroll() {
+          if (!ticking) {
+            requestAnimationFrame(updateParallax);
+            ticking = true;
+          }
+        }
+
+        function recalculate() {
+          for (const item of items) {
+            item.el.style.transform = '';
+            const rect = item.el.getBoundingClientRect();
+            item.documentTop = rect.top + window.scrollY;
+            item.height = rect.height;
+          }
+          updateParallax();
+        }
+
+        updateParallax();
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', recalculate);
+      }
+    </script>
+  </body>
+</html>

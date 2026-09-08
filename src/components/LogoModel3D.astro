@@ -1,0 +1,36 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+---
+
+<model-viewer
+  class:list={['logo-model', className]}
+  src="/models/cozeta-mark.glb"
+  poster="/favicon.svg"
+  alt="Logotipo de COZETA en 3D — arrástralo para girarlo"
+  camera-controls
+  disable-pan
+  interaction-prompt="none"
+  shadow-intensity="0.8"
+  exposure="1.1"
+  environment-image="neutral"
+  style="touch-action: pan-y;"
+>
+</model-viewer>
+
+<script>
+  import '@google/model-viewer';
+</script>
+
+<style>
+  .logo-model {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    --poster-color: transparent;
+  }
+</style>

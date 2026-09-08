@@ -1,0 +1,257 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/PageHero.astro';
+import Icon from '../../components/Icon.astro';
+import { site, fullAddress } from '../../lib/site';
+
+const servicios = (await getCollection('servicios')).sort((a, b) => a.data.order - b.data.order);
+const mapsSrc = `https://www.google.com/maps?q=${encodeURIComponent(site.mapsEmbedQuery)}&output=embed`;
+
+const FORMSPREE_ID = 'mgaenozq';
+const graciasPath = '/contacto/gracias/';
+// _next necesita ser absoluta: Formspree la resuelve contra su propio dominio, no el nuestro.
+// Solo se usa como fallback si el navegador no ejecuta el JS de envío por AJAX de abajo.
+const graciasAbsoluteUrl = new URL(graciasPath, Astro.site).toString();
+---
+
+<Layout
+  title="Contacto"
+  description="Solicita presupuesto sin compromiso para tu instalación de carburantes. Teléfono, email, dirección y formulario de contacto de COZETA en Bétera (Valencia)."
+>
+  <PageHero
+    eyebrow="Contacto"
+    title="Hablemos de vuestro proyecto"
+    intro="Contadnos qué necesitáis y os responderemos con una propuesta técnica y económica. También podéis llamarnos directamente."
+  />
+
+  <section class="section">
+    <div class="container two-col">
+      <div class="contact-form-wrap card">
+        <h2>Solicita presupuesto</h2>
+
+        <!--
+          Formulario enviado vía Formspree (https://formspree.io). Panel de mensajes
+          y configuración del formulario en formspree.io/forms/[ID]/settings.
+        -->
+        <form
+          id="contact-form"
+          name="contacto"
+          method="POST"
+          action={`https://formspree.io/f/${FORMSPREE_ID}`}
+          data-gracias-url={graciasPath}
+        >
+          <input type="hidden" name="_subject" value="Nueva solicitud de presupuesto — web COZETA" />
+          <input type="hidden" name="_next" value={graciasAbsoluteUrl} />
+          <p class="honeypot" aria-hidden="true">
+            <label>No rellenar si eres humano: <input name="_gotcha" tabindex="-1" autocomplete="off" /></label>
+          </p>
+          <p id="form-error" class="form-error" role="alert" hidden>
+            No hemos podido enviar el formulario. Prueba de nuevo o escríbenos a
+            {' '}<a href={`mailto:${site.email}`}>{site.email}</a>.
+          </p>
+
+          <div class="grid grid-2">
+            <div class="form-field">
+              <label for="nombre">Nombre <span class="required">*</span></label>
+              <input type="text" id="nombre" name="nombre" required autocomplete="name" />
+            </div>
+            <div class="form-field">
+              <label for="empresa">Empresa</label>
+              <input type="text" id="empresa" name="empresa" autocomplete="organization" />
+            </div>
+          </div>
+
+          <div class="grid grid-2">
+            <div class="form-field">
+              <label for="email">Email <span class="required">*</span></label>
+              <input type="email" id="email" name="email" required autocomplete="email" />
+            </div>
+            <div class="form-field">
+              <label for="telefono">Teléfono</label>
+              <input type="tel" id="telefono" name="telefono" autocomplete="tel" />
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="servicio">Servicio de interés</label>
+            <select id="servicio" name="servicio">
+              <option value="">Selecciona un servicio</option>
+              {servicios.map((s) => (
+                <option value={s.data.shortTitle}>{s.data.shortTitle}</option>
+              ))}
+              <option value="Otro">Otro</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label for="mensaje">Mensaje <span class="required">*</span></label>
+            <textarea id="mensaje" name="mensaje" rows="5" required></textarea>
+          </div>
+
+          <div class="form-field form-check">
+            <input type="checkbox" id="rgpd" name="rgpd" required value="Sí, acepto" />
+            <label for="rgpd">
+              He leído y acepto la <a href="/politica-de-privacidad/">política de privacidad</a> y consiento
+              el tratamiento de mis datos para responder a esta solicitud. <span class="required">*</span>
+            </label>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block">Enviar solicitud</button>
+        </form>
+      </div>
+
+      <div class="contact-info">
+        <div class="card info-card">
+          <h2>Datos de contacto</h2>
+          <ul class="info-list">
+            <li>
+              <Icon name="pin" class="icon-sm" />
+              <span>{fullAddress}</span>
+            </li>
+            <li>
+              <Icon name="phone" class="icon-sm" />
+              <a href={`tel:+34${site.phone}`}>{site.phoneDisplay}</a>
+            </li>
+            <li>
+              <Icon name="mail" class="icon-sm" />
+              <a href={`mailto:${site.email}`}>{site.email}</a>
+            </li>
+            <li>
+              <Icon name="clock" class="icon-sm" />
+              <span>Lunes a viernes, 8:00 – 17:00</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="map-frame">
+          <iframe
+            title={`Ubicación de ${site.legalName} en Google Maps`}
+            src={mapsSrc}
+            width="100%"
+            height="320"
+            style="border:0"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const errorMsg = document.getElementById('form-error');
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    errorMsg?.setAttribute('hidden', '');
+
+    const submitBtn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    submitBtn?.setAttribute('disabled', '');
+
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { Accept: 'application/json' },
+      });
+
+      if (res.ok) {
+        window.location.href = form.dataset.graciasUrl ?? '/contacto/';
+        return;
+      }
+      throw new Error('submission failed');
+    } catch {
+      errorMsg?.removeAttribute('hidden');
+      submitBtn?.removeAttribute('disabled');
+    }
+  });
+</script>
+
+<style>
+  .two-col {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: var(--space-6);
+    align-items: start;
+  }
+
+  .two-col > * {
+    min-width: 0;
+  }
+
+  .contact-form-wrap h2 {
+    margin-bottom: var(--space-4);
+  }
+
+  .honeypot {
+    position: absolute;
+    left: -9999px;
+  }
+
+  .form-error {
+    background: #fdecea;
+    color: var(--color-error);
+    border-radius: var(--radius);
+    padding: var(--space-3);
+    margin-bottom: var(--space-4);
+  }
+
+  .btn-block {
+    width: 100%;
+    display: flex;
+  }
+
+  .contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  .info-card h2 {
+    margin-bottom: var(--space-4);
+  }
+
+  .info-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .info-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    color: var(--color-text-muted);
+  }
+
+  .info-list :global(.icon-sm) {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    color: var(--color-secondary);
+    margin-top: 2px;
+  }
+
+  .map-frame {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--color-border);
+  }
+
+  .map-frame iframe {
+    display: block;
+  }
+
+  @media (max-width: 900px) {
+    .two-col {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

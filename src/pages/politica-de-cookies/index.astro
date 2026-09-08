@@ -1,0 +1,56 @@
+---
+import LegalLayout from '../../components/LegalLayout.astro';
+import { site } from '../../lib/site';
+---
+
+<LegalLayout
+  title="Política de cookies"
+  description="Política de cookies de COZETA: qué cookies utiliza este sitio web y cómo puedes gestionar tu consentimiento."
+  updated="2026-09-02"
+>
+  <p>
+    Este sitio web, propiedad de {site.legalName}, utiliza cookies propias y, en su caso, de terceros
+    para garantizar su correcto funcionamiento y, si lo aceptas, analizar la navegación de los usuarios.
+    A continuación te explicamos qué son las cookies, cuáles utilizamos y cómo puedes gestionarlas.
+  </p>
+  <h2>1. ¿Qué son las cookies?</h2>
+  <p>
+    Las cookies son pequeños archivos de texto que los sitios web almacenan en tu navegador y que
+    permiten reconocer tu dispositivo en visitas sucesivas, recordar tus preferencias o recopilar
+    información estadística sobre el uso del sitio.
+  </p>
+
+  <h2>2. Cookies que utilizamos</h2>
+  <ul>
+    <li>
+      <strong>Cookies técnicas necesarias:</strong> imprescindibles para el funcionamiento del sitio web,
+      como la que recuerda tu elección sobre el aviso de cookies (guardada en el almacenamiento local de
+      tu navegador). No requieren consentimiento.
+    </li>
+    <li>
+      <strong>Cookies analíticas (opcionales):</strong> si en el futuro se incorpora una herramienta de
+      analítica web, se utilizarán para conocer el número de visitantes y cómo navegan por el sitio,
+      únicamente si el usuario las acepta. Este apartado se actualizará cuando dicha herramienta esté
+      activa.
+    </li>
+  </ul>
+e  <h2>3. Gestión de tu consentimiento</h2>
+  <p>
+    Al acceder al sitio web por primera vez, se muestra un banner que te permite aceptar o rechazar las
+    cookies no esenciales. Tu elección se guarda en el navegador y puedes modificarla en cualquier
+    momento borrando los datos de navegación de tu navegador y recargando el sitio.
+  </p>
+
+  <h2>4. Cómo desactivar las cookies desde el navegador</h2>
+  <p>
+    Además de la gestión desde nuestro propio banner, puedes permitir, bloquear o eliminar las cookies
+    instaladas en tu equipo mediante la configuración de tu navegador: Chrome, Firefox, Safari o Edge
+    incluyen opciones específicas para ello en sus ajustes de privacidad.
+  </p>
+
+  <h2>5. Más información</h2>
+  <p>
+    Para cualquier duda sobre esta política de cookies, puedes escribirnos a
+    <a href={`mailto:${site.email}`}>{site.email}</a>.
+  </p>
+</LegalLayout>

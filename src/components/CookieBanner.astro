@@ -1,0 +1,75 @@
+<div id="cookie-banner" class="cookie-banner" role="dialog" aria-live="polite" aria-label="Aviso de cookies" hidden>
+  <div class="cookie-inner">
+    <p>
+      Utilizamos cookies propias y de terceros para el funcionamiento del sitio y para analizar la navegación.
+      Puedes aceptarlas, rechazar las no esenciales o consultar más información en nuestra
+      <a href="/politica-de-cookies/">política de cookies</a>.
+    </p>
+    <div class="cookie-actions">
+      <button id="cookie-reject" type="button" class="btn btn-outline btn-sm">Rechazar</button>
+      <button id="cookie-accept" type="button" class="btn btn-primary btn-sm">Aceptar</button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .cookie-banner {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 300;
+    background: var(--color-primary-dark);
+    color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  .cookie-inner {
+    max-width: var(--container-width);
+    margin-inline: auto;
+    padding: var(--space-4);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-5);
+    flex-wrap: wrap;
+  }
+
+  .cookie-inner p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.92rem;
+    flex: 1 1 380px;
+  }
+
+  .cookie-inner a {
+    color: #fff;
+    text-decoration: underline;
+  }
+
+  .cookie-actions {
+    display: flex;
+    gap: var(--space-3);
+    flex-shrink: 0;
+  }
+</style>
+
+<script>
+  const STORAGE_KEY = 'cozeta-cookie-consent';
+  const banner = document.getElementById('cookie-banner');
+  const acceptBtn = document.getElementById('cookie-accept');
+  const rejectBtn = document.getElementById('cookie-reject');
+
+  const stored = localStorage.getItem(STORAGE_KEY);
+
+  if (banner && !stored) {
+    banner.hidden = false;
+  }
+
+  function setConsent(value: 'accepted' | 'rejected') {
+    localStorage.setItem(STORAGE_KEY, value);
+    if (banner) banner.hidden = true;
+  }
+
+  acceptBtn?.addEventListener('click', () => setConsent('accepted'));
+  rejectBtn?.addEventListener('click', () => setConsent('rejected'));
+</script>

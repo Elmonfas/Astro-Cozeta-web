@@ -265,6 +265,20 @@ const resto = navLinks.filter((l) => l.href !== '/' && l.href !== '/servicios/')
     position: relative;
   }
 
+  /* Puente invisible que rellena el hueco entre "Productos" y el panel
+     (el "var(--space-2)" del "top" de .dropdown-menu). Sin esto, al bajar
+     el ratón desde el botón hacia las opciones, el cursor cruza ese hueco
+     -que no pertenece ni al botón ni al panel- y pierde el :hover a mitad
+     de camino, cerrando el desplegable antes de poder pulsar nada. */
+  .has-dropdown::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: max(100%, 190px);
+    height: var(--space-2);
+  }
+
   .nav-trigger {
     position: relative;
     display: inline-flex;

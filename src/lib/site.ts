@@ -26,9 +26,9 @@ export const site = {
 export const fullAddress = `${site.address.line1}, ${site.address.line2}, ${site.address.postalCode} ${site.address.city} (${site.address.province})`;
 
 export const team = [
-  { name: 'Luis Cuenca', role: 'Gerente' },
+  { name: 'Luis J. Cuenca', role: 'Gerente' },
   { name: 'Daniel Laínez', role: 'Ejecución' },
-  { name: 'Begoña Urizar', role: 'Finanzas' },
+  { name: 'Luis Cuenca', role: 'Finanzas' },
   { name: 'Mª Ángeles Ibáñez', role: 'Proyectos' },
 ] as const;
 

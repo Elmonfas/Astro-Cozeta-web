@@ -1,0 +1,15 @@
+{
+  "name": "COZETA Instalaciones Petrolíferas",
+  "short_name": "COZETA",
+  "description": "Construcción, mantenimiento y legalización de instalaciones de transferencia de carburantes en Bétera (Valencia).",
+  "lang": "es-ES",
+  "start_url": "/",
+  "scope": "/",
+  "display": "browser",
+  "background_color": "#FFFFFF",
+  "theme_color": "#0F3A5F",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}

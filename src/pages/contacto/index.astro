@@ -8,96 +8,126 @@ import { site, fullAddress } from '../../lib/site';
 const servicios = (await getCollection('servicios')).sort((a, b) => a.data.order - b.data.order);
 const mapsSrc = `https://www.google.com/maps?q=${encodeURIComponent(site.mapsEmbedQuery)}&output=embed`;
 
-const FORMSPREE_ID = 'mgaenozq';
+// El ID vive en PUBLIC_FORMSPREE_ID (.env) para que cambiar de formulario o de
+// destinatario sea tocar un único sitio y no el código. Ver .env.example.
+const FORMSPREE_ID = import.meta.env.PUBLIC_FORMSPREE_ID;
+if (!FORMSPREE_ID) {
+  throw new Error('Falta PUBLIC_FORMSPREE_ID. Copia .env.example a .env y rellena el ID de Formspree.');
+}
+
 const graciasPath = '/contacto/gracias/';
-// _next necesita ser absoluta: Formspree la resuelve contra su propio dominio, no el nuestro.
-// Solo se usa como fallback si el navegador no ejecuta el JS de envío por AJAX de abajo.
+// _next necesita ser absoluta: Formspree la resuelve contra su propio dominio,
+// no el nuestro. Solo entra en juego si el navegador no ejecuta el JS de envío.
 const graciasAbsoluteUrl = new URL(graciasPath, Astro.site).toString();
 ---
 
 <Layout
-  title="Contacto"
-  description="Solicita presupuesto sin compromiso para tu instalación de carburantes. Teléfono, email, dirección y formulario de contacto de COZETA en Bétera (Valencia)."
+  title="Contacto: presupuesto para vuestra instalación"
+  description="Pedid presupuesto sin compromiso para vuestra instalación de carburantes. Teléfono, email y dirección de COZETA en Bétera (Valencia). Respondemos en 24-48 h."
+  breadcrumbs={[{ name: 'Contacto', path: '/contacto/' }]}
 >
   <PageHero
     eyebrow="Contacto"
     title="Hablemos de vuestro proyecto"
-    intro="Contadnos qué necesitáis y os responderemos con una propuesta técnica y económica. También podéis llamarnos directamente."
+    intro="Explicadnos qué instalación necesitáis y os respondemos con una propuesta técnica y económica. Si preferís hablarlo directamente, el teléfono está siempre abierto en horario de oficina."
   />
 
   <section class="section">
     <div class="container two-col">
       <div class="contact-form-wrap card">
-        <h2>Solicita presupuesto</h2>
+        <h2>Solicitud de presupuesto</h2>
+        <p class="form-lead">
+          Cuantos más detalles nos deis (ubicación, tipo de instalación y plazo previsto), más
+          ajustada será la propuesta que os enviemos.
+        </p>
 
         <!--
           Formulario enviado vía Formspree (https://formspree.io). Panel de mensajes
-          y configuración del formulario en formspree.io/forms/[ID]/settings.
+          y destinatarios en formspree.io/forms/[ID]/settings → Emails.
         -->
         <form
           id="contact-form"
           name="contacto"
           method="POST"
           action={`https://formspree.io/f/${FORMSPREE_ID}`}
-          data-gracias-url={graciasPath}
+          novalidate
         >
           <input type="hidden" name="_subject" value="Nueva solicitud de presupuesto — web COZETA" />
           <input type="hidden" name="_next" value={graciasAbsoluteUrl} />
           <p class="honeypot" aria-hidden="true">
             <label>No rellenar si eres humano: <input name="_gotcha" tabindex="-1" autocomplete="off" /></label>
           </p>
-          <p id="form-error" class="form-error" role="alert" hidden>
-            No hemos podido enviar el formulario. Prueba de nuevo o escríbenos a
+
+          <p id="form-error" class="form-msg form-msg-error" role="alert" hidden>
+            No hemos podido enviar el formulario. Volved a intentarlo o escribidnos a
             {' '}<a href={`mailto:${site.email}`}>{site.email}</a>.
           </p>
 
-          <div class="grid grid-2">
-            <div class="form-field">
-              <label for="nombre">Nombre <span class="required">*</span></label>
-              <input type="text" id="nombre" name="nombre" required autocomplete="name" />
+          <div class="form-fields">
+            <div class="grid grid-2">
+              <div class="form-field">
+                <label for="nombre">Nombre <span class="required" aria-hidden="true">*</span></label>
+                <input type="text" id="nombre" name="nombre" required autocomplete="name" aria-describedby="nombre-error" />
+                <p class="field-error" id="nombre-error" hidden>Indicadnos vuestro nombre.</p>
+              </div>
+              <div class="form-field">
+                <label for="empresa">Empresa</label>
+                <input type="text" id="empresa" name="empresa" autocomplete="organization" />
+              </div>
             </div>
-            <div class="form-field">
-              <label for="empresa">Empresa</label>
-              <input type="text" id="empresa" name="empresa" autocomplete="organization" />
+
+            <div class="grid grid-2">
+              <div class="form-field">
+                <label for="email">Email <span class="required" aria-hidden="true">*</span></label>
+                <input type="email" id="email" name="email" required autocomplete="email" aria-describedby="email-error" />
+                <p class="field-error" id="email-error" hidden>Revisad el email: falta el formato nombre@dominio.</p>
+              </div>
+              <div class="form-field">
+                <label for="telefono">Teléfono</label>
+                <input type="tel" id="telefono" name="telefono" autocomplete="tel" />
+              </div>
             </div>
-          </div>
 
-          <div class="grid grid-2">
             <div class="form-field">
-              <label for="email">Email <span class="required">*</span></label>
-              <input type="email" id="email" name="email" required autocomplete="email" />
+              <label for="servicio">Servicio de interés</label>
+              <select id="servicio" name="servicio">
+                <option value="">Seleccionad un servicio</option>
+                {servicios.map((s) => (
+                  <option value={s.data.shortTitle}>{s.data.shortTitle}</option>
+                ))}
+                <option value="Otro">Otro</option>
+              </select>
             </div>
+
             <div class="form-field">
-              <label for="telefono">Teléfono</label>
-              <input type="tel" id="telefono" name="telefono" autocomplete="tel" />
+              <label for="mensaje">Mensaje <span class="required" aria-hidden="true">*</span></label>
+              <textarea id="mensaje" name="mensaje" rows="5" required aria-describedby="mensaje-error"></textarea>
+              <p class="field-error" id="mensaje-error" hidden>Contadnos brevemente qué necesitáis.</p>
             </div>
+
+            <div class="form-field form-check">
+              <input type="checkbox" id="rgpd" name="rgpd" required value="Sí, acepto" aria-describedby="rgpd-error" />
+              <label for="rgpd">
+                He leído y acepto la <a href="/politica-de-privacidad/">política de privacidad</a> y
+                consiento el tratamiento de mis datos para responder a esta solicitud.
+                <span class="required" aria-hidden="true">*</span>
+              </label>
+            </div>
+            <p class="field-error" id="rgpd-error" hidden>Necesitamos vuestro consentimiento para poder responderos.</p>
+
+            <button type="submit" class="btn btn-primary btn-block" data-label="Enviar solicitud">
+              Enviar solicitud
+            </button>
           </div>
 
-          <div class="form-field">
-            <label for="servicio">Servicio de interés</label>
-            <select id="servicio" name="servicio">
-              <option value="">Selecciona un servicio</option>
-              {servicios.map((s) => (
-                <option value={s.data.shortTitle}>{s.data.shortTitle}</option>
-              ))}
-              <option value="Otro">Otro</option>
-            </select>
+          <div id="form-success" class="form-success" role="status" hidden>
+            <Icon name="check" class="icon-check" />
+            <h3>Solicitud enviada</h3>
+            <p>
+              Hemos recibido vuestro mensaje y os respondemos en 24-48 horas laborables. Si es
+              urgente, llamadnos al <a href={`tel:+34${site.phone}`}>{site.phoneDisplay}</a>.
+            </p>
           </div>
-
-          <div class="form-field">
-            <label for="mensaje">Mensaje <span class="required">*</span></label>
-            <textarea id="mensaje" name="mensaje" rows="5" required></textarea>
-          </div>
-
-          <div class="form-field form-check">
-            <input type="checkbox" id="rgpd" name="rgpd" required value="Sí, acepto" />
-            <label for="rgpd">
-              He leído y acepto la <a href="/politica-de-privacidad/">política de privacidad</a> y consiento
-              el tratamiento de mis datos para responder a esta solicitud. <span class="required">*</span>
-            </label>
-          </div>
-
-          <button type="submit" class="btn btn-primary btn-block">Enviar solicitud</button>
         </form>
       </div>
 
@@ -124,16 +154,25 @@ const graciasAbsoluteUrl = new URL(graciasPath, Astro.site).toString();
           </ul>
         </div>
 
-        <div class="map-frame">
-          <iframe
-            title={`Ubicación de ${site.legalName} en Google Maps`}
-            src={mapsSrc}
-            width="100%"
-            height="320"
-            style="border:0"
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-          ></iframe>
+        <!--
+          El mapa NO se carga solo: incrustar Google Maps envía la IP del visitante
+          a Google, así que solo se monta tras aceptar cookies o al pulsar el botón.
+        -->
+        <div class="map-frame" id="map-frame" data-map-src={mapsSrc}>
+          <div class="map-placeholder" id="map-placeholder">
+            <Icon name="pin" class="icon-pin" />
+            <p>
+              El mapa lo sirve Google Maps, que puede instalar cookies propias. Se carga solo si
+              lo autorizáis.
+            </p>
+            <button type="button" class="btn btn-outline btn-sm" id="map-load">Cargar el mapa</button>
+            <a
+              class="map-external"
+              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(site.mapsEmbedQuery)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >Abrir en Google Maps</a>
+          </div>
         </div>
       </div>
     </div>
@@ -143,13 +182,44 @@ const graciasAbsoluteUrl = new URL(graciasPath, Astro.site).toString();
 <script>
   const form = document.getElementById('contact-form') as HTMLFormElement | null;
   const errorMsg = document.getElementById('form-error');
+  const successMsg = document.getElementById('form-success');
+  const fields = form?.querySelector('.form-fields') as HTMLElement | null;
+
+  function showFieldError(input: HTMLInputElement | HTMLTextAreaElement, show: boolean) {
+    const errorId = input.getAttribute('aria-describedby');
+    const el = errorId ? document.getElementById(errorId) : null;
+    if (el) el.hidden = !show;
+    input.setAttribute('aria-invalid', String(show));
+  }
+
+  function validate(): boolean {
+    if (!form) return false;
+    const inputs = Array.from(
+      form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('[required]')
+    );
+    let firstInvalid: HTMLElement | null = null;
+
+    for (const input of inputs) {
+      const valid = input.checkValidity();
+      showFieldError(input, !valid);
+      if (!valid && !firstInvalid) firstInvalid = input;
+    }
+
+    firstInvalid?.focus();
+    return !firstInvalid;
+  }
 
   form?.addEventListener('submit', async (e) => {
     e.preventDefault();
     errorMsg?.setAttribute('hidden', '');
 
+    if (!validate()) return;
+
     const submitBtn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
-    submitBtn?.setAttribute('disabled', '');
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Enviando…';
+    }
 
     try {
       const res = await fetch(form.action, {
@@ -158,15 +228,63 @@ const graciasAbsoluteUrl = new URL(graciasPath, Astro.site).toString();
         headers: { Accept: 'application/json' },
       });
 
-      if (res.ok) {
-        window.location.href = form.dataset.graciasUrl ?? '/contacto/';
-        return;
+      if (!res.ok) throw new Error('submission failed');
+
+      // Éxito sin salir de la página: se sustituyen los campos por la confirmación.
+      if (fields) fields.hidden = true;
+      if (successMsg) {
+        successMsg.hidden = false;
+        successMsg.scrollIntoView({ block: 'center', behavior: 'smooth' });
       }
-      throw new Error('submission failed');
     } catch {
       errorMsg?.removeAttribute('hidden');
-      submitBtn?.removeAttribute('disabled');
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = submitBtn.dataset.label ?? 'Enviar solicitud';
+      }
     }
+  });
+
+  // Limpia el error de un campo en cuanto el usuario lo corrige.
+  form?.querySelectorAll<HTMLInputElement>('[required]').forEach((input) => {
+    input.addEventListener('input', () => {
+      if (input.checkValidity()) showFieldError(input, false);
+    });
+  });
+</script>
+
+<script>
+  const frame = document.getElementById('map-frame');
+  const placeholder = document.getElementById('map-placeholder');
+
+  function loadMap() {
+    if (!frame || frame.dataset.loaded === 'true') return;
+    const iframe = document.createElement('iframe');
+    iframe.src = frame.dataset.mapSrc ?? '';
+    iframe.title = 'Ubicación de COZETA en Google Maps';
+    iframe.width = '100%';
+    iframe.height = '320';
+    iframe.loading = 'lazy';
+    iframe.referrerPolicy = 'no-referrer-when-downgrade';
+    iframe.style.border = '0';
+    placeholder?.remove();
+    frame.appendChild(iframe);
+    frame.dataset.loaded = 'true';
+  }
+
+  function hasConsent() {
+    try {
+      return localStorage.getItem('cozeta-cookie-consent') === 'accepted';
+    } catch {
+      return false;
+    }
+  }
+
+  if (hasConsent()) loadMap();
+
+  document.getElementById('map-load')?.addEventListener('click', loadMap);
+  document.addEventListener('cozeta:consent', (e) => {
+    if ((e as CustomEvent).detail === 'accepted') loadMap();
   });
 </script>
 
@@ -183,7 +301,11 @@ const graciasAbsoluteUrl = new URL(graciasPath, Astro.site).toString();
   }
 
   .contact-form-wrap h2 {
-    margin-bottom: var(--space-4);
+    margin-bottom: var(--space-2);
+  }
+
+  .form-lead {
+    margin-bottom: var(--space-5);
   }
 
   .honeypot {
@@ -191,12 +313,42 @@ const graciasAbsoluteUrl = new URL(graciasPath, Astro.site).toString();
     left: -9999px;
   }
 
-  .form-error {
-    background: #fdecea;
-    color: var(--color-error);
+  .form-msg {
     border-radius: var(--radius);
     padding: var(--space-3);
     margin-bottom: var(--space-4);
+  }
+
+  .form-msg-error {
+    background: #fdecea;
+    color: var(--color-error);
+  }
+
+  .field-error {
+    margin: var(--space-2) 0 0;
+    font-size: 0.85rem;
+    color: var(--color-error);
+  }
+
+  .form-field input[aria-invalid='true'],
+  .form-field textarea[aria-invalid='true'] {
+    border-color: var(--color-error);
+  }
+
+  .form-success {
+    text-align: center;
+    padding: var(--space-4) 0;
+  }
+
+  .form-success :global(.icon-check) {
+    width: 44px;
+    height: 44px;
+    color: var(--color-success);
+    margin-inline: auto;
+  }
+
+  .form-success h3 {
+    margin-block: var(--space-3) var(--space-2);
   }
 
   .btn-block {
@@ -243,10 +395,38 @@ const graciasAbsoluteUrl = new URL(graciasPath, Astro.site).toString();
     overflow: hidden;
     box-shadow: var(--shadow-sm);
     border: 1px solid var(--color-border);
+    background: var(--color-bg-alt);
   }
 
-  .map-frame iframe {
+  .map-frame :global(iframe) {
     display: block;
+  }
+
+  .map-placeholder {
+    min-height: 320px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    padding: var(--space-5);
+    text-align: center;
+  }
+
+  .map-placeholder p {
+    margin: 0;
+    max-width: 34ch;
+    font-size: 0.9rem;
+  }
+
+  .map-placeholder :global(.icon-pin) {
+    width: 32px;
+    height: 32px;
+    color: var(--color-secondary);
+  }
+
+  .map-external {
+    font-size: 0.85rem;
   }
 
   @media (max-width: 900px) {

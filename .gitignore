@@ -25,3 +25,6 @@ CLAUDE.md
 
 # jetbrains setting folder
 .idea/
+
+# Configuración local del editor con rutas absolutas de la máquina
+.claude/launch.json

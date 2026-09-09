@@ -1,9 +1,19 @@
 ---
 title: "Gasolineras y estaciones de servicio"
 shortTitle: "Gasolineras"
-description: "Diseño y construcción integral llave en mano de estaciones de servicio, desde el proyecto técnico hasta la puesta en marcha y legalización ante industria."
+seoTitle: "Construcción de gasolineras y estaciones de servicio"
+description: "Construimos estaciones de servicio completas: obra civil, tanques, surtidores y legalización ante industria. Entre 3 y 5 meses de obra. Pedid presupuesto."
+intro: "Diseño y construcción integral llave en mano de estaciones de servicio, desde el proyecto técnico hasta la puesta en marcha y la legalización ante industria."
 order: 1
 icon: "gasolinera"
+aside:
+  titulo: "¿Tenéis ya el solar?"
+  texto: "Con la ubicación y una idea del volumen de venta previsto podemos daros una primera estimación de plazo y coste."
+  boton: "Solicitar estimación"
+cta:
+  titulo: "De solar vacío a estación en servicio"
+  texto: "Nos ocupamos de la obra civil, los equipos y todo el papeleo con industria. Vosotros tenéis un único interlocutor de principio a fin."
+  boton: "Pedir presupuesto"
 incluye:
   - "Obra civil completa: excavación, cubetos, soleras y urbanización del solar"
   - "Suministro e instalación de tanques de doble pared homologados"

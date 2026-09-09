@@ -1,36 +1,47 @@
 ---
+import { Image } from 'astro:assets';
 import Layout from '../../layouts/Layout.astro';
 import PageHero from '../../components/PageHero.astro';
 import CtaBanner from '../../components/CtaBanner.astro';
-
-const proyectos = [
-  { img: '/images/proyectos-real/lowcost.jpg', title: 'Estación LOWCOST', tag: 'Gasolineras', desc: 'Construcción llave en mano de estación de servicio desatendida, con doble marquesina, isla accesible y cartelería multilingüe.' },
-  { img: '/images/proyectos-real/soex2.jpg', title: 'SOEX 2', tag: 'Gasolineras', desc: 'Estación de servicio 24 horas de un solo surtidor, con totem de precios y pago en efectivo o con tarjeta.' },
-  { img: '/images/proyectos-real/autoil-museros.jpg', title: 'Autoil Lowcost Museros', tag: 'Gasolineras', desc: 'Estación de bajo coste con doble isla de repostaje y marquesina sobre pilares, en Museros (Valencia).' },
-  { img: '/images/proyectos-real/benzoil.jpg', title: 'Benzoil', tag: 'Gasolineras', desc: 'Estación de servicio con dos islas de repostaje, imagen corporativa integral y suministro 24 horas.' },
-  { img: '/images/proyectos-real/dieself.jpg', title: 'Dieself', tag: 'Gasolineras', desc: 'Punto de suministro desatendido junto a nave industrial, con pago con tarjeta y efectivo las 24 horas.' },
-  { img: '/images/proyectos-real/gasoprix.jpg', title: 'Gasoprix', tag: 'Gasolineras', desc: 'Estación de servicio en zona comercial, con marquesina de gran formato y totems de precios digitales.' },
-  { img: '/images/proyectos-real/cooperativa-sant-josep.jpg', title: 'Cooperativa Sant Josep', tag: 'Consumos propios', desc: 'Punto de repostaje para una cooperativa agraria, con marquesina e islas adaptadas a maquinaria y vehículos de sus socios.' },
-];
+import { proyectos } from '../../lib/proyectos';
 ---
 
 <Layout
-  title="Proyectos"
-  description="Galería de instalaciones de carburantes ejecutadas por COZETA: gasolineras, gasocentros, puertos, consumos propios y más."
+  title="Gasolineras y estaciones que hemos construido"
+  description="Estaciones de servicio, puntos desatendidos y repostaje para cooperativas construidos y legalizados en Valencia. Mirad la obra antes de pedirnos presupuesto."
+  breadcrumbs={[{ name: 'Proyectos', path: '/proyectos/' }]}
 >
   <PageHero
     eyebrow="Obra ejecutada"
     title="Proyectos realizados"
-    intro="Una muestra de las instalaciones que hemos diseñado, construido y legalizado en los últimos años."
+    intro="Una muestra de las instalaciones que hemos diseñado, construido y legalizado en los últimos años. Todas siguen en servicio."
   />
 
-  <section class="section">
+  <section class="section" aria-labelledby="obra-heading">
     <div class="container">
+      <div class="section-header">
+        <h2 id="obra-heading">Instalaciones entregadas y en servicio</h2>
+        <p>
+          Siete obras representativas del tipo de encargo que solemos recibir: estaciones
+          desatendidas, puntos de suministro junto a nave industrial y repostaje para cooperativas
+          agrarias.
+        </p>
+      </div>
       <div class="grid grid-3">
         {proyectos.map((p) => (
           <article class="project-card card">
             <div class="project-media">
-              <img src={p.img} alt={p.title} width="800" height="600" loading="lazy" data-parallax="0.25" data-parallax-clamp="40" />
+              <Image
+                src={p.img}
+                alt={p.alt}
+                widths={[400, 700, 1050]}
+                sizes="(max-width: 620px) 100vw, (max-width: 900px) 50vw, 33vw"
+                format="webp"
+                quality={72}
+                loading="lazy"
+                data-parallax="0.25"
+                data-parallax-clamp="40"
+              />
             </div>
             <div class="project-body">
               <span class="project-tag">{p.tag}</span>
@@ -43,7 +54,11 @@ const proyectos = [
     </div>
   </section>
 
-  <CtaBanner title="¿Tenéis un proyecto similar?" text="Contadnos los detalles y os preparamos una propuesta técnica adaptada a vuestra instalación." />
+  <CtaBanner
+    title="¿Tenéis un proyecto parecido entre manos?"
+    text="Enviadnos la ubicación y el tipo de instalación que necesitáis y os devolvemos una propuesta técnica adaptada."
+    cta="Contar mi proyecto"
+  />
 </Layout>
 
 <style>

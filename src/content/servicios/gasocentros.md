@@ -1,9 +1,19 @@
 ---
 title: "Gasocentros"
 shortTitle: "Gasocentros"
-description: "Instalación y legalización de centros de carga de gasóleo para camiones cisterna, con capacidad de descarga rápida y control de existencias."
+seoTitle: "Gasocentros: centros de carga para camiones cisterna"
+description: "Centros de carga para camiones cisterna con trasiego rápido, enclavamientos de seguridad y control de existencias. Dimensionamos según vuestro volumen real."
+intro: "Instalación y legalización de centros de carga de gasóleo para camiones cisterna, con capacidad de descarga rápida y control de existencias."
 order: 2
 icon: "gasocentro"
+aside:
+  titulo: "¿Cuánto trasiego movéis al mes?"
+  texto: "Es el dato que marca todo lo demás: capacidad de los depósitos, caudal de las bombas y tiempo de cada carga."
+  boton: "Dimensionar mi instalación"
+cta:
+  titulo: "Instalaciones de gran capacidad, sin sobredimensionar"
+  texto: "Calculamos depósitos y caudal a partir de vuestro trasiego real, para que no paguéis por capacidad que no vais a usar."
+  boton: "Hablar con un técnico"
 incluye:
   - "Diseño de la instalación según volumen de carga previsto"
   - "Depósitos de gran capacidad y sistemas de trasiego rápido"

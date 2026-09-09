@@ -1,9 +1,19 @@
 ---
 title: "Consumos propios"
 shortTitle: "Consumos propios"
-description: "Equipamiento de repostaje interno para flotas de vehículos: maquinaria agrícola, transporte, construcción y servicios municipales."
+seoTitle: "Depósito de gasóleo para consumo propio y flotas"
+description: "Repostaje interno para vuestra flota, con control de consumo por vehículo y la autorización de industria tramitada. Sin depender de la estación pública."
+intro: "Equipamiento de repostaje interno para flotas de vehículos: maquinaria agrícola, transporte, construcción y servicios municipales."
 order: 3
 icon: "flota"
+aside:
+  titulo: "¿Cuántos litros gastáis al mes?"
+  texto: "Con el consumo mensual y el espacio del que dispongáis calculamos la capacidad de depósito que os sale a cuenta."
+  boton: "Calcular mi depósito"
+cta:
+  titulo: "Repostar en casa sale más barato que la estación"
+  texto: "Menos tiempos muertos, precio de compra a granel y un registro de cada repostaje por vehículo o conductor."
+  boton: "Solicitar visita técnica"
 incluye:
   - "Depósitos aéreos y enterrados homologados para gasóleo B y A"
   - "Surtidores o dispensadores con control de consumo por vehículo o tarjeta"

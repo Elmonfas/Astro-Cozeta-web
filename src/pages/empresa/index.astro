@@ -1,14 +1,22 @@
 ---
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
 import Layout from '../../layouts/Layout.astro';
 import CtaBanner from '../../components/CtaBanner.astro';
 import Icon from '../../components/Icon.astro';
 import { site, team } from '../../lib/site';
 
-const teamPhotos: Record<string, string> = {
-  'Luis J. Cuenca': '/images/placeholders/team-luis-j-cuenca.jpg',
-  'Daniel Laínez': '/images/placeholders/team-daniel-lainez.jpg',
-  'Luis Cuenca': '/images/placeholders/team-luis-cuenca-hijo.jpg',
-  'Mª Ángeles Ibáñez': '/images/placeholders/team-angeles-ibanez.jpg',
+import flotaImg from '../../assets/flota-cozeta.png';
+import luisJCuenca from '../../assets/equipo/luis-j-cuenca.jpg';
+import danielLainez from '../../assets/equipo/daniel-lainez.jpg';
+import luisCuenca from '../../assets/equipo/luis-cuenca.jpg';
+import angelesIbanez from '../../assets/equipo/angeles-ibanez.jpg';
+
+const teamPhotos: Record<string, ImageMetadata> = {
+  'Luis J. Cuenca': luisJCuenca,
+  'Daniel Laínez': danielLainez,
+  'Luis Cuenca': luisCuenca,
+  'Mª Ángeles Ibáñez': angelesIbanez,
 };
 
 const teamIcons: Record<string, string> = {
@@ -27,14 +35,15 @@ const teamDept: Record<string, string> = {
 ---
 
 <Layout
-  title="Empresa"
-  description="Conoce COZETA: más de 30 años de experiencia en instalaciones de transferencia de carburantes desde Bétera (Valencia). Equipo e historia."
+  title="Empresa instaladora de gasolineras en Valencia"
+  description="Desde 1996 construyendo y legalizando instalaciones de carburantes en Bétera (Valencia). Conoced nuestra historia y al equipo que lleva cada obra."
+  breadcrumbs={[{ name: 'Empresa', path: '/empresa/' }]}
 >
   <section class="empresa-hero">
     <div class="container empresa-hero-inner">
       <div class="empresa-hero-copy">
         <p class="eyebrow">Quiénes somos</p>
-        <h1>Más de 30 años en el sector pretrolifero</h1>
+        <h1>Más de 30 años en el sector petrolífero</h1>
         <p class="hero-intro">
           COZETA nació en 1996 en Bétera (Valencia) de la mano de Luis Joaquín Cuenca, con el
           objetivo de dar servicio técnico riguroso a un sector muy regulado y en constante
@@ -42,12 +51,15 @@ const teamDept: Record<string, string> = {
         </p>
       </div>
       <div class="empresa-hero-media" data-parallax="-0.1" data-parallax-axis="x" data-parallax-clamp="80">
-        <img
-          src="/images/placeholders/empresa-flota.png"
-          alt="Furgonetas de la flota de COZETA con el logotipo corporativo"
-          width="600"
-          height="346"
+        <Image
+          src={flotaImg}
+          alt="Dos furgonetas de la flota de COZETA rotuladas con el logotipo corporativo"
+          widths={[600, 900]}
+          sizes="(max-width: 900px) 100vw, 55vw"
+          format="webp"
+          quality={80}
           loading="eager"
+          fetchpriority="high"
           class="empresa-hero-img"
         />
       </div>
@@ -57,7 +69,7 @@ const teamDept: Record<string, string> = {
   <section class="section" aria-labelledby="historia-heading">
     <div class="container historia">
       <p class="eyebrow">Nuestra historia</p>
-      <h2 id="historia-heading" class="visually-hidden">Nuestra historia</h2>
+      <h2 id="historia-heading" class="historia-title">De pequeña instaladora a equipo llave en mano</h2>
       <ol class="timeline">
         <li class="timeline-item">
           <span class="timeline-marker">{site.foundedYear}</span>
@@ -109,7 +121,15 @@ const teamDept: Record<string, string> = {
         {team.map((member) => (
           <div class="team-card">
             <div class="team-photo">
-              <img src={teamPhotos[member.name]} alt={`Foto de ${member.name}`} width="480" height="480" loading="lazy" />
+              <Image
+                src={teamPhotos[member.name]}
+                alt={`${member.name}, responsable de ${(teamDept[member.role] ?? member.role).toLowerCase()} en COZETA`}
+                width={280}
+                height={280}
+                format="webp"
+                quality={80}
+                loading="lazy"
+              />
               <div class="team-dept" aria-hidden="true">
                 <Icon name={teamIcons[member.role] ?? 'shield'} class="icon-md" />
                 <span>{teamDept[member.role] ?? member.role}</span>
@@ -123,7 +143,11 @@ const teamDept: Record<string, string> = {
     </div>
   </section>
 
-  <CtaBanner />
+  <CtaBanner
+    title="Detrás de cada obra está este equipo"
+    text="No subcontratamos la parte crítica: quien firma el proyecto y quien está en obra trabajan aquí. Si queréis, os lo contamos en persona."
+    cta="Concertar una visita"
+  />
 </Layout>
 
 <style>
@@ -191,6 +215,10 @@ const teamDept: Record<string, string> = {
   }
 
   .historia .eyebrow {
+    margin-bottom: var(--space-2);
+  }
+
+  .historia-title {
     margin-bottom: var(--space-5);
   }
 

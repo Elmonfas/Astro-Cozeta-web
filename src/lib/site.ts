@@ -1,6 +1,9 @@
 export const site = {
   name: 'COZETA',
+  // Razón social: solo para textos legales, copyright y JSON-LD.
   legalName: 'COZETA Tecnología y Construcción SL',
+  // Nombre comercial: el que ve el cliente en marca, alt de logos y redes.
+  tradeName: 'COZETA Instalaciones Petrolíferas',
   cif: 'B97651905',
   registryInfo: 'Registro Mercantil de Valencia, Tomo 8407, Libro 5697, Folio 43, Hoja V-112321, inscripción 1ª',
   claim: 'Instalaciones de transferencia de carburantes',
@@ -17,6 +20,10 @@ export const site = {
     province: 'Valencia',
     country: 'España',
   },
+  // Coordenadas tomadas de la ficha real de Google Business Profile
+  // ("Cozeta Instalaciones Petroliferas", plus code HHJ6+85 Bétera).
+  geo: { lat: 39.580822, lng: -0.4395272 },
+  openingHours: { days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '08:00', closes: '17:00' },
   mapsEmbedQuery: "COZETA Instalaciones Petrolíferas, Calle 6, nave 12, P.I. L'Horta Vella, 46117 Bétera, Valencia",
   social: {
     // Sin redes sociales activas por el momento.

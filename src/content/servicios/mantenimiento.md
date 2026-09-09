@@ -1,9 +1,19 @@
 ---
 title: "Mantenimiento"
 shortTitle: "Mantenimiento"
-description: "Revisiones periódicas, reparaciones y servicio integral de mantenimiento preventivo y correctivo para instalaciones de carburantes."
+seoTitle: "Mantenimiento de gasolineras e inspecciones"
+description: "Preventivo, correctivo y urgencias, con el calendario de inspecciones obligatorias controlado por nosotros para que no se os pase ninguna fecha."
+intro: "Revisiones periódicas, reparaciones y servicio integral de mantenimiento preventivo y correctivo para instalaciones de carburantes."
 order: 7
 icon: "mantenimiento"
+aside:
+  titulo: "¿Sabéis cuándo toca la próxima revisión?"
+  texto: "Si no lo tenéis controlado, revisamos el historial de la instalación y os montamos el calendario de inspecciones."
+  boton: "Revisar mi calendario"
+cta:
+  titulo: "Una avería en temporada alta cuesta más que el mantenimiento"
+  texto: "Contrato anual o intervenciones puntuales, con técnicos propios y repuestos de los equipos que instalamos."
+  boton: "Pedir plan de mantenimiento"
 incluye:
   - "Mantenimiento preventivo programado según normativa"
   - "Revisión de tanques, tuberías y sistemas de detección de fugas"

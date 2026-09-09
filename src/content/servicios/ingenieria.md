@@ -1,9 +1,19 @@
 ---
 title: "Ingeniería y legalizaciones"
 shortTitle: "Ingeniería"
-description: "Asesoramiento técnico, redacción de proyectos y tramitación de licencias para instalaciones de transferencia de carburantes."
+seoTitle: "Legalización de instalaciones petrolíferas"
+description: "Proyectos técnicos, dirección de obra y tramitación ante industria. También legalizamos instalaciones que ya existen y no tienen proyecto en regla."
+intro: "Asesoramiento técnico, redacción de proyectos y tramitación de licencias para instalaciones de transferencia de carburantes."
 order: 6
 icon: "ingenieria"
+aside:
+  titulo: "¿Instalación nueva o ya construida?"
+  texto: "Si ya está en pie y sin proyecto en regla, hacemos el levantamiento in situ y montamos el expediente desde cero."
+  boton: "Consultar mi expediente"
+cta:
+  titulo: "Proyectos escritos por quien luego los ejecuta"
+  texto: "Somos instaladores además de ingeniería, así que redactamos pensando en cómo se construye y en qué mira industria. Menos correcciones, menos retrasos."
+  boton: "Encargar proyecto técnico"
 incluye:
   - "Proyectos técnicos conforme a la ITC MI-IP04 y normativa autonómica"
   - "Estudios de seguridad y clasificación de zonas ATEX"
@@ -13,7 +23,7 @@ incluye:
   - "Actualización de instalaciones a normativa vigente"
 faq:
   - pregunta: "¿Podéis legalizar una instalación que ya existe pero no tiene proyecto?"
-    respuesta: "Sí, elaboramos el proyecto 'as built' con visita técnica y mediciones in situ, y tramitamos la legalización ante el organismo competente."
+    respuesta: "Sí, elaboramos el proyecto «as built» con visita técnica y mediciones in situ, y tramitamos la legalización ante el organismo competente."
   - pregunta: "¿Hacéis solo la parte de ingeniería sin ejecutar la obra?"
     respuesta: "Sí, ofrecemos el servicio de ingeniería y tramitación de forma independiente para clientes que ya cuentan con su propio instalador o constructora."
   - pregunta: "¿Qué normativa aplica a las instalaciones de carburantes?"

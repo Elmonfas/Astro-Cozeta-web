@@ -1,76 +1,30 @@
 ---
 import '../styles/global.css';
+import Seo from '../components/Seo.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import CookieBanner from '../components/CookieBanner.astro';
 import MobileCallButton from '../components/MobileCallButton.astro';
-import { site } from '../lib/site';
 
 interface Props {
   title: string;
   description: string;
   noindex?: boolean;
+  breadcrumbs?: { name: string; path: string }[];
 }
 
-const { title, description, noindex = false } = Astro.props;
-const pageTitle = title === site.name ? `${site.name} — ${site.claim}` : `${title} | ${site.name}`;
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const ogImage = new URL('/images/og-cozeta.png', Astro.site);
-
-const localBusinessSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'LocalBusiness',
-  '@id': `${Astro.site}#organizacion`,
-  name: site.legalName,
-  alternateName: site.name,
-  description: 'Empresa de instalaciones de transferencia de carburantes: gasolineras, gasocentros, consumos propios y puertos.',
-  url: Astro.site,
-  telephone: `+34${site.phone}`,
-  email: site.email,
-  foundingDate: String(site.foundedYear),
-  address: {
-    '@type': 'PostalAddress',
-    streetAddress: `${site.address.line1}, ${site.address.line2}`,
-    addressLocality: site.address.city,
-    addressRegion: site.address.province,
-    postalCode: site.address.postalCode,
-    addressCountry: 'ES',
-  },
-  areaServed: 'ES',
-};
+const { title, description, noindex = false, breadcrumbs = [] } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="es">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" sizes="any" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <link rel="canonical" href={canonicalURL} />
-    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <Seo title={title} description={description} noindex={noindex} breadcrumbs={breadcrumbs} />
 
-    <title>{pageTitle}</title>
-    <meta name="description" content={description} />
-
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content={site.name} />
-    <meta property="og:title" content={pageTitle} />
-    <meta property="og:description" content={description} />
-    <meta property="og:url" content={canonicalURL} />
-    <meta property="og:image" content={ogImage} />
-    <meta property="og:locale" content="es_ES" />
-
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={pageTitle} />
-    <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={ogImage} />
-
-    <meta name="theme-color" content="#0F3A5F" />
-    <meta name="generator" content={Astro.generator} />
-
-    <script type="application/ld+json" set:html={JSON.stringify(localBusinessSchema)} />
+    {/* Fuentes autoalojadas (ver src/styles/fonts.css). Se precargan las dos
+        que pintan el primer texto visible: el cuerpo y los titulares. */}
+    <link rel="preload" href="/fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/unbounded-700.woff2" as="font" type="font/woff2" crossorigin />
   </head>
   <body>
     <a href="#contenido" class="skip-link">Saltar al contenido</a>

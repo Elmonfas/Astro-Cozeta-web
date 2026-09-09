@@ -3,21 +3,26 @@ import Layout from '../layouts/Layout.astro';
 import { site } from '../lib/site';
 ---
 
-<Layout title="Página no encontrada" description="La página que buscas no existe o se ha movido." noindex>
+<Layout title="Página no encontrada" description="La página que buscáis no existe o ha cambiado de dirección. Desde aquí podéis ir a servicios, proyectos, empresa o contacto, o volver a la portada." noindex>
   <section class="not-found section">
     <div class="container">
       <p class="eyebrow">Error 404</p>
       <h1>No hemos encontrado esta página</h1>
       <p>
-        Puede que el enlace esté roto o que la página se haya movido. Prueba a volver al inicio o
-        consulta nuestros servicios.
+        Puede que el enlace esté roto o que la página haya cambiado de dirección. Estos son los
+        sitios a los que suele ir todo el mundo:
       </p>
+      <ul class="not-found-links">
+        <li><a href="/servicios/">Los siete servicios que ofrecemos</a></li>
+        <li><a href="/proyectos/">Instalaciones que hemos construido</a></li>
+        <li><a href="/empresa/">Quiénes somos y cómo trabajamos</a></li>
+        <li><a href="/contacto/">Pedir presupuesto</a></li>
+      </ul>
       <div class="not-found-actions">
         <a href="/" class="btn btn-primary">Volver al inicio</a>
-        <a href="/servicios/" class="btn btn-outline">Ver servicios</a>
       </div>
       <p class="not-found-phone">
-        ¿Prefieres hablar con nosotros? Llámanos al
+        ¿Preferís hablarlo directamente? Llamadnos al
         <a href={`tel:+34${site.phone}`}>{site.phoneDisplay}</a>
       </p>
     </div>
@@ -38,6 +43,16 @@ import { site } from '../lib/site';
   .not-found p {
     max-width: 50ch;
     margin-inline: auto;
+  }
+
+  .not-found-links {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-5) auto 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    max-width: 34ch;
   }
 
   .not-found-actions {

@@ -1,9 +1,19 @@
 ---
 title: "Medios de pago"
 shortTitle: "Medios de pago"
-description: "Sistemas de cobro automático y pago desatendido para estaciones de servicio, con integración de tarjetas de flota, bancarias y app."
+seoTitle: "Pago desatendido para estaciones de servicio"
+description: "Vended 24 horas sin personal en caja: terminales en surtidor con tarjeta bancaria, de flota y pago por app, integrados con vuestro sistema de gestión."
+intro: "Sistemas de cobro automático y pago desatendido para estaciones de servicio, con integración de tarjetas de flota, bancarias y app."
 order: 5
 icon: "pago"
+aside:
+  titulo: "¿Qué sistema de gestión usáis?"
+  texto: "De eso depende qué terminal encaja sin rehacer la integración de ventas y existencias que ya tenéis montada."
+  boton: "Consultar compatibilidad"
+cta:
+  titulo: "Las horas en que la estación está cerrada también venden"
+  texto: "El terminal desatendido cobra de noche y en festivos, y sigue permitiendo atención manual en horario comercial."
+  boton: "Ver opciones de cobro"
 incluye:
   - "Terminales de pago desatendido en surtidor (24 horas)"
   - "Lectores de tarjetas de flota, bancarias y códigos QR"

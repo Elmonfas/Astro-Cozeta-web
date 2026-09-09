@@ -1,28 +1,22 @@
 ---
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import Icon from '../components/Icon.astro';
 import BlueprintMarks from '../components/BlueprintMarks.astro';
 import LogoModel3D from '../components/LogoModel3D.astro';
 import PaywayViewer from '../components/PaywayViewer.astro';
 import { site, stats, whyCozeta, clientBrands } from '../lib/site';
+import { proyectos as proyectosDestacados } from '../lib/proyectos';
 
 const servicios = (await getCollection('servicios')).sort((a, b) => a.data.order - b.data.order);
 
-const proyectosDestacados = [
-  { img: '/images/proyectos-real/benzoil.jpg', title: 'Benzoil', tag: 'Gasolineras' },
-  { img: '/images/proyectos-real/lowcost.jpg', title: 'Estación LOWCOST', tag: 'Gasolineras' },
-  { img: '/images/proyectos-real/gasoprix.jpg', title: 'Gasoprix', tag: 'Gasolineras' },
-  { img: '/images/proyectos-real/autoil-museros.jpg', title: 'Autoil Lowcost Museros', tag: 'Gasolineras' },
-  { img: '/images/proyectos-real/dieself.jpg', title: 'Dieself', tag: 'Gasolineras' },
-  { img: '/images/proyectos-real/soex2.jpg', title: 'SOEX 2', tag: 'Gasolineras' },
-  { img: '/images/proyectos-real/cooperativa-sant-josep.jpg', title: 'Cooperativa Sant Josep', tag: 'Consumos propios' },
-];
+
 ---
 
 <Layout
-  title={site.name}
-  description="Diseño, construcción y legalización de gasolineras, gasocentros y puntos de repostaje. Más de 30 años de experiencia en instalaciones de transferencia de carburantes en Bétera, Valencia."
+  title="Instalaciones de transferencia de carburantes"
+  description="Construimos y legalizamos gasolineras, gasocentros y puntos de repostaje desde Bétera (Valencia). Más de 30 años y equipo técnico propio. Pedid presupuesto."
 >
   <section class="hero">
     <div class="container hero-inner">
@@ -90,7 +84,7 @@ const proyectosDestacados = [
 
         <div class="services-index">
           <p class="eyebrow">Qué hacemos</p>
-          <h2 class="visually-hidden">Servicios</h2>
+          <h2 class="services-index-title">Siete servicios, una sola instalación</h2>
           <ul class="services-list">
             {servicios.map((servicio) => (
               <li>
@@ -99,7 +93,7 @@ const proyectosDestacados = [
                     <span class="service-list-name">{servicio.data.shortTitle}</span>
                     <Icon name="arrow" class="icon-arrow" />
                   </span>
-                  <span class="service-list-desc">{servicio.data.description}</span>
+                  <span class="service-list-desc">{servicio.data.intro}</span>
                 </a>
               </li>
             ))}
@@ -130,7 +124,7 @@ const proyectosDestacados = [
                 data-index={index}
               >
                 <span class="index-num">{String(index + 1).padStart(2, '0')}</span>
-                <img src={p.img} alt="" class="index-thumb" loading="lazy" />
+                <Image src={p.img} alt="" class="index-thumb" width={128} height={128} format="webp" quality={70} loading="lazy" />
                 <span class="index-body">
                   <span class="index-name">{p.title}</span>
                   <span class="index-tag">{p.tag}</span>
@@ -142,12 +136,16 @@ const proyectosDestacados = [
 
         <div class="projects-preview" aria-hidden="true">
           {proyectosDestacados.map((p, index) => (
-            <img
+            <Image
               src={p.img}
               alt=""
               class="preview-img"
               class:list={{ 'is-active': index === 0 }}
               data-index={index}
+              widths={[600, 1050]}
+              sizes="(max-width: 900px) 0px, 50vw"
+              format="webp"
+              quality={72}
               loading={index === 0 ? 'eager' : 'lazy'}
             />
           ))}
@@ -195,9 +193,12 @@ const proyectosDestacados = [
     <div class="container closing-inner">
       <div class="closing-copy">
         <p class="eyebrow">Hablemos</p>
-        <h2>¿Necesitáis una instalación nueva o una revisión?</h2>
-        <p>Contadnos qué necesitáis y os preparamos un presupuesto sin compromiso.</p>
-        <a href="/contacto/" class="btn btn-primary">Pedir presupuesto</a>
+        <h2>Antes de decidir, hablad con quien va a hacer la obra</h2>
+        <p>
+          En la primera llamada os atiende un técnico, no un comercial: sabréis si vuestra idea es
+          viable, qué normativa os afecta y con qué plazos reales contar.
+        </p>
+        <a href="/contacto/" class="btn btn-primary">Plantear mi proyecto</a>
       </div>
       <a href={`tel:+34${site.phone}`} class="closing-phone">
         <span class="closing-phone-label">O llamadnos directamente</span>
@@ -443,6 +444,11 @@ const proyectosDestacados = [
 
   .services-index {
     border-top: 1px solid var(--color-border);
+  }
+
+  .services-index-title {
+    font-size: 1.35rem;
+    margin-block: var(--space-4) var(--space-2);
   }
 
   .services-list {

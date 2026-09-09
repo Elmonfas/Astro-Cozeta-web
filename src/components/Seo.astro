@@ -1,0 +1,127 @@
+---
+import { site } from '../lib/site';
+
+// Ninguna página puede renderizarse sin title ni description: son props
+// obligatorias aquí y en Layout.astro, así que TypeScript falla en build
+// si alguien crea una página nueva y se las deja.
+interface Props {
+  title: string;
+  description: string;
+  noindex?: boolean;
+  ogType?: 'website' | 'article';
+  breadcrumbs?: { name: string; path: string }[];
+}
+
+const { title, description, noindex = false, ogType = 'website', breadcrumbs = [] } = Astro.props;
+
+// Marca corta al final para no comerse los ~60 caracteres que muestra Google.
+const pageTitle = `${title} | ${site.name}`;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL('/images/og-cozeta.png', Astro.site);
+const siteUrl = String(Astro.site);
+
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  '@id': `${siteUrl}#organizacion`,
+  name: site.tradeName,
+  legalName: site.legalName,
+  alternateName: site.name,
+  description:
+    'Empresa instaladora de puntos de transferencia de carburantes: construcción y legalización de gasolineras, gasocentros, consumos propios e instalaciones portuarias.',
+  url: siteUrl,
+  logo: new URL('/logos/cozeta-logo-horizontal.svg', Astro.site).href,
+  image: ogImage.href,
+  telephone: `+34${site.phone}`,
+  email: site.email,
+  vatID: site.cif,
+  foundingDate: String(site.foundedYear),
+  founder: { '@type': 'Person', name: site.founder },
+  priceRange: '$$',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: `${site.address.line1}, ${site.address.line2}`,
+    addressLocality: site.address.city,
+    addressRegion: site.address.province,
+    postalCode: site.address.postalCode,
+    addressCountry: 'ES',
+  },
+  geo: { '@type': 'GeoCoordinates', latitude: site.geo.lat, longitude: site.geo.lng },
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: site.openingHours.days,
+      opens: site.openingHours.opens,
+      closes: site.openingHours.closes,
+    },
+  ],
+  areaServed: [
+    { '@type': 'AdministrativeArea', name: 'Comunidad Valenciana' },
+    { '@type': 'Country', name: 'España' },
+  ],
+};
+
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': `${siteUrl}#website`,
+  url: siteUrl,
+  name: site.tradeName,
+  inLanguage: 'es-ES',
+  publisher: { '@id': `${siteUrl}#organizacion` },
+};
+
+const breadcrumbSchema =
+  breadcrumbs.length > 0
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [{ name: 'Inicio', path: '/' }, ...breadcrumbs].map((crumb, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          name: crumb.name,
+          item: new URL(crumb.path, Astro.site).href,
+        })),
+      }
+    : null;
+---
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>{pageTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalURL} />
+{noindex && <meta name="robots" content="noindex, follow" />}
+
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="icon" href="/favicon.ico" sizes="any" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="manifest" href="/site.webmanifest" />
+<meta name="theme-color" content="#0F3A5F" />
+
+<meta property="og:type" content={ogType} />
+<meta property="og:site_name" content={site.tradeName} />
+<meta property="og:title" content={pageTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={`${site.tradeName} — ${site.claim}`} />
+<meta property="og:locale" content="es_ES" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={pageTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+<meta name="twitter:image:alt" content={`${site.tradeName} — ${site.claim}`} />
+
+<meta name="geo.region" content="ES-V" />
+<meta name="geo.placename" content={`${site.address.city}, ${site.address.province}`} />
+<meta name="author" content={site.legalName} />
+<meta name="generator" content={Astro.generator} />
+
+<script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
+<script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
+{breadcrumbSchema && <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />}

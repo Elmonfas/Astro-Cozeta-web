@@ -2,15 +2,15 @@
 import Icon from './Icon.astro';
 import { site } from '../lib/site';
 
+// title, text y cta son obligatorios a propósito: con valores por defecto, el
+// mismo par de frases acababa repetido en las 8 páginas que usan el banner.
 interface Props {
-  title?: string;
-  text?: string;
+  title: string;
+  text: string;
+  cta: string;
 }
 
-const {
-  title = '¿Necesitáis una instalación nueva o una revisión?',
-  text = 'Contadnos qué necesitáis y os preparamos un presupuesto sin compromiso.',
-} = Astro.props;
+const { title, text, cta } = Astro.props;
 ---
 
 <section class="cta-banner">
@@ -20,7 +20,7 @@ const {
       <p>{text}</p>
     </div>
     <div class="cta-actions">
-      <a href="/contacto/" class="btn btn-primary">Pedir presupuesto</a>
+      <a href="/contacto/" class="btn btn-primary">{cta}</a>
       <a href={`tel:+34${site.phone}`} class="btn btn-secondary">
         <Icon name="phone" class="icon-sm" /> {site.phoneDisplay}
       </a>

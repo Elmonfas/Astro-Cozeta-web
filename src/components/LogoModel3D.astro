@@ -6,27 +6,84 @@ interface Props {
 const { class: className = '' } = Astro.props;
 ---
 
-<model-viewer
-  class:list={['logo-model', className]}
-  src="/models/cozeta-mark.glb"
-  poster="/favicon.svg"
-  alt="Logotipo de COZETA en 3D — arrástralo para girarlo"
-  camera-controls
-  disable-pan
-  interaction-prompt="none"
-  shadow-intensity="0.8"
-  exposure="1.1"
-  environment-image="neutral"
-  style="touch-action: pan-y;"
->
-</model-viewer>
+{/*
+  El motor 3D (@google/model-viewer) pesa ~280 KB gzip y el modelo otros 472 KB.
+  Está en el hero de la home, así que NO se importa de entrada: hasta que no se
+  carga, se ve el logo plano en SVG, que pinta al instante y sirve de póster.
+  El import real se hace en cuanto el navegador está ocioso (ver script).
+*/}
+<div class:list={['logo-3d', className]} data-logo-3d>
+  <img
+    class="logo-3d-poster"
+    src="/logos/cozeta-isotipo.svg"
+    alt="Isotipo de COZETA"
+    width="512"
+    height="512"
+    fetchpriority="high"
+  />
+</div>
 
 <script>
-  import '@google/model-viewer';
+  const host = document.querySelector<HTMLElement>('[data-logo-3d]');
+
+  async function mount3D() {
+    if (!host || host.dataset.mounted === 'true') return;
+    host.dataset.mounted = 'true';
+
+    await import('@google/model-viewer');
+
+    const viewer = document.createElement('model-viewer');
+    viewer.className = 'logo-model';
+    viewer.setAttribute('src', '/models/cozeta-mark.glb');
+    viewer.setAttribute('alt', 'Logotipo de COZETA en 3D. Arrastradlo para girarlo.');
+    viewer.setAttribute('camera-controls', '');
+    viewer.setAttribute('disable-pan', '');
+    viewer.setAttribute('interaction-prompt', 'none');
+    viewer.setAttribute('shadow-intensity', '0.8');
+    viewer.setAttribute('exposure', '1.1');
+    viewer.setAttribute('environment-image', 'neutral');
+    viewer.setAttribute('style', 'touch-action: pan-y;');
+
+    viewer.addEventListener('load', () => host.classList.add('is-3d-ready'), { once: true });
+    host.appendChild(viewer);
+  }
+
+  // Ni el usuario con "reducir movimiento" ni una conexión lenta necesitan
+  // descargar el motor 3D: se quedan con el SVG, que es el mismo logo.
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const connection = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
+  const slowNetwork = connection?.saveData === true || /2g/.test(connection?.effectiveType ?? '');
+
+  if (!reducedMotion && !slowNetwork) {
+    const idle = window.requestIdleCallback ?? ((cb: () => void) => setTimeout(cb, 1500));
+    idle(() => mount3D());
+  }
 </script>
 
 <style>
-  .logo-model {
+  .logo-3d {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+  }
+
+  .logo-3d-poster {
+    width: min(100%, 420px);
+    height: auto;
+    transition: opacity 0.4s ease;
+  }
+
+  /* El SVG se retira solo cuando el modelo ya ha pintado, para que no haya
+     ni un frame en blanco entre uno y otro. */
+  .logo-3d.is-3d-ready .logo-3d-poster {
+    opacity: 0;
+    position: absolute;
+    pointer-events: none;
+  }
+
+  .logo-3d :global(.logo-model) {
     display: block;
     width: 100%;
     height: 100%;

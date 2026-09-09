@@ -1,9 +1,19 @@
 ---
 title: "Puertos y náutica"
 shortTitle: "Puertos"
-description: "Instalaciones de repostaje para embarcaciones en puertos deportivos y comerciales, con equipos resistentes al ambiente marino."
+seoTitle: "Suministro de combustible en puertos deportivos"
+description: "Surtidores en pantalán y muelle con materiales anticorrosión y protección frente a vertidos. Nos coordinamos con la autoridad portuaria de principio a fin."
+intro: "Instalaciones de repostaje para embarcaciones en puertos deportivos y comerciales, con equipos resistentes al ambiente marino."
 order: 4
 icon: "puerto"
+aside:
+  titulo: "¿En qué punto del puerto va?"
+  texto: "El amarre, el calado y el tipo de embarcación que repostáis condicionan el equipo y la protección ambiental necesaria."
+  boton: "Consultar mi caso"
+cta:
+  titulo: "El ambiente marino se come los equipos corrientes"
+  texto: "Instalamos material anticorrosión y sistemas de contención de vertidos, que es donde más aprieta la inspección en este tipo de instalación."
+  boton: "Hablar con un técnico"
 incluye:
   - "Pantalanes y surtidores de combustible marino"
   - "Tuberías y equipos en materiales resistentes a la corrosión salina"

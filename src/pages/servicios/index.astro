@@ -9,8 +9,9 @@ const servicios = (await getCollection('servicios')).sort((a, b) => a.data.order
 ---
 
 <Layout
-  title="Servicios"
-  description="Gasolineras, gasocentros, consumos propios, puertos, medios de pago, ingeniería y mantenimiento. Instalaciones de carburantes llave en mano."
+  title="Servicios de instalaciones petrolíferas en Valencia"
+  description="Construcción, ingeniería y mantenimiento de gasolineras, gasocentros, consumos propios y puertos. Siete servicios y un único interlocutor para toda la obra."
+  breadcrumbs={[{ name: 'Servicios', path: '/servicios/' }]}
 >
   <PageHero
     eyebrow="Servicios"
@@ -18,20 +19,31 @@ const servicios = (await getCollection('servicios')).sort((a, b) => a.data.order
     intro="Desde el proyecto técnico hasta la legalización final. Estos son los servicios que ofrecemos a operadores, flotas, cooperativas y administraciones."
   />
 
-  <section class="section">
+  <section class="section" aria-labelledby="servicios-heading">
     <div class="container">
+      <div class="section-header">
+        <h2 id="servicios-heading">Siete servicios que cubren la vida entera de la instalación</h2>
+        <p>
+          Se pueden contratar por separado o encadenados: proyecto, obra, puesta en marcha y
+          mantenimiento posterior. Lo habitual es que empiece por uno y acabe siendo todo.
+        </p>
+      </div>
       <div class="grid grid-3">
         {servicios.map((servicio) => (
           <ServiceCard
             href={`/servicios/${servicio.id}/`}
             icon={servicio.data.icon}
             title={servicio.data.shortTitle}
-            description={servicio.data.description}
+            description={servicio.data.intro}
           />
         ))}
       </div>
     </div>
   </section>
 
-  <CtaBanner />
+  <CtaBanner
+    title="¿No sabéis por dónde empezar?"
+    text="Contadnos en qué punto estáis (una idea, un solar, una instalación vieja) y os decimos qué haría falta y en qué orden."
+    cta="Consultar mi caso"
+  />
 </Layout>

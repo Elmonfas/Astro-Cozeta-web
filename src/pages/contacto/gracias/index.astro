@@ -5,14 +5,18 @@ import Icon from '../../../components/Icon.astro';
 import { site } from '../../../lib/site';
 ---
 
+{/* Página de destino tras enviar el formulario sin JavaScript. Con JS, la
+    confirmación se muestra en la propia página de contacto. No debe indexarse:
+    no aporta nada en buscadores y es contenido mínimo. */}
 <Layout
   title="Solicitud enviada"
-  description="Hemos recibido vuestra solicitud de presupuesto. Os responderemos lo antes posible."
+  description="Hemos recibido vuestra solicitud de presupuesto y os respondemos en 24-48 horas laborables. Si corre prisa, podéis adelantarlo por teléfono."
+  noindex
 >
   <PageHero
     eyebrow="Contacto"
     title="Solicitud enviada"
-    intro="Gracias por escribirnos. Hemos recibido vuestro mensaje y os responderemos lo antes posible."
+    intro="Gracias por escribirnos. Hemos recibido vuestro mensaje y os respondemos en 24-48 horas laborables."
   />
 
   <section class="section">
@@ -21,8 +25,8 @@ import { site } from '../../../lib/site';
         <Icon name="check" class="icon-check" />
         <h2>Mensaje recibido</h2>
         <p>
-          Nuestro equipo revisará vuestra solicitud y os contactará por email o teléfono en
-          cuanto podamos. Si es urgente, también podéis llamarnos directamente.
+          Revisaremos vuestra solicitud y os contactaremos por email o teléfono. Si el asunto es
+          urgente o preferís adelantarlo por voz, llamadnos directamente.
         </p>
         <div class="gracias-actions">
           <a href="/" class="btn btn-primary">Volver al inicio</a>

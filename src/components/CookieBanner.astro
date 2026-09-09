@@ -1,13 +1,20 @@
-<div id="cookie-banner" class="cookie-banner" role="dialog" aria-live="polite" aria-label="Aviso de cookies" hidden>
+---
+// El sitio no usa analítica. La única cookie de terceros posible es la que
+// instala el mapa de Google Maps en /contacto/, por eso el banner solo habla
+// de eso: prometer analítica que no existe sería incorrecto ante la LSSI.
+---
+
+<div id="cookie-banner" class="cookie-banner" role="region" aria-label="Aviso de cookies" hidden>
   <div class="cookie-inner">
     <p>
-      Utilizamos cookies propias y de terceros para el funcionamiento del sitio y para analizar la navegación.
-      Puedes aceptarlas, rechazar las no esenciales o consultar más información en nuestra
+      Usamos cookies propias necesarias para que el sitio funcione. En la página de contacto
+      incrustamos un mapa de Google Maps que puede instalar cookies de terceros: solo se carga si
+      lo aceptáis. Tenéis el detalle en nuestra
       <a href="/politica-de-cookies/">política de cookies</a>.
     </p>
     <div class="cookie-actions">
-      <button id="cookie-reject" type="button" class="btn btn-outline btn-sm">Rechazar</button>
-      <button id="cookie-accept" type="button" class="btn btn-primary btn-sm">Aceptar</button>
+      <button id="cookie-reject" type="button" class="btn btn-outline btn-sm">Solo las necesarias</button>
+      <button id="cookie-accept" type="button" class="btn btn-primary btn-sm">Aceptar todas</button>
     </div>
   </div>
 </div>
@@ -51,25 +58,50 @@
     gap: var(--space-3);
     flex-shrink: 0;
   }
+
+  /* En móvil el botón flotante de llamada queda justo encima del banner. */
+  @media (max-width: 860px) {
+    .cookie-actions {
+      width: 100%;
+    }
+
+    .cookie-actions .btn {
+      flex: 1;
+    }
+  }
 </style>
 
 <script>
   const STORAGE_KEY = 'cozeta-cookie-consent';
   const banner = document.getElementById('cookie-banner');
-  const acceptBtn = document.getElementById('cookie-accept');
-  const rejectBtn = document.getElementById('cookie-reject');
 
-  const stored = localStorage.getItem(STORAGE_KEY);
-
-  if (banner && !stored) {
-    banner.hidden = false;
+  // localStorage lanza en modo privado de algunos navegadores: si falla,
+  // el banner se muestra igual y el consentimiento simplemente no persiste.
+  function readConsent(): string | null {
+    try {
+      return localStorage.getItem(STORAGE_KEY);
+    } catch {
+      return null;
+    }
   }
+
+  function writeConsent(value: string) {
+    try {
+      localStorage.setItem(STORAGE_KEY, value);
+    } catch {
+      /* sin persistencia disponible */
+    }
+  }
+
+  if (banner && !readConsent()) banner.hidden = false;
 
   function setConsent(value: 'accepted' | 'rejected') {
-    localStorage.setItem(STORAGE_KEY, value);
+    writeConsent(value);
     if (banner) banner.hidden = true;
+    // Avisa a quien dependa del consentimiento (el mapa de /contacto/).
+    document.dispatchEvent(new CustomEvent('cozeta:consent', { detail: value }));
   }
 
-  acceptBtn?.addEventListener('click', () => setConsent('accepted'));
-  rejectBtn?.addEventListener('click', () => setConsent('rejected'));
+  document.getElementById('cookie-accept')?.addEventListener('click', () => setConsent('accepted'));
+  document.getElementById('cookie-reject')?.addEventListener('click', () => setConsent('rejected'));
 </script>

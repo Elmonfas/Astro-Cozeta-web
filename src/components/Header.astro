@@ -201,7 +201,11 @@ const resto = navLinks.filter((l) => l.href !== '/' && l.href !== '/servicios/')
     width: auto;
   }
 
-  .main-nav ul {
+  /* Hijo directo, no descendiente: con ".main-nav ul" a secas, este mismo
+     display:flex se colaba también en la lista anidada del desplegable
+     ".dropdown-menu" (que también es un <ul> dentro de .main-nav) y la
+     ponía en fila en vez de en columna. */
+  .main-nav > ul {
     list-style: none;
     display: flex;
     gap: var(--space-5);
@@ -303,14 +307,17 @@ const resto = navLinks.filter((l) => l.href !== '/' && l.href !== '/servicios/')
     top: calc(100% + var(--space-2));
     left: 0;
     z-index: 10;
-    min-width: 180px;
+    min-width: 190px;
     margin: 0;
     padding: var(--space-2);
     list-style: none;
+    display: flex;
+    flex-direction: column;
     background: var(--color-bg);
     border: 1px solid var(--color-border);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow-md);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    transform-origin: top left;
   }
 
   .dropdown-menu a {
@@ -322,6 +329,7 @@ const resto = navLinks.filter((l) => l.href !== '/' && l.href !== '/servicios/')
     font-size: 0.92rem;
     color: var(--color-text);
     text-decoration: none;
+    transition: background-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
   }
 
   .dropdown-menu a:hover,
@@ -329,6 +337,71 @@ const resto = navLinks.filter((l) => l.href !== '/' && l.href !== '/servicios/')
     background: var(--color-bg-alt);
     color: var(--color-secondary);
     text-decoration: none;
+    transform: translateX(2px);
+  }
+
+  /* Entrada: fundido + escala desde la esquina superior izquierda (donde
+     está el "Productos" que la abre), con los tres enlaces entrando en
+     cascada. Un <details> nativo no anima su cierre, así que la salida la
+     dispara el script (clase .is-closing) reproduciendo esta misma
+     animación al revés. */
+  @keyframes dropdown-reveal {
+    from {
+      opacity: 0;
+      transform: translateY(-6px) scale(0.94);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes dropdown-item-reveal {
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .nav-dropdown[open]:not(.is-closing) .dropdown-menu {
+    animation: dropdown-reveal 0.22s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .nav-dropdown[open]:not(.is-closing) .dropdown-menu li {
+    opacity: 0;
+    animation: dropdown-item-reveal 0.2s ease both;
+  }
+
+  .nav-dropdown[open]:not(.is-closing) .dropdown-menu li:nth-child(1) {
+    animation-delay: 0.05s;
+  }
+
+  .nav-dropdown[open]:not(.is-closing) .dropdown-menu li:nth-child(2) {
+    animation-delay: 0.1s;
+  }
+
+  .nav-dropdown[open]:not(.is-closing) .dropdown-menu li:nth-child(3) {
+    animation-delay: 0.15s;
+  }
+
+  .nav-dropdown.is-closing .dropdown-menu {
+    animation: dropdown-reveal 0.15s cubic-bezier(0.4, 0, 1, 1) reverse both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dropdown-menu,
+    .dropdown-menu li,
+    .nav-dropdown[open]:not(.is-closing) .dropdown-menu,
+    .nav-dropdown[open]:not(.is-closing) .dropdown-menu li,
+    .nav-dropdown.is-closing .dropdown-menu {
+      animation: none !important;
+      opacity: 1;
+      transform: none;
+    }
   }
 
   .header-actions {
@@ -596,28 +669,48 @@ const resto = navLinks.filter((l) => l.href !== '/' && l.href !== '/servicios/')
     });
   }
 
-  // <details> nativo no se cierra solo al hacer clic fuera ni con Escape;
-  // se añade aquí porque es el comportamiento esperado de un desplegable de menú.
+  // <details> nativo no se cierra solo al hacer clic fuera ni con Escape, y
+  // tampoco anima su cierre (el atributo "open" se quita de golpe). Por eso
+  // el clic en <summary> se intercepta a mano: abrir es instantáneo (para
+  // que la animación de entrada en CSS pueda reproducirse), pero cerrar
+  // espera a que termine la animación de salida (.is-closing) antes de
+  // quitar "open" de verdad.
   const navDropdown = document.querySelector<HTMLDetailsElement>('.nav-dropdown');
+  const navSummary = navDropdown?.querySelector('summary');
+  const CLOSE_MS = 150;
 
-  if (navDropdown) {
-    document.addEventListener('click', (e) => {
-      if (navDropdown.open && !navDropdown.contains(e.target as Node)) {
+  if (navDropdown && navSummary) {
+    const closeDropdown = () => {
+      if (!navDropdown.open || navDropdown.classList.contains('is-closing')) return;
+      navDropdown.classList.add('is-closing');
+      window.setTimeout(() => {
         navDropdown.open = false;
+        navDropdown.classList.remove('is-closing');
+      }, CLOSE_MS);
+    };
+
+    navSummary.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (navDropdown.open) {
+        closeDropdown();
+      } else {
+        navDropdown.open = true;
       }
+    });
+
+    document.addEventListener('click', (e) => {
+      if (navDropdown.open && !navDropdown.contains(e.target as Node)) closeDropdown();
     });
 
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && navDropdown.open) {
-        navDropdown.open = false;
-        navDropdown.querySelector('summary')?.focus();
+        closeDropdown();
+        navSummary.focus();
       }
     });
 
     navDropdown.querySelectorAll('a').forEach((link) => {
-      link.addEventListener('click', () => {
-        navDropdown.open = false;
-      });
+      link.addEventListener('click', closeDropdown);
     });
   }
 

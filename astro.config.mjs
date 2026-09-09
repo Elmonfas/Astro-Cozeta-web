@@ -16,9 +16,7 @@ export default defineConfig({
     sitemap({
       // /contacto/gracias/ es la página de destino del formulario sin JS:
       // no aporta nada en buscadores y va marcada como noindex.
-      // /netoil/ es un placeholder pendiente de contenido y fotos reales,
-      // también noindex hasta que se rellene (ver src/pages/netoil/index.astro).
-      filter: (page) => !page.includes('/contacto/gracias') && !page.includes('/netoil'),
+      filter: (page) => !page.includes('/contacto/gracias'),
     }),
   ],
 

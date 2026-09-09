@@ -14,7 +14,7 @@ const servicios = (await getCollection('servicios')).sort((a, b) => a.data.order
 const productIcons: Record<string, string> = {
   '/payway/': 'pago',
   '/mantenimiento/': 'mantenimiento',
-  '/netoil/': 'clock',
+  '/netoil/': 'flota',
 };
 ---
 
@@ -55,7 +55,7 @@ const productIcons: Record<string, string> = {
     <div class="container">
       <div class="section-header">
         <h2 id="productos-heading">Productos propios</h2>
-        <p>PAYWAY y el contrato de mantenimiento tienen página propia, con todo el detalle.</p>
+        <p>PAYWAY, Netoil y el contrato de mantenimiento tienen página propia, con todo el detalle.</p>
       </div>
       <ul class="products-list">
         {productLinks.map((p) => (

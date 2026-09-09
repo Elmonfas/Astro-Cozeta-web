@@ -244,6 +244,66 @@ const proyectosDestacados = [
     flex-wrap: wrap;
   }
 
+  /* Entrada del hero: los textos aparecen en cascada y la columna de la derecha
+     con un fundido. La media lleva parallax por JS (transform inline), así que
+     aquí solo se anima opacity para no pelearse con ese transform. */
+  @keyframes hero-rise {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes hero-fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .hero-copy .eyebrow,
+  .hero-copy h1,
+  .hero-text,
+  .hero-actions {
+    animation: hero-rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .hero-copy .eyebrow {
+    animation-delay: 0.05s;
+  }
+
+  .hero-copy h1 {
+    animation-delay: 0.15s;
+  }
+
+  .hero-text {
+    animation-delay: 0.32s;
+  }
+
+  .hero-actions {
+    animation-delay: 0.46s;
+  }
+
+  .hero-media {
+    animation: hero-fade 1s ease 0.3s both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-copy .eyebrow,
+    .hero-copy h1,
+    .hero-text,
+    .hero-actions,
+    .hero-media {
+      animation: none;
+    }
+  }
+
   .text-link {
     display: inline-flex;
     align-items: center;

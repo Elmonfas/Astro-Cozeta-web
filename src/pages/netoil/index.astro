@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import ServiceDetail from '../../components/ServiceDetail.astro';
+import Product3DViewer from '../../components/Product3DViewer.astro';
 
 const incluye = [
   'Controlador de consumos instalable en equipos de bombeo o surtidores industriales',
@@ -73,7 +74,6 @@ const relacionados = [
     eyebrow="Productos"
     title="Netoil"
     intro="Controlador de consumos de combustible para empresas de transporte y flotas propias: gestionad y controlad el gasto de cada vehículo desde el navegador, sin instalar nada."
-    icon="flota"
     incluye={incluye}
     proceso={proceso}
     faq={faq}
@@ -81,6 +81,17 @@ const relacionados = [
     cta={cta}
     relacionados={relacionados}
   >
+    <Fragment slot="media">
+      <Product3DViewer
+        height="400px"
+        modelSrc="/models/netoil-terminal.glb"
+        modelAlt="Terminal Netoil de control de consumos de combustible en 3D"
+        posterIcon="flota"
+        cameraCenter={25}
+        cameraRange={20}
+      />
+    </Fragment>
+
     <p>
       Con Netoil lleváis un control absoluto del consumo de combustible de vuestros vehículos: un
       sistema potente y económico, de fácil acceso mediante el navegador, que se instala tanto en

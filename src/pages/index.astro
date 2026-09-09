@@ -6,6 +6,7 @@ import Icon from '../components/Icon.astro';
 import BlueprintMarks from '../components/BlueprintMarks.astro';
 import LogoModel3D from '../components/LogoModel3D.astro';
 import PaywayViewer from '../components/PaywayViewer.astro';
+import Product3DViewer from '../components/Product3DViewer.astro';
 import { site, stats, whyCozeta, clientBrands } from '../lib/site';
 import { proyectos as proyectosDestacados } from '../lib/proyectos';
 
@@ -167,6 +168,30 @@ const servicios = (await getCollection('servicios')).sort((a, b) => a.data.order
           de forma intensiva.
         </p>
         <a href="/payway/" class="text-link">Ver PAYWAY <Icon name="arrow" class="icon-arrow" /></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section netoil-section" aria-labelledby="netoil-heading">
+    <div class="container netoil-grid">
+      <div class="netoil-copy">
+        <p class="eyebrow">Control de consumos</p>
+        <h2 id="netoil-heading">Netoil</h2>
+        <p>
+          Controlador de consumos de combustible para vuestra flota: reconocimiento de vehículos
+          por llave o tarjeta, con acceso desde cualquier ordenador o móvil sin instalar nada.
+        </p>
+        <a href="/netoil/" class="text-link">Ver Netoil <Icon name="arrow" class="icon-arrow" /></a>
+      </div>
+      <div class="netoil-viewer-wrap">
+        <Product3DViewer
+          height="360px"
+          modelSrc="/models/netoil-terminal.glb"
+          modelAlt="Terminal Netoil de control de consumos de combustible en 3D"
+          posterIcon="flota"
+          cameraCenter={25}
+          cameraRange={20}
+        />
       </div>
     </div>
   </section>
@@ -631,6 +656,26 @@ const servicios = (await getCollection('servicios')).sort((a, b) => a.data.order
     margin-bottom: var(--space-4);
   }
 
+  /* Control de consumos Netoil: mismo patrón que PAYWAY pero con la imagen a
+     la derecha (el texto va primero en el DOM), para no repetir la misma
+     composición dos secciones seguidas. */
+  .netoil-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: var(--space-8);
+  }
+
+  .netoil-copy,
+  .netoil-viewer-wrap {
+    min-width: 0;
+  }
+
+  .netoil-copy p {
+    max-width: 42ch;
+    margin-bottom: var(--space-4);
+  }
+
   /* Cifras */
   .stats-section {
     position: relative;
@@ -780,12 +825,14 @@ const servicios = (await getCollection('servicios')).sort((a, b) => a.data.order
       display: none;
     }
 
-    .payway-grid {
+    .payway-grid,
+    .netoil-grid {
       grid-template-columns: 1fr;
       gap: var(--space-5);
     }
 
-    .payway-viewer-wrap {
+    .payway-viewer-wrap,
+    .netoil-viewer-wrap {
       order: -1;
     }
 

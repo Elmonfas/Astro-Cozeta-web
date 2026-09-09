@@ -1,0 +1,231 @@
+---
+// Visor 3D genérico bajo demanda: usado por PaywayViewer y por /netoil/.
+// El motor (@google/model-viewer, ~280 KB gzip) solo se descarga cuando el
+// bloque entra en pantalla; hasta entonces se ve un póster (foto real si hay,
+// o un icono de repuesto si el producto todavía no tiene fotografía propia).
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+
+interface Props {
+  class?: string;
+  height?: string;
+  modelSrc: string;
+  modelAlt: string;
+  poster?: ImageMetadata;
+  posterAlt?: string;
+  // Si no hay foto de póster todavía, se usa este icono como marcador.
+  posterIcon?: string;
+  // Balanceo automático de cámara: centro y amplitud del azimut, en grados.
+  cameraCenter?: number;
+  cameraRange?: number;
+  polar?: string;
+  radius?: string;
+  fov?: string;
+}
+
+const {
+  class: className = '',
+  height = '440px',
+  modelSrc,
+  modelAlt,
+  poster,
+  posterAlt = modelAlt,
+  posterIcon = 'tools',
+  cameraCenter = -25,
+  cameraRange = 20,
+  polar = '82deg',
+  radius = '1.1m',
+  fov = '28deg',
+} = Astro.props;
+
+const azimuthMin = cameraCenter - cameraRange;
+const azimuthMax = cameraCenter + cameraRange;
+---
+
+<div
+  class:list={['product-3d', className]}
+  data-product-3d
+  data-model-src={modelSrc}
+  data-model-alt={modelAlt}
+  data-camera-center={cameraCenter}
+  data-camera-range={cameraRange}
+  data-polar={polar}
+  data-radius={radius}
+  data-fov={fov}
+  style={`height:${height};`}
+>
+  {poster ? (
+    <Image
+      class="product-3d-poster"
+      src={poster}
+      alt={posterAlt}
+      widths={[350, 699]}
+      sizes="(max-width: 900px) 60vw, 350px"
+      format="webp"
+      quality={80}
+      loading="lazy"
+    />
+  ) : (
+    <div class="product-3d-placeholder" aria-hidden="true">
+      <Icon name={posterIcon} class="icon-placeholder" />
+    </div>
+  )}
+</div>
+
+<script>
+  const PERIOD = 12000;
+
+  function startRock(viewer: any, host: HTMLElement) {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const center = Number(host.dataset.cameraCenter ?? '-25');
+    const range = Number(host.dataset.cameraRange ?? '20');
+    const polar = host.dataset.polar ?? '82deg';
+    const radius = host.dataset.radius ?? '1.1m';
+    const start = performance.now();
+    let paused = false;
+    let visible = true;
+    let rafId = 0;
+
+    viewer.addEventListener('camera-change', (e: CustomEvent) => {
+      if (e.detail?.source === 'user-interaction') paused = true;
+    });
+
+    // Sin esto el requestAnimationFrame seguía corriendo siempre, también con
+    // el modelo fuera de pantalla y con el balanceo ya pausado: CPU y batería
+    // gastadas para nada.
+    const visObserver = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      if (visible && !rafId) rafId = requestAnimationFrame(tick);
+    });
+    visObserver.observe(host);
+
+    function tick(now: number) {
+      if (!visible || paused) {
+        rafId = 0;
+        return;
+      }
+      const t = (now - start) / PERIOD;
+      const azimuth = center + range * Math.sin(t * Math.PI * 2);
+      viewer.cameraOrbit = `${azimuth.toFixed(2)}deg ${polar} ${radius}`;
+      rafId = requestAnimationFrame(tick);
+    }
+
+    rafId = requestAnimationFrame(tick);
+  }
+
+  async function mount(host: HTMLElement) {
+    if (host.dataset.mounted === 'true') return;
+    host.dataset.mounted = 'true';
+
+    await import('@google/model-viewer');
+
+    const { modelSrc, modelAlt, cameraCenter, cameraRange, polar, radius, fov } = host.dataset;
+    const center = Number(cameraCenter ?? '-25');
+    const range = Number(cameraRange ?? '20');
+    const azimuthMin = center - range;
+    const azimuthMax = center + range;
+
+    const viewer = document.createElement('model-viewer') as any;
+    viewer.className = 'product-model';
+    viewer.setAttribute('src', modelSrc ?? '');
+    viewer.setAttribute('alt', modelAlt ?? '');
+    viewer.setAttribute('camera-controls', '');
+    viewer.setAttribute('camera-orbit', `${center}deg ${polar} ${radius}`);
+    viewer.setAttribute('min-camera-orbit', `${azimuthMin}deg 65deg auto`);
+    viewer.setAttribute('max-camera-orbit', `${azimuthMax}deg 95deg auto`);
+    viewer.setAttribute('field-of-view', fov ?? '28deg');
+    viewer.setAttribute('shadow-intensity', '1');
+    viewer.setAttribute('shadow-softness', '0.8');
+    viewer.setAttribute('exposure', '1.05');
+    viewer.setAttribute('environment-image', 'neutral');
+    viewer.setAttribute('interaction-prompt', 'none');
+    // Nuestro propio IntersectionObserver ya espera a que esté en pantalla
+    // antes de crear el elemento; sin "eager" model-viewer vuelve a evaluar
+    // la visibilidad por su cuenta con loading="auto" (su valor por defecto)
+    // y en ocasiones se queda esperando indefinidamente sin llegar a cargar
+    // el modelo, dejando el póster de siempre en su lugar.
+    viewer.setAttribute('loading', 'eager');
+    viewer.setAttribute('reveal', 'auto');
+
+    viewer.addEventListener(
+      'load',
+      () => {
+        host.classList.add('is-3d-ready');
+        startRock(viewer, host);
+      },
+      { once: true }
+    );
+
+    host.appendChild(viewer);
+  }
+
+  const connection = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
+  const slowNetwork = connection?.saveData === true || /2g/.test(connection?.effectiveType ?? '');
+
+  document.querySelectorAll<HTMLElement>('[data-product-3d]').forEach((host) => {
+    if (slowNetwork) return;
+    const observer = new IntersectionObserver(
+      (entries, obs) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            obs.disconnect();
+            mount(host);
+          }
+        }
+      },
+      { rootMargin: '200px' }
+    );
+    observer.observe(host);
+  });
+</script>
+
+<style>
+  .product-3d {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 100%;
+  }
+
+  .product-3d-poster {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    object-fit: contain;
+    transition: opacity 0.4s ease;
+  }
+
+  .product-3d-placeholder {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    transition: opacity 0.4s ease;
+  }
+
+  .product-3d-placeholder :global(.icon-placeholder) {
+    width: 64px;
+    height: 64px;
+    color: var(--color-secondary-light);
+  }
+
+  .product-3d.is-3d-ready .product-3d-poster,
+  .product-3d.is-3d-ready .product-3d-placeholder {
+    opacity: 0;
+    position: absolute;
+    pointer-events: none;
+  }
+
+  .product-3d :global(.product-model) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    --poster-color: transparent;
+  }
+</style>

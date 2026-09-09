@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import Product3DViewer from './Product3DViewer.astro';
 import posterPayway from '../assets/payway-poster.png';
 
 interface Props {
@@ -10,161 +10,13 @@ interface Props {
 const { class: className = '', height = '440px' } = Astro.props;
 ---
 
-{/*
-  El motor 3D solo se descarga cuando este bloque entra en pantalla. Hasta
-  entonces se ve el póster, que es una imagen normal del terminal.
-*/}
-<div
-  class:list={['payway-3d', className]}
-  data-payway-3d
-  style={`height:${height};`}
->
-  <Image
-    class="payway-poster"
-    src={posterPayway}
-    alt="Terminal de pago desatendido PAYWAY Classic en caja de acero inoxidable"
-    widths={[350, 699]}
-    sizes="(max-width: 900px) 60vw, 350px"
-    format="webp"
-    quality={80}
-    loading="lazy"
-  />
-</div>
-
-<script>
-  // auto-rotate de model-viewer ignora min/max-camera-orbit y da la vuelta
-  // entera; por eso el balanceo se controla a mano, siempre dentro del rango
-  // frontal (-45deg a -5deg) fijado en los atributos del elemento.
-  const AZIMUTH_MIN = -45;
-  const AZIMUTH_MAX = -5;
-  const POLAR = '82deg';
-  const RADIUS = '1.1m';
-  const PERIOD = 12000;
-
-  function startRock(viewer: any, host: HTMLElement) {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    const center = (AZIMUTH_MIN + AZIMUTH_MAX) / 2;
-    const amplitude = (AZIMUTH_MAX - AZIMUTH_MIN) / 2;
-    const start = performance.now();
-    let paused = false;
-    let visible = true;
-    let rafId = 0;
-
-    viewer.addEventListener('camera-change', (e: CustomEvent) => {
-      if (e.detail?.source === 'user-interaction') paused = true;
-    });
-
-    // Sin esto el requestAnimationFrame seguía corriendo siempre, también con
-    // el modelo fuera de pantalla y con el balanceo ya pausado: CPU y batería
-    // gastadas para nada.
-    const visObserver = new IntersectionObserver(([entry]) => {
-      visible = entry.isIntersecting;
-      if (visible && !rafId) rafId = requestAnimationFrame(tick);
-    });
-    visObserver.observe(host);
-
-    function tick(now: number) {
-      if (!visible || paused) {
-        rafId = 0;
-        return;
-      }
-      const t = (now - start) / PERIOD;
-      const azimuth = center + amplitude * Math.sin(t * Math.PI * 2);
-      viewer.cameraOrbit = `${azimuth.toFixed(2)}deg ${POLAR} ${RADIUS}`;
-      rafId = requestAnimationFrame(tick);
-    }
-
-    rafId = requestAnimationFrame(tick);
-  }
-
-  async function mount(host: HTMLElement) {
-    if (host.dataset.mounted === 'true') return;
-    host.dataset.mounted = 'true';
-
-    await import('@google/model-viewer');
-
-    const viewer = document.createElement('model-viewer') as any;
-    viewer.className = 'payway-model';
-    viewer.setAttribute('src', '/models/payway-classic.glb');
-    viewer.setAttribute('alt', 'Terminal de pago desatendido PAYWAY Classic en 3D');
-    viewer.setAttribute('camera-controls', '');
-    viewer.setAttribute('camera-orbit', '-25deg 82deg 1.1m');
-    viewer.setAttribute('min-camera-orbit', '-45deg 65deg auto');
-    viewer.setAttribute('max-camera-orbit', '-5deg 95deg auto');
-    viewer.setAttribute('field-of-view', '28deg');
-    viewer.setAttribute('shadow-intensity', '1');
-    viewer.setAttribute('shadow-softness', '0.8');
-    viewer.setAttribute('exposure', '1.05');
-    viewer.setAttribute('environment-image', 'neutral');
-    viewer.setAttribute('interaction-prompt', 'none');
-    // Nuestro propio IntersectionObserver ya espera a que esté en pantalla
-    // antes de crear el elemento; sin "eager" model-viewer vuelve a evaluar
-    // la visibilidad por su cuenta con loading="auto" (su valor por defecto)
-    // y en ocasiones se queda esperando indefinidamente sin llegar a cargar
-    // el modelo, dejando la foto de siempre en su lugar.
-    viewer.setAttribute('loading', 'eager');
-    viewer.setAttribute('reveal', 'auto');
-
-    viewer.addEventListener(
-      'load',
-      () => {
-        host.classList.add('is-3d-ready');
-        startRock(viewer, host);
-      },
-      { once: true }
-    );
-
-    host.appendChild(viewer);
-  }
-
-  const connection = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
-  const slowNetwork = connection?.saveData === true || /2g/.test(connection?.effectiveType ?? '');
-
-  document.querySelectorAll<HTMLElement>('[data-payway-3d]').forEach((host) => {
-    if (slowNetwork) return;
-    const observer = new IntersectionObserver(
-      (entries, obs) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            obs.disconnect();
-            mount(host);
-          }
-        }
-      },
-      { rootMargin: '200px' }
-    );
-    observer.observe(host);
-  });
-</script>
-
-<style>
-  .payway-3d {
-    position: relative;
-    display: grid;
-    place-items: center;
-    width: 100%;
-  }
-
-  .payway-poster {
-    max-width: 100%;
-    max-height: 100%;
-    width: auto;
-    object-fit: contain;
-    transition: opacity 0.4s ease;
-  }
-
-  .payway-3d.is-3d-ready .payway-poster {
-    opacity: 0;
-    position: absolute;
-    pointer-events: none;
-  }
-
-  .payway-3d :global(.payway-model) {
-    display: block;
-    width: 100%;
-    height: 100%;
-    background-color: transparent;
-    --poster-color: transparent;
-  }
-</style>
+<Product3DViewer
+  class={className}
+  height={height}
+  modelSrc="/models/payway-classic.glb"
+  modelAlt="Terminal de pago desatendido PAYWAY Classic en 3D"
+  poster={posterPayway}
+  posterAlt="Terminal de pago desatendido PAYWAY Classic en caja de acero inoxidable"
+  cameraCenter={-25}
+  cameraRange={20}
+/>

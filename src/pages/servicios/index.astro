@@ -3,14 +3,24 @@ import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import PageHero from '../../components/PageHero.astro';
 import ServiceCard from '../../components/ServiceCard.astro';
+import Icon from '../../components/Icon.astro';
 import CtaBanner from '../../components/CtaBanner.astro';
+import { productLinks } from '../../lib/site';
 
 const servicios = (await getCollection('servicios')).sort((a, b) => a.data.order - b.data.order);
+
+// PAYWAY y Mantenimiento tienen página propia (ver productLinks); se enlazan
+// aquí para quien los busque desde la lista de servicios, como antes.
+const productIcons: Record<string, string> = {
+  '/payway/': 'pago',
+  '/mantenimiento/': 'mantenimiento',
+  '/netoil/': 'clock',
+};
 ---
 
 <Layout
   title="Servicios de instalaciones petrolíferas en Valencia"
-  description="Construcción, ingeniería y mantenimiento de gasolineras, gasocentros, consumos propios y puertos. Siete servicios y un único interlocutor para toda la obra."
+  description="Construcción, ingeniería y mantenimiento de gasolineras, gasocentros, consumos propios y puertos, con un único interlocutor para toda la obra."
   breadcrumbs={[{ name: 'Servicios', path: '/servicios/' }]}
 >
   <PageHero
@@ -22,10 +32,10 @@ const servicios = (await getCollection('servicios')).sort((a, b) => a.data.order
   <section class="section" aria-labelledby="servicios-heading">
     <div class="container">
       <div class="section-header">
-        <h2 id="servicios-heading">Siete servicios que cubren la vida entera de la instalación</h2>
+        <h2 id="servicios-heading">Servicios que cubren la vida entera de la instalación</h2>
         <p>
-          Se pueden contratar por separado o encadenados: proyecto, obra, puesta en marcha y
-          mantenimiento posterior. Lo habitual es que empiece por uno y acabe siendo todo.
+          Se pueden contratar por separado o encadenados: proyecto, obra y puesta en marcha. Lo
+          habitual es que empiece por uno y acabe siendo todo.
         </p>
       </div>
       <div class="grid grid-3">
@@ -41,9 +51,77 @@ const servicios = (await getCollection('servicios')).sort((a, b) => a.data.order
     </div>
   </section>
 
+  <section class="section section-alt" aria-labelledby="productos-heading">
+    <div class="container">
+      <div class="section-header">
+        <h2 id="productos-heading">Productos propios</h2>
+        <p>PAYWAY y el contrato de mantenimiento tienen página propia, con todo el detalle.</p>
+      </div>
+      <ul class="products-list">
+        {productLinks.map((p) => (
+          <li>
+            <a href={p.href}>
+              <Icon name={productIcons[p.href] ?? 'tools'} class="icon-rel" />
+              <strong>{p.label}</strong>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
   <CtaBanner
     title="¿No sabéis por dónde empezar?"
     text="Contadnos en qué punto estáis (una idea, un solar, una instalación vieja) y os decimos qué haría falta y en qué orden."
     cta="Consultar mi caso"
   />
 </Layout>
+
+<style>
+  .products-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+  }
+
+  .products-list a {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    height: 100%;
+    padding: var(--space-4);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.2s ease;
+  }
+
+  .products-list a:hover {
+    border-color: var(--color-secondary);
+    text-decoration: none;
+  }
+
+  .products-list strong {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    color: var(--color-primary-dark);
+  }
+
+  .products-list :global(.icon-rel) {
+    width: 26px;
+    height: 26px;
+    flex-shrink: 0;
+    color: var(--color-secondary);
+  }
+
+  @media (max-width: 620px) {
+    .products-list {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

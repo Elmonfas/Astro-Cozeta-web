@@ -1,0 +1,464 @@
+---
+// Plantilla compartida por /servicios/[slug]/, /payway/ y /mantenimiento/.
+// Antes cada página de servicio duplicaba ~300 líneas de CSS; al sacar PAYWAY
+// y Mantenimiento de la content collection para darles página propia, esa
+// duplicación se habría multiplicado. Con este componente solo vive una vez.
+import Icon from './Icon.astro';
+import CtaBanner from './CtaBanner.astro';
+import BlueprintMarks from './BlueprintMarks.astro';
+import { site } from '../lib/site';
+
+interface Relacionado {
+  href: string;
+  icon: string;
+  label: string;
+}
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  intro: string;
+  icon?: string;
+  incluye: string[];
+  proceso: { titulo: string; texto: string }[];
+  faq?: { pregunta: string; respuesta: string }[];
+  aside: { titulo: string; texto: string; boton: string };
+  cta: { titulo: string; texto: string; boton: string };
+  relacionados?: Relacionado[];
+}
+
+const {
+  eyebrow = 'Servicios',
+  title,
+  intro,
+  icon,
+  incluye,
+  proceso,
+  faq = [],
+  aside,
+  cta,
+  relacionados = [],
+} = Astro.props;
+
+const hasMedia = Astro.slots.has('media');
+
+const faqSchema =
+  faq.length > 0
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faq.map((item) => ({
+          '@type': 'Question',
+          name: item.pregunta,
+          acceptedAnswer: { '@type': 'Answer', text: item.respuesta },
+        })),
+      }
+    : null;
+
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  serviceType: title,
+  description: intro,
+  provider: { '@type': 'LocalBusiness', name: site.legalName, telephone: `+34${site.phone}` },
+  areaServed: 'ES',
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(serviceSchema)} />
+{faqSchema && <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />}
+
+<section class="service-hero">
+  <BlueprintMarks />
+  {hasMedia ? (
+    <div class="container service-hero-inner service-hero-inner-media">
+      <div>
+        <p class="eyebrow">{eyebrow}</p>
+        <h1>{title}</h1>
+        <p class="hero-intro">{intro}</p>
+        <div class="hero-actions">
+          <a href="/contacto/" class="btn btn-primary">Pedir presupuesto</a>
+          <a href={`tel:+34${site.phone}`} class="btn btn-secondary">
+            <Icon name="phone" class="icon-sm" /> {site.phoneDisplay}
+          </a>
+        </div>
+      </div>
+      <div class="service-hero-media">
+        <slot name="media" />
+      </div>
+    </div>
+  ) : (
+    <div class="container service-hero-inner">
+      {icon && <span class="service-hero-icon"><Icon name={icon} class="icon" /></span>}
+      <div>
+        <p class="eyebrow">{eyebrow}</p>
+        <h1>{title}</h1>
+        <p class="hero-intro">{intro}</p>
+        <div class="hero-actions">
+          <a href="/contacto/" class="btn btn-primary">Pedir presupuesto</a>
+          <a href={`tel:+34${site.phone}`} class="btn btn-secondary">
+            <Icon name="phone" class="icon-sm" /> {site.phoneDisplay}
+          </a>
+        </div>
+      </div>
+    </div>
+  )}
+</section>
+
+<section class="section">
+  <div class="container two-col">
+    <div class="service-content">
+      <slot />
+
+      <h2>Qué incluye</h2>
+      <ul class="check-list">
+        {incluye.map((item) => (
+          <li>
+            <Icon name="check" class="icon-check" />
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <aside class="service-aside card">
+      <h3>{aside.titulo}</h3>
+      <p>{aside.texto}</p>
+      <a href="/contacto/" class="btn btn-primary btn-block">{aside.boton}</a>
+      <a href={`tel:+34${site.phone}`} class="aside-phone">
+        <Icon name="phone" class="icon-sm" /> {site.phoneDisplay}
+      </a>
+    </aside>
+  </div>
+</section>
+
+<section class="section section-alt" aria-labelledby="proceso-heading">
+  <div class="container">
+    <div class="section-header center">
+      <p class="eyebrow">Cómo trabajamos</p>
+      <h2 id="proceso-heading">Nuestro proceso</h2>
+    </div>
+    <ol class="process-list">
+      {proceso.map((paso, index) => (
+        <li>
+          <span class="process-number">{index + 1}</span>
+          <div>
+            <h3>{paso.titulo}</h3>
+            <p>{paso.texto}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+{faq.length > 0 && (
+  <section class="section" aria-labelledby="faq-heading">
+    <div class="container">
+      <div class="section-header center">
+        <p class="eyebrow">Preguntas frecuentes</p>
+        <h2 id="faq-heading">Resolvemos vuestras dudas</h2>
+      </div>
+      <div class="faq-list">
+        {faq.map((item) => (
+          <details class="faq-item">
+            <summary>{item.pregunta}</summary>
+            <p>{item.respuesta}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+)}
+
+{relacionados.length > 0 && (
+  <section class="section" aria-labelledby="relacionados-heading">
+    <div class="container">
+      <h2 id="relacionados-heading" class="relacionados-title">Otros servicios que solemos combinar con este</h2>
+      <ul class="relacionados-list">
+        {relacionados.map((r) => (
+          <li>
+            <a href={r.href}>
+              <Icon name={r.icon} class="icon-rel" />
+              <strong>{r.label}</strong>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+)}
+
+<CtaBanner title={cta.titulo} text={cta.texto} cta={cta.boton} />
+
+<style>
+  .service-hero {
+    position: relative;
+    overflow: hidden;
+    background: var(--color-primary-dark);
+    color: #fff;
+    padding-block: var(--space-7);
+  }
+
+  .service-hero-inner {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-5);
+  }
+
+  .service-hero-inner-media {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: var(--space-7);
+  }
+
+  .service-hero-inner-media > * {
+    min-width: 0;
+  }
+
+  .service-hero-media :global(model-viewer) {
+    --poster-color: transparent;
+  }
+
+  .service-hero-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 68px;
+    height: 68px;
+    border-radius: var(--radius);
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--color-secondary-light);
+    flex-shrink: 0;
+  }
+
+  .service-hero-icon :global(.icon) {
+    width: 36px;
+    height: 36px;
+  }
+
+  .service-hero h1 {
+    color: #fff;
+    margin-bottom: var(--space-3);
+  }
+
+  .hero-intro {
+    max-width: 60ch;
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.82);
+    margin-bottom: var(--space-4);
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+  }
+
+  .hero-actions :global(.icon-sm) {
+    width: 18px;
+    height: 18px;
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--space-7);
+    align-items: start;
+  }
+
+  .two-col > * {
+    min-width: 0;
+  }
+
+  .service-content :global(h2) {
+    margin-top: var(--space-6);
+  }
+
+  .check-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .check-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+    color: var(--color-text-muted);
+  }
+
+  .check-list :global(.icon-check) {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    color: var(--color-success);
+    margin-top: 2px;
+  }
+
+  .service-aside {
+    position: sticky;
+    top: calc(var(--header-height) + var(--space-4));
+  }
+
+  .service-aside h3 {
+    margin-bottom: var(--space-2);
+  }
+
+  .btn-block {
+    display: flex;
+    width: 100%;
+    margin-block: var(--space-3);
+  }
+
+  .aside-phone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    font-family: var(--font-body);
+    font-weight: 700;
+    color: var(--color-primary-dark);
+  }
+
+  .aside-phone :global(.icon-sm) {
+    width: 18px;
+    height: 18px;
+    color: var(--color-secondary);
+  }
+
+  .process-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-5);
+  }
+
+  .process-list li {
+    display: flex;
+    gap: var(--space-4);
+  }
+
+  .process-number {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    color: #fff;
+    font-family: var(--font-body);
+    font-weight: 700;
+  }
+
+  .process-list h3 {
+    margin-bottom: var(--space-2);
+  }
+
+  .process-list p {
+    margin: 0;
+  }
+
+  .faq-list {
+    max-width: 800px;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .faq-item {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: var(--space-4);
+  }
+
+  .faq-item summary {
+    cursor: pointer;
+    font-family: var(--font-body);
+    font-weight: 700;
+    color: var(--color-primary-dark);
+  }
+
+  .faq-item p {
+    margin: var(--space-3) 0 0;
+  }
+
+  .relacionados-title {
+    font-size: 1.35rem;
+    margin-bottom: var(--space-5);
+  }
+
+  .relacionados-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+  }
+
+  .relacionados-list a {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    height: 100%;
+    padding: var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.2s ease;
+  }
+
+  .relacionados-list a:hover {
+    border-color: var(--color-secondary);
+    text-decoration: none;
+  }
+
+  .relacionados-list strong {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    color: var(--color-primary-dark);
+  }
+
+  .relacionados-list :global(.icon-rel) {
+    width: 26px;
+    height: 26px;
+    flex-shrink: 0;
+    color: var(--color-secondary);
+  }
+
+  @media (max-width: 900px) {
+    .two-col,
+    .process-list,
+    .relacionados-list {
+      grid-template-columns: 1fr;
+    }
+
+    .service-aside {
+      position: static;
+    }
+
+    .service-hero-inner {
+      flex-direction: column;
+    }
+
+    .service-hero-inner-media {
+      grid-template-columns: 1fr;
+    }
+
+    .service-hero-media :global(.payway-3d) {
+      height: 320px !important;
+    }
+  }
+</style>

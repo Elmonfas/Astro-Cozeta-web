@@ -4,7 +4,7 @@ shortTitle: "Ingeniería"
 seoTitle: "Legalización de instalaciones petrolíferas"
 description: "Proyectos técnicos, dirección de obra y tramitación ante industria. También legalizamos instalaciones que ya existen y no tienen proyecto en regla."
 intro: "Asesoramiento técnico, redacción de proyectos y tramitación de licencias para instalaciones de transferencia de carburantes."
-order: 6
+order: 5
 icon: "ingenieria"
 aside:
   titulo: "¿Instalación nueva o ya construida?"

@@ -1,6 +1,6 @@
 ---
 import Icon from './Icon.astro';
-import { site, navLinks } from '../lib/site';
+import { site, navLinks, productLinks } from '../lib/site';
 
 const currentPath = Astro.url.pathname;
 
@@ -8,6 +8,15 @@ function isActive(href: string) {
   if (href === '/') return currentPath === '/';
   return currentPath.startsWith(href);
 }
+
+const isProductActive = productLinks.some((p) => isActive(p.href));
+
+// El desplegable "Productos" se inserta entre Servicios y Proyectos. Se busca
+// cada enlace por href (no por posición) para no depender del orden exacto
+// en que estén declarados en navLinks.
+const inicio = navLinks.find((l) => l.href === '/')!;
+const servicios = navLinks.find((l) => l.href === '/servicios/')!;
+const resto = navLinks.filter((l) => l.href !== '/' && l.href !== '/servicios/');
 ---
 
 <header class="site-header">
@@ -29,10 +38,38 @@ function isActive(href: string) {
 
     <nav class="main-nav" aria-label="Navegación principal">
       <ul>
-        {navLinks.map((link, index) => (
+        <li>
+          <a href={inicio.href} aria-current={isActive(inicio.href) ? 'page' : undefined}>
+            <span class="nav-index">01</span>
+            {inicio.label}
+          </a>
+        </li>
+        <li>
+          <a href={servicios.href} aria-current={isActive(servicios.href) ? 'page' : undefined}>
+            <span class="nav-index">02</span>
+            {servicios.label}
+          </a>
+        </li>
+        <li class="has-dropdown">
+          <details class="nav-dropdown">
+            <summary aria-current={isProductActive ? 'page' : undefined}>
+              <span class="nav-index">03</span>
+              Productos
+              <span class="nav-caret" aria-hidden="true"></span>
+            </summary>
+            <ul class="dropdown-menu">
+              {productLinks.map((item) => (
+                <li>
+                  <a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>{item.label}</a>
+                </li>
+              ))}
+            </ul>
+          </details>
+        </li>
+        {resto.map((link, index) => (
           <li>
             <a href={link.href} aria-current={isActive(link.href) ? 'page' : undefined}>
-              <span class="nav-index">{String(index + 1).padStart(2, '0')}</span>
+              <span class="nav-index">{String(index + 4).padStart(2, '0')}</span>
               {link.label}
             </a>
           </li>
@@ -65,7 +102,23 @@ function isActive(href: string) {
 
   <div id="mobile-nav" class="mobile-nav" data-open="false">
     <ul>
-      {navLinks.map((link) => (
+      <li>
+        <a href={inicio.href}>{inicio.label}</a>
+      </li>
+      <li>
+        <a href={servicios.href}>{servicios.label}</a>
+      </li>
+      <li class="mobile-dropdown-item">
+        <details class="mobile-dropdown">
+          <summary>Productos</summary>
+          <ul>
+            {productLinks.map((item) => (
+              <li><a href={item.href}>{item.label}</a></li>
+            ))}
+          </ul>
+        </details>
+      </li>
+      {resto.map((link) => (
         <li>
           <a href={link.href}>{link.label}</a>
         </li>
@@ -200,6 +253,82 @@ function isActive(href: string) {
   .main-nav a[aria-current='page']::after {
     transform: scaleX(1);
     transform-origin: left;
+  }
+
+  /* Desplegable "Productos" */
+  .has-dropdown {
+    position: relative;
+  }
+
+  .nav-dropdown summary {
+    position: relative;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.4em;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--color-text);
+    padding: var(--space-2) 0;
+    cursor: pointer;
+    list-style: none;
+    transition: color 0.2s ease;
+  }
+
+  .nav-dropdown summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .nav-dropdown summary:hover,
+  .nav-dropdown summary[aria-current='page'] {
+    color: var(--color-secondary);
+  }
+
+  .nav-caret {
+    width: 7px;
+    height: 7px;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    transform: rotate(45deg) translateY(-2px);
+    transition: transform 0.2s ease;
+    opacity: 0.7;
+  }
+
+  .nav-dropdown[open] .nav-caret {
+    transform: rotate(-135deg) translateY(1px);
+  }
+
+  .dropdown-menu {
+    position: absolute;
+    top: calc(100% + var(--space-2));
+    left: 0;
+    z-index: 10;
+    min-width: 180px;
+    margin: 0;
+    padding: var(--space-2);
+    list-style: none;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+  }
+
+  .dropdown-menu a {
+    display: block;
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius);
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.92rem;
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .dropdown-menu a:hover,
+  .dropdown-menu a[aria-current='page'] {
+    background: var(--color-bg-alt);
+    color: var(--color-secondary);
+    text-decoration: none;
   }
 
   .header-actions {
@@ -401,6 +530,40 @@ function isActive(href: string) {
       height: 18px;
       color: var(--color-secondary);
     }
+
+    .mobile-dropdown-item {
+      padding: 0;
+    }
+
+    .mobile-dropdown summary {
+      display: flex;
+      align-items: center;
+      min-height: 44px;
+      font-family: var(--font-body);
+      font-weight: 600;
+      color: var(--color-text);
+      font-size: 1.05rem;
+      cursor: pointer;
+      list-style: none;
+    }
+
+    .mobile-dropdown summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .mobile-dropdown ul {
+      list-style: none;
+      margin: 0;
+      padding: 0 0 var(--space-2) var(--space-4);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .mobile-dropdown ul a {
+      min-height: 40px;
+      font-size: 0.98rem;
+      color: var(--color-text-muted);
+    }
   }
 </style>
 
@@ -430,6 +593,31 @@ function isActive(href: string) {
         setOpen(false);
         toggle.focus();
       }
+    });
+  }
+
+  // <details> nativo no se cierra solo al hacer clic fuera ni con Escape;
+  // se añade aquí porque es el comportamiento esperado de un desplegable de menú.
+  const navDropdown = document.querySelector<HTMLDetailsElement>('.nav-dropdown');
+
+  if (navDropdown) {
+    document.addEventListener('click', (e) => {
+      if (navDropdown.open && !navDropdown.contains(e.target as Node)) {
+        navDropdown.open = false;
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && navDropdown.open) {
+        navDropdown.open = false;
+        navDropdown.querySelector('summary')?.focus();
+      }
+    });
+
+    navDropdown.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        navDropdown.open = false;
+      });
     });
   }
 

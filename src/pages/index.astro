@@ -84,7 +84,7 @@ const servicios = (await getCollection('servicios')).sort((a, b) => a.data.order
 
         <div class="services-index">
           <p class="eyebrow">Qué hacemos</p>
-          <h2 class="services-index-title">Siete servicios, una sola instalación</h2>
+          <h2 class="services-index-title">Servicios para cada fase de la instalación</h2>
           <ul class="services-list">
             {servicios.map((servicio) => (
               <li>
@@ -166,7 +166,7 @@ const servicios = (await getCollection('servicios')).sort((a, b) => a.data.order
           Aceptador de pagos en caja de acero inoxidable, diseñado para trabajar ininterrumpidamente
           de forma intensiva.
         </p>
-        <a href="/servicios/medios-de-pago/" class="text-link">Ver medios de pago <Icon name="arrow" class="icon-arrow" /></a>
+        <a href="/payway/" class="text-link">Ver PAYWAY <Icon name="arrow" class="icon-arrow" /></a>
       </div>
     </div>
   </section>

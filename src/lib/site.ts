@@ -47,6 +47,14 @@ export const navLinks = [
   { href: '/contacto/', label: 'Contacto' },
 ] as const;
 
+// Páginas independientes (fuera de la lista de servicios), agrupadas en el
+// desplegable "Productos" del menú. Netoil está pendiente de contenido real.
+export const productLinks = [
+  { href: '/payway/', label: 'PAYWAY' },
+  { href: '/mantenimiento/', label: 'Mantenimiento' },
+  { href: '/netoil/', label: 'Netoil' },
+] as const;
+
 export const stats = [
   { target: 30, suffix: '+', label: 'años de experiencia', icon: 'clock' },
   { target: 55, suffix: '+', label: 'estaciones realizadas', icon: 'gasolinera' },

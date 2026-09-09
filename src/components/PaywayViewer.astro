@@ -98,6 +98,13 @@ const { class: className = '', height = '440px' } = Astro.props;
     viewer.setAttribute('exposure', '1.05');
     viewer.setAttribute('environment-image', 'neutral');
     viewer.setAttribute('interaction-prompt', 'none');
+    // Nuestro propio IntersectionObserver ya espera a que esté en pantalla
+    // antes de crear el elemento; sin "eager" model-viewer vuelve a evaluar
+    // la visibilidad por su cuenta con loading="auto" (su valor por defecto)
+    // y en ocasiones se queda esperando indefinidamente sin llegar a cargar
+    // el modelo, dejando la foto de siempre en su lugar.
+    viewer.setAttribute('loading', 'eager');
+    viewer.setAttribute('reveal', 'auto');
 
     viewer.addEventListener(
       'load',

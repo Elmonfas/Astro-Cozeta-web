@@ -39,6 +39,11 @@ const { class: className = '' } = Astro.props;
     viewer.setAttribute('camera-controls', '');
     viewer.setAttribute('disable-pan', '');
     viewer.setAttribute('interaction-prompt', 'none');
+    // Sin esto, model-viewer usa su loading="auto" por defecto y vuelve a
+    // comprobar la visibilidad por su cuenta, quedándose a veces esperando
+    // indefinidamente sin llegar a cargar el modelo (ver PaywayViewer.astro).
+    viewer.setAttribute('loading', 'eager');
+    viewer.setAttribute('reveal', 'auto');
     viewer.setAttribute('shadow-intensity', '0.8');
     viewer.setAttribute('exposure', '1.1');
     viewer.setAttribute('environment-image', 'neutral');

@@ -221,7 +221,7 @@ Antes: 11 de 17 títulos por debajo de 50 caracteres, sin keyword ni referencia 
 - [x] **8.5** `.gitignore`: `dist/`, `node_modules/`, `.env`, `.DS_Store` correctamente ignorados. Verificado que no hay `.env` ni `.DS_Store` versionados.
 - [x] **8.6** Archivos de desarrollo que no deben acabar en el build: `.DS_Store` y `README.md` de imágenes, eliminados.
 - [x] **8.7** `dev.sh` apuntaba a `$HOME/.local/node/bin`, una ruta de otra máquina. Eliminado (se usa `npm run dev`).
-- [x] **8.8** `.claude/launch.json` contenía una ruta absoluta con el usuario del equipo de desarrollo. Sacado del control de versiones.
+- [x] **8.8** La configuración local del editor contenía una ruta absoluta con el usuario del equipo de desarrollo. Sacada del control de versiones.
 - [x] **8.9** `DEPLOY.md` con S3 + CloudFront, OAC, política de bucket, ACM en `us-east-1`, redirección www, cabeceras de caché y seguridad, gestión del 404 y script de despliegue.
 
 ---

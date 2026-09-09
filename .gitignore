@@ -20,11 +20,12 @@ pnpm-debug.log*
 # macOS-specific files
 .DS_Store
 
-# instrucciones locales de Claude Code (symlink a AGENTS.md)
+# instrucciones locales del asistente de desarrollo
 CLAUDE.md
+AGENTS.md
 
 # jetbrains setting folder
 .idea/
 
 # Configuración local del editor con rutas absolutas de la máquina
-.claude/launch.json
+.claude/

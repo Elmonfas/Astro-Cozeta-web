@@ -51,20 +51,18 @@ const resto = navLinks.filter((l) => l.href !== '/' && l.href !== '/servicios/')
           </a>
         </li>
         <li class="has-dropdown">
-          <details class="nav-dropdown">
-            <summary aria-current={isProductActive ? 'page' : undefined}>
-              <span class="nav-index">03</span>
-              Productos
-              <span class="nav-caret" aria-hidden="true"></span>
-            </summary>
-            <ul class="dropdown-menu">
-              {productLinks.map((item) => (
-                <li>
-                  <a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>{item.label}</a>
-                </li>
-              ))}
-            </ul>
-          </details>
+          <button type="button" class="nav-trigger" aria-current={isProductActive ? 'page' : undefined} aria-haspopup="true">
+            <span class="nav-index">03</span>
+            Productos
+            <span class="nav-caret" aria-hidden="true"></span>
+          </button>
+          <ul class="dropdown-menu">
+            {productLinks.map((item) => (
+              <li>
+                <a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>{item.label}</a>
+              </li>
+            ))}
+          </ul>
         </li>
         {resto.map((link, index) => (
           <li>
@@ -259,12 +257,15 @@ const resto = navLinks.filter((l) => l.href !== '/' && l.href !== '/servicios/')
     transform-origin: left;
   }
 
-  /* Desplegable "Productos" */
+  /* Desplegable "Productos": se abre solo con hover (o con el teclado, vía
+     :focus-within al tabular hasta el botón o hasta un enlace de dentro).
+     Sin <details> ni JS: una simple transición de opacidad/escala que, al
+     ser CSS puro, ya anima igual de bien la apertura que el cierre. */
   .has-dropdown {
     position: relative;
   }
 
-  .nav-dropdown summary {
+  .nav-trigger {
     position: relative;
     display: inline-flex;
     align-items: baseline;
@@ -274,17 +275,14 @@ const resto = navLinks.filter((l) => l.href !== '/' && l.href !== '/servicios/')
     font-size: 0.95rem;
     color: var(--color-text);
     padding: var(--space-2) 0;
-    cursor: pointer;
-    list-style: none;
+    background: none;
+    border: none;
+    cursor: default;
     transition: color 0.2s ease;
   }
 
-  .nav-dropdown summary::-webkit-details-marker {
-    display: none;
-  }
-
-  .nav-dropdown summary:hover,
-  .nav-dropdown summary[aria-current='page'] {
+  .nav-trigger:hover,
+  .nav-trigger[aria-current='page'] {
     color: var(--color-secondary);
   }
 
@@ -298,7 +296,8 @@ const resto = navLinks.filter((l) => l.href !== '/' && l.href !== '/servicios/')
     opacity: 0.7;
   }
 
-  .nav-dropdown[open] .nav-caret {
+  .has-dropdown:hover .nav-caret,
+  .has-dropdown:focus-within .nav-caret {
     transform: rotate(-135deg) translateY(1px);
   }
 
@@ -318,6 +317,26 @@ const resto = navLinks.filter((l) => l.href !== '/' && l.href !== '/servicios/')
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-lg);
     transform-origin: top left;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-6px) scale(0.94);
+    transition:
+      opacity 0.16s ease,
+      transform 0.16s ease,
+      visibility 0s linear 0.16s;
+  }
+
+  .has-dropdown:hover .dropdown-menu,
+  .has-dropdown:focus-within .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0) scale(1);
+    transition:
+      opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+      visibility 0s;
   }
 
   .dropdown-menu a {
@@ -340,67 +359,46 @@ const resto = navLinks.filter((l) => l.href !== '/' && l.href !== '/servicios/')
     transform: translateX(2px);
   }
 
-  /* Entrada: fundido + escala desde la esquina superior izquierda (donde
-     está el "Productos" que la abre), con los tres enlaces entrando en
-     cascada. Un <details> nativo no anima su cierre, así que la salida la
-     dispara el script (clase .is-closing) reproduciendo esta misma
-     animación al revés. */
-  @keyframes dropdown-reveal {
-    from {
-      opacity: 0;
-      transform: translateY(-6px) scale(0.94);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-  }
-
-  @keyframes dropdown-item-reveal {
-    from {
-      opacity: 0;
-      transform: translateY(-4px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .nav-dropdown[open]:not(.is-closing) .dropdown-menu {
-    animation: dropdown-reveal 0.22s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-
-  .nav-dropdown[open]:not(.is-closing) .dropdown-menu li {
+  /* Los tres enlaces entran en cascada, pero solo al abrir: al cerrar no
+     hay contra-cuenta (transition-delay vuelve a 0 en cuanto se deja de
+     cumplir :hover/:focus-within), así que el cierre es un único fundido. */
+  .dropdown-menu li {
     opacity: 0;
-    animation: dropdown-item-reveal 0.2s ease both;
+    transform: translateY(-4px);
+    transition: opacity 0.16s ease, transform 0.16s ease;
   }
 
-  .nav-dropdown[open]:not(.is-closing) .dropdown-menu li:nth-child(1) {
-    animation-delay: 0.05s;
+  .has-dropdown:hover .dropdown-menu li,
+  .has-dropdown:focus-within .dropdown-menu li {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.2s ease, transform 0.2s ease;
   }
 
-  .nav-dropdown[open]:not(.is-closing) .dropdown-menu li:nth-child(2) {
-    animation-delay: 0.1s;
+  .has-dropdown:hover .dropdown-menu li:nth-child(1),
+  .has-dropdown:focus-within .dropdown-menu li:nth-child(1) {
+    transition-delay: 0.04s;
   }
 
-  .nav-dropdown[open]:not(.is-closing) .dropdown-menu li:nth-child(3) {
-    animation-delay: 0.15s;
+  .has-dropdown:hover .dropdown-menu li:nth-child(2),
+  .has-dropdown:focus-within .dropdown-menu li:nth-child(2) {
+    transition-delay: 0.08s;
   }
 
-  .nav-dropdown.is-closing .dropdown-menu {
-    animation: dropdown-reveal 0.15s cubic-bezier(0.4, 0, 1, 1) reverse both;
+  .has-dropdown:hover .dropdown-menu li:nth-child(3),
+  .has-dropdown:focus-within .dropdown-menu li:nth-child(3) {
+    transition-delay: 0.12s;
   }
 
   @media (prefers-reduced-motion: reduce) {
     .dropdown-menu,
     .dropdown-menu li,
-    .nav-dropdown[open]:not(.is-closing) .dropdown-menu,
-    .nav-dropdown[open]:not(.is-closing) .dropdown-menu li,
-    .nav-dropdown.is-closing .dropdown-menu {
-      animation: none !important;
-      opacity: 1;
-      transform: none;
+    .has-dropdown:hover .dropdown-menu,
+    .has-dropdown:focus-within .dropdown-menu,
+    .has-dropdown:hover .dropdown-menu li,
+    .has-dropdown:focus-within .dropdown-menu li {
+      transition-duration: 0.01ms !important;
+      transition-delay: 0s !important;
     }
   }
 
@@ -669,48 +667,18 @@ const resto = navLinks.filter((l) => l.href !== '/' && l.href !== '/servicios/')
     });
   }
 
-  // <details> nativo no se cierra solo al hacer clic fuera ni con Escape, y
-  // tampoco anima su cierre (el atributo "open" se quita de golpe). Por eso
-  // el clic en <summary> se intercepta a mano: abrir es instantáneo (para
-  // que la animación de entrada en CSS pueda reproducirse), pero cerrar
-  // espera a que termine la animación de salida (.is-closing) antes de
-  // quitar "open" de verdad.
-  const navDropdown = document.querySelector<HTMLDetailsElement>('.nav-dropdown');
-  const navSummary = navDropdown?.querySelector('summary');
-  const CLOSE_MS = 150;
+  // El desplegable "Productos" se abre con :hover/:focus-within en CSS, sin
+  // JS. Lo único que el CSS no puede resolver solo es Escape: si el foco
+  // está dentro (navegando con teclado), lo devuelve al botón para que
+  // :focus-within deje de cumplirse y el menú se cierre.
+  const productsDropdown = document.querySelector<HTMLElement>('.has-dropdown');
+  const productsTrigger = productsDropdown?.querySelector<HTMLButtonElement>('.nav-trigger');
 
-  if (navDropdown && navSummary) {
-    const closeDropdown = () => {
-      if (!navDropdown.open || navDropdown.classList.contains('is-closing')) return;
-      navDropdown.classList.add('is-closing');
-      window.setTimeout(() => {
-        navDropdown.open = false;
-        navDropdown.classList.remove('is-closing');
-      }, CLOSE_MS);
-    };
-
-    navSummary.addEventListener('click', (e) => {
-      e.preventDefault();
-      if (navDropdown.open) {
-        closeDropdown();
-      } else {
-        navDropdown.open = true;
-      }
-    });
-
-    document.addEventListener('click', (e) => {
-      if (navDropdown.open && !navDropdown.contains(e.target as Node)) closeDropdown();
-    });
-
+  if (productsDropdown && productsTrigger) {
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && navDropdown.open) {
-        closeDropdown();
-        navSummary.focus();
+      if (e.key === 'Escape' && productsDropdown.contains(document.activeElement)) {
+        productsTrigger.focus();
       }
-    });
-
-    navDropdown.querySelectorAll('a').forEach((link) => {
-      link.addEventListener('click', closeDropdown);
     });
   }
 

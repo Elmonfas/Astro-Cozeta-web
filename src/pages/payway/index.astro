@@ -253,7 +253,7 @@ const serviceSchema = {
       <div class="grid grid-4 modelos-grid">
         {modelos.map((m) => (
           <div class="modelo-card card">
-            <span class="modelo-icon"><Image src={m.icon} alt="" width={56} height={56} /></span>
+            <span class="modelo-icon"><Image src={m.icon} alt="" height={160} /></span>
             <h3>{m.nombre}</h3>
             <p>{m.texto}</p>
           </div>
@@ -487,15 +487,17 @@ const serviceSchema = {
 
   .modelo-icon {
     display: inline-flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: center;
-    height: 72px;
+    height: 80px;
     margin-bottom: var(--space-3);
   }
 
   .modelo-icon :global(img) {
     height: 100%;
     width: auto;
+    max-width: 100%;
+    object-fit: contain;
   }
 
   .modelo-card h3 {

@@ -51,7 +51,6 @@ export const navLinks = [
 // desplegable "Productos" del menú. Netoil está pendiente de contenido real.
 export const productLinks = [
   { href: '/payway/', label: 'PAYWAY' },
-  { href: '/mantenimiento/', label: 'Mantenimiento' },
   { href: '/netoil/', label: 'Netoil' },
 ] as const;
 

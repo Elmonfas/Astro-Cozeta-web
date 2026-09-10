@@ -1,25 +1,107 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import ServiceDetail from '../../components/ServiceDetail.astro';
-import PaywayViewer from '../../components/PaywayViewer.astro';
+import Icon from '../../components/Icon.astro';
+import BlueprintMarks from '../../components/BlueprintMarks.astro';
+import CtaBanner from '../../components/CtaBanner.astro';
+import Product3DViewer from '../../components/Product3DViewer.astro';
+import { site } from '../../lib/site';
+
+// Contenido real de PAYWAY (distribuido por COZETA en toda España), pasado
+// por el jefe desde el material de marca. Adaptado al tono del resto de la
+// web (vosotros, sin frases de venta tipo "no quedará defraudado") y sin
+// repetir la comparación con los rovers de Marte del material original, que
+// no podemos verificar.
+
+const modelos = [
+  {
+    nombre: 'Classic',
+    texto: 'Aceptador de pagos en caja de acero inoxidable, diseñado para trabajar ininterrumpidamente de forma intensiva.',
+  },
+  {
+    nombre: 'Effective',
+    texto: 'La solución para aceptar pagos en efectivo: los billetes se guardan en caja fuerte tradicional o automatizada, compatible con empresas de recogida de efectivo.',
+  },
+  {
+    nombre: 'Near',
+    texto: 'Sistema de pago integrado en los propios surtidores, para una operación de pago en pista más fluida.',
+  },
+  {
+    nombre: 'Eco',
+    texto: 'Todas las capacidades de PAYWAY al mínimo coste: el equipo pensado para instalaciones lowcost.',
+  },
+];
 
 const incluye = [
-  'Terminales de pago desatendido en surtidor (24 horas)',
-  'Lectores de tarjetas de flota, bancarias y códigos QR',
-  'Integración con el sistema de gestión de la estación',
-  'Software de facturación y control de consumos por cliente',
-  'Mantenimiento y actualización de los terminales',
-  'Formación al personal para la gestión diaria del sistema',
+  'Pago con tarjeta de crédito, tarjeta propia de fidelización, contactless y efectivo (monedas y billetes)',
+  'Interfaz táctil de fácil manejo',
+  'Entorno de facturación integrado',
+  'Control de pista automático o manual',
+  'Gasóleo profesional y bonificado',
+  'Control desde smartphone o tablet',
+  'Impresora de gran capacidad (más de 4.000 tickets)',
+  'Alarmas por correo electrónico ante incidencias',
+];
+
+const pilares = [
+  {
+    titulo: 'Estabilidad',
+    texto: 'Pensado para funcionar de forma ininterrumpida, como exige un equipo desatendido. Desarrollado sobre GNU/Linux, con más de 15 años de experiencia del equipo en entornos industriales de alta disponibilidad.',
+  },
+  {
+    titulo: 'Economía',
+    texto: 'Un equipo económico de comprar, instalar y mantener, sin costes ocultos.',
+  },
+  {
+    titulo: 'Seguridad',
+    texto: 'Sin escritorio, sin puertas traseras ni programas de acceso remoto de terceros: la conexión se hace por una red privada virtual (VPN) propia y cifrada.',
+  },
+  {
+    titulo: 'Sencillez',
+    texto: 'Repostar es sencillo para el cliente, manejar la estación es fácil para el propietario, e instalar y poner en marcha el equipo es rápido para nosotros.',
+  },
+];
+
+const tecnologia = [
+  {
+    icon: 'pago',
+    titulo: 'Pasarela de pagos',
+    texto: 'Trabajamos con un proveedor especializado en pagos con tarjeta para la gestión con los bancos, en vez de intentar hacerlo todo nosotros mismos.',
+  },
+  {
+    icon: 'tools',
+    titulo: 'Impresora de gran capacidad',
+    texto: 'Rollo de papel largo y ticket optimizado. En instalaciones con varios equipos, las impresoras se pueden usar indistintamente entre ellos.',
+  },
+  {
+    icon: 'shield',
+    titulo: 'Autochequeo',
+    texto: 'El equipo comprueba periódicamente cada dispositivo y, ante un fallo puntual, se reinicia solo, sin intervención humana.',
+  },
+  {
+    icon: 'chart',
+    titulo: 'Crédito centralizado',
+    texto: 'Si tenéis más de una estación, el crédito a clientes se gestiona de forma centralizada en toda la red.',
+  },
+  {
+    icon: 'phone',
+    titulo: 'Control remoto seguro',
+    texto: 'La comunicación fuera de la red local va cifrada por VPN propia, sin depender de servidores de terceros.',
+  },
+  {
+    icon: 'ingenieria',
+    titulo: 'Base GNU/Linux',
+    texto: 'Más de 15 años de experiencia del equipo de desarrollo en aplicaciones de alta disponibilidad para entornos industriales y de transporte.',
+  },
 ];
 
 const proceso = [
   {
     titulo: 'Diagnóstico del punto de venta',
-    texto: 'Revisamos el sistema de gestión actual y el volumen de operaciones para elegir el terminal adecuado.',
+    texto: 'Revisamos el sistema de gestión actual y el volumen de operaciones para elegir el modelo de PAYWAY adecuado.',
   },
   {
     titulo: 'Instalación del hardware',
-    texto: 'Montamos los terminales PAYWAY en surtidor o en isla, con la protección adecuada para exterior.',
+    texto: 'Montamos los terminales en surtidor o en isla, con la protección adecuada para exterior.',
   },
   {
     titulo: 'Integración de software',
@@ -33,66 +115,586 @@ const proceso = [
 
 const faq = [
   {
-    pregunta: '¿Se puede combinar el pago desatendido con atención en horario comercial?',
-    respuesta: 'Sí, es habitual: el sistema funciona de forma autónoma fuera de horario y el personal puede intervenir manualmente cuando la estación está atendida.',
+    pregunta: '¿Necesito instalar algún programa para gestionar PAYWAY?',
+    respuesta: 'No. Solo hace falta un navegador conectado a vuestro servidor: nada que instalar ni reinstalar cada vez que cambiéis de ordenador.',
   },
   {
-    pregunta: '¿Es compatible con tarjetas de flotas de otras empresas?',
-    respuesta: 'Sí, integramos los principales sistemas de tarjeta de flota del mercado, además de tarjetas bancarias y pago por app.',
+    pregunta: '¿Qué pasa si un dispositivo falla?',
+    respuesta: 'El sistema de autochequeo detecta el fallo y reinicia el dispositivo, o el equipo completo, sin intervención humana.',
   },
   {
-    pregunta: '¿Qué pasa si falla el terminal de pago?',
-    respuesta: 'Nuestro servicio de mantenimiento incluye soporte ante incidencias para minimizar el tiempo sin servicio de cobro, con piezas de repuesto disponibles para los modelos que instalamos.',
+    pregunta: '¿Puedo dar crédito a mis clientes en varias estaciones?',
+    respuesta: 'Sí, si tenéis más de una estación el crédito se gestiona de forma centralizada en toda vuestra red.',
+  },
+  {
+    pregunta: '¿Es compatible con la tienda de mi estación?',
+    respuesta: 'Sí, también tenemos un ERP para tienda que se integra con PAYWAY. Pedidnos una demostración.',
   },
 ];
-
-const aside = {
-  titulo: '¿Qué sistema de gestión usáis?',
-  texto: 'De eso depende qué terminal PAYWAY encaja sin rehacer la integración de ventas y existencias que ya tenéis montada.',
-  boton: 'Consultar compatibilidad',
-};
-
-const cta = {
-  titulo: 'Las horas en que la estación está cerrada también venden',
-  texto: 'El terminal PAYWAY cobra de noche y en festivos, y sigue permitiendo atención manual en horario comercial.',
-  boton: 'Ver opciones de cobro',
-};
 
 const relacionados = [
   { href: '/servicios/gasolineras/', icon: 'gasolinera', label: 'Gasolineras y estaciones de servicio' },
   { href: '/servicios/mantenimiento/', icon: 'mantenimiento', label: 'Mantenimiento' },
-  { href: '/servicios/ingenieria/', icon: 'ingenieria', label: 'Ingeniería y legalizaciones' },
+  { href: '/netoil/', icon: 'flota', label: 'Netoil' },
 ];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map((item) => ({
+    '@type': 'Question',
+    name: item.pregunta,
+    acceptedAnswer: { '@type': 'Answer', text: item.respuesta },
+  })),
+};
+
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: 'PAYWAY',
+  description: 'Terminales de cobro automático para estaciones de servicio, distribuidos por COZETA en toda España.',
+  brand: { '@type': 'Brand', name: 'PAYWAY' },
+  manufacturer: { '@type': 'Organization', name: site.legalName },
+};
 ---
 
 <Layout
-  title="PAYWAY: pago desatendido para estaciones de servicio"
-  description="PAYWAY es el terminal de pago desatendido de COZETA: cobro 24 horas en surtidor con tarjeta, flota y app, integrado con vuestro sistema de gestión."
+  title="PAYWAY: terminales de cobro automático para gasolineras"
+  description="COZETA distribuye PAYWAY en toda España: terminales de cobro automático con tarjeta, contactless y efectivo, control remoto y cuatro modelos según necesidad."
   breadcrumbs={[{ name: 'PAYWAY', path: '/payway/' }]}
 >
-  <ServiceDetail
-    eyebrow="Productos"
-    title="PAYWAY"
-    intro="Terminal de pago desatendido en caja de acero inoxidable, diseñado para trabajar 24 horas ininterrumpidamente en exterior."
-    incluye={incluye}
-    proceso={proceso}
-    faq={faq}
-    aside={aside}
-    cta={cta}
-    relacionados={relacionados}
-  >
-    <Fragment slot="media">
-      <PaywayViewer height="400px" />
-    </Fragment>
+  <script type="application/ld+json" set:html={JSON.stringify(serviceSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 
-    <p>
-      PAYWAY es el sistema de cobro automático que instalamos en estaciones de servicio para que
-      podáis operar 24 horas sin personal en caja, o complementar la atención habitual con una
-      opción de autoservicio para el cliente.
-    </p>
-    <p>
-      Integra tarjetas de flota, tarjetas bancarias y pago por aplicación, conectado con el
-      sistema de gestión de la estación para un control de ventas y existencias en tiempo real.
-    </p>
-  </ServiceDetail>
+  <section class="service-hero">
+    <BlueprintMarks />
+    <div class="container service-hero-inner">
+      <div>
+        <p class="eyebrow">Productos</p>
+        <h1>PAYWAY</h1>
+        <p class="hero-intro">
+          COZETA distribuye en todo el territorio nacional la línea de terminales de cobro
+          automático PAYWAY. Permiten rentabilizar al máximo la inversión de una estación de
+          servicio y controlarla desde cualquier parte, con cualquier terminal móvil.
+        </p>
+        <div class="hero-actions">
+          <a href="/contacto/" class="btn btn-primary">Pedir presupuesto</a>
+          <a href={`tel:+34${site.phone}`} class="btn btn-secondary">
+            <Icon name="phone" class="icon-sm" /> {site.phoneDisplay}
+          </a>
+        </div>
+      </div>
+      <div class="service-hero-media">
+        <Product3DViewer
+          height="400px"
+          modelSrc="/models/payway-classic.glb"
+          modelAlt="Terminal PAYWAY Classic de cobro automático en 3D"
+          posterIcon="pago"
+          cameraCenter={-25}
+          cameraRange={20}
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container two-col">
+      <div class="service-content">
+        <p>
+          Con PAYWAY se cobra con tarjeta de crédito, tarjeta propia de fidelización, contactless y
+          efectivo (monedas y billetes). Lo que diferencia a estos terminales del resto es la
+          seguridad y la velocidad de cada operación de pago.
+        </p>
+        <p>
+          El software es de los más versátiles del sector: permite conectarse a la estación desde
+          cualquier ordenador, tablet o smartphone, sin instalar ni mantener ningún programa
+          complejo — solo un navegador apuntando a vuestro servidor. El ERP de gestión de
+          hidrocarburos da control total de la estación, incluso para pedir un suministro o emitir
+          las facturas de fin de mes desde el móvil.
+        </p>
+
+        <h2>Qué incluye</h2>
+        <ul class="check-list">
+          {incluye.map((item) => (
+            <li>
+              <Icon name="check" class="icon-check" />
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <aside class="service-aside card">
+        <h3>¿Qué sistema de gestión usáis?</h3>
+        <p>De eso depende qué modelo de PAYWAY encaja sin rehacer la integración de ventas y existencias que ya tenéis montada.</p>
+        <a href="/contacto/" class="btn btn-primary btn-block">Consultar compatibilidad</a>
+        <a href={`tel:+34${site.phone}`} class="aside-phone">
+          <Icon name="phone" class="icon-sm" /> {site.phoneDisplay}
+        </a>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section section-alt" aria-labelledby="modelos-heading">
+    <div class="container">
+      <div class="section-header center">
+        <p class="eyebrow">Un modelo para cada necesidad</p>
+        <h2 id="modelos-heading">Cuatro versiones de PAYWAY</h2>
+      </div>
+      <div class="grid grid-4 modelos-grid">
+        {modelos.map((m) => (
+          <div class="modelo-card card">
+            <span class="modelo-icon"><Icon name="pago" class="icon" /></span>
+            <h3>{m.nombre}</h3>
+            <p>{m.texto}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-dark pilares-section" aria-labelledby="pilares-heading">
+    <BlueprintMarks />
+    <div class="container">
+      <div class="section-header center">
+        <p class="eyebrow">Economía · estabilidad · seguridad · sencillez</p>
+        <h2 id="pilares-heading">Por qué PAYWAY funciona sin sorpresas</h2>
+      </div>
+      <div class="grid grid-4 pilares-grid">
+        {pilares.map((p) => (
+          <div class="pilar">
+            <h3>{p.titulo}</h3>
+            <p>{p.texto}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="tecnologia-heading">
+    <div class="container">
+      <div class="section-header center">
+        <p class="eyebrow">Bajo el capó</p>
+        <h2 id="tecnologia-heading">Solución completa para la comercialización de carburantes</h2>
+      </div>
+      <div class="grid grid-3">
+        {tecnologia.map((t) => (
+          <div class="tech-card">
+            <span class="tech-icon"><Icon name={t.icon} class="icon" /></span>
+            <h3>{t.titulo}</h3>
+            <p>{t.texto}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt" aria-labelledby="proceso-heading">
+    <div class="container">
+      <div class="section-header center">
+        <p class="eyebrow">Cómo trabajamos</p>
+        <h2 id="proceso-heading">Nuestro proceso</h2>
+      </div>
+      <ol class="process-list">
+        {proceso.map((paso, index) => (
+          <li>
+            <span class="process-number">{index + 1}</span>
+            <div>
+              <h3>{paso.titulo}</h3>
+              <p>{paso.texto}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="faq-heading">
+    <div class="container">
+      <div class="section-header center">
+        <p class="eyebrow">Preguntas frecuentes</p>
+        <h2 id="faq-heading">Resolvemos vuestras dudas</h2>
+      </div>
+      <div class="faq-list">
+        {faq.map((item) => (
+          <details class="faq-item">
+            <summary>{item.pregunta}</summary>
+            <p>{item.respuesta}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="relacionados-heading">
+    <div class="container">
+      <h2 id="relacionados-heading" class="relacionados-title">Otros servicios que solemos combinar con este</h2>
+      <ul class="relacionados-list">
+        {relacionados.map((r) => (
+          <li>
+            <a href={r.href}>
+              <Icon name={r.icon} class="icon-rel" />
+              <strong>{r.label}</strong>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <CtaBanner
+    title="Las horas en que la estación está cerrada también venden"
+    text="PAYWAY cobra de noche y en festivos, y sigue permitiendo atención manual en horario comercial."
+    cta="Ver opciones de cobro"
+  />
 </Layout>
+
+<style>
+  .service-hero {
+    position: relative;
+    overflow: hidden;
+    background: var(--color-primary-dark);
+    color: #fff;
+    padding-block: var(--space-7);
+  }
+
+  .service-hero-inner {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: var(--space-7);
+  }
+
+  .service-hero-inner > * {
+    min-width: 0;
+  }
+
+  .service-hero-media :global(model-viewer) {
+    --poster-color: transparent;
+  }
+
+  .service-hero h1 {
+    color: #fff;
+    margin-bottom: var(--space-3);
+  }
+
+  .hero-intro {
+    max-width: 60ch;
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.82);
+    margin-bottom: var(--space-4);
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+  }
+
+  .hero-actions :global(.icon-sm) {
+    width: 18px;
+    height: 18px;
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--space-7);
+    align-items: start;
+  }
+
+  .two-col > * {
+    min-width: 0;
+  }
+
+  .service-content :global(h2) {
+    margin-top: var(--space-6);
+  }
+
+  .check-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .check-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+    color: var(--color-text-muted);
+  }
+
+  .check-list :global(.icon-check) {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    color: var(--color-success);
+    margin-top: 2px;
+  }
+
+  .service-aside {
+    position: sticky;
+    top: calc(var(--header-height) + var(--space-4));
+  }
+
+  .service-aside h3 {
+    margin-bottom: var(--space-2);
+  }
+
+  .btn-block {
+    display: flex;
+    width: 100%;
+    margin-block: var(--space-3);
+  }
+
+  .aside-phone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    font-family: var(--font-body);
+    font-weight: 700;
+    color: var(--color-primary-dark);
+  }
+
+  .aside-phone :global(.icon-sm) {
+    width: 18px;
+    height: 18px;
+    color: var(--color-secondary);
+  }
+
+  /* Modelos */
+  .modelos-grid {
+    align-items: stretch;
+  }
+
+  .modelo-card {
+    text-align: center;
+  }
+
+  .modelo-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: var(--radius);
+    background: var(--color-bg-alt);
+    color: var(--color-secondary);
+    margin-bottom: var(--space-3);
+  }
+
+  .modelo-icon :global(.icon) {
+    width: 28px;
+    height: 28px;
+  }
+
+  .modelo-card h3 {
+    margin-bottom: var(--space-2);
+  }
+
+  .modelo-card p {
+    margin: 0;
+    font-size: 0.92rem;
+  }
+
+  /* Pilares */
+  .pilares-section {
+    position: relative;
+    overflow: hidden;
+    background: var(--color-primary-dark);
+  }
+
+  .pilares-grid {
+    position: relative;
+  }
+
+  .pilar h3 {
+    color: #fff;
+    margin-bottom: var(--space-2);
+    font-size: 1.05rem;
+  }
+
+  .pilar p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 0.92rem;
+  }
+
+  /* Tecnología */
+  .tech-card {
+    text-align: center;
+  }
+
+  .tech-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: var(--radius);
+    background: var(--color-bg-alt);
+    color: var(--color-secondary);
+    margin-bottom: var(--space-3);
+  }
+
+  .tech-icon :global(.icon) {
+    width: 28px;
+    height: 28px;
+  }
+
+  .tech-card h3 {
+    margin-bottom: var(--space-2);
+    font-size: 1.05rem;
+  }
+
+  .tech-card p {
+    margin: 0;
+    font-size: 0.92rem;
+  }
+
+  /* Proceso */
+  .process-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-5);
+  }
+
+  .process-list li {
+    display: flex;
+    gap: var(--space-4);
+  }
+
+  .process-number {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    color: #fff;
+    font-family: var(--font-body);
+    font-weight: 700;
+  }
+
+  .process-list h3 {
+    margin-bottom: var(--space-2);
+  }
+
+  .process-list p {
+    margin: 0;
+  }
+
+  /* FAQ */
+  .faq-list {
+    max-width: 800px;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .faq-item {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: var(--space-4);
+  }
+
+  .faq-item summary {
+    cursor: pointer;
+    font-family: var(--font-body);
+    font-weight: 700;
+    color: var(--color-primary-dark);
+  }
+
+  .faq-item p {
+    margin: var(--space-3) 0 0;
+  }
+
+  /* Relacionados */
+  .relacionados-title {
+    font-size: 1.35rem;
+    margin-bottom: var(--space-5);
+  }
+
+  .relacionados-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+  }
+
+  .relacionados-list a {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    height: 100%;
+    padding: var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.2s ease;
+  }
+
+  .relacionados-list a:hover {
+    border-color: var(--color-secondary);
+    text-decoration: none;
+  }
+
+  .relacionados-list strong {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    color: var(--color-primary-dark);
+  }
+
+  .relacionados-list :global(.icon-rel) {
+    width: 26px;
+    height: 26px;
+    flex-shrink: 0;
+    color: var(--color-secondary);
+  }
+
+  @media (max-width: 900px) {
+    .two-col,
+    .process-list,
+    .relacionados-list {
+      grid-template-columns: 1fr;
+    }
+
+    .modelos-grid,
+    .pilares-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .service-aside {
+      position: static;
+    }
+
+    .service-hero-inner {
+      grid-template-columns: 1fr;
+    }
+
+    .service-hero-media :global(.product-3d) {
+      height: 320px !important;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .modelos-grid,
+    .pilares-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

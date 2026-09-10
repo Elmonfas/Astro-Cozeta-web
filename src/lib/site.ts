@@ -79,11 +79,13 @@ export const whyCozeta = [
 
 // Marcas reales para las que hemos construido instalaciones — franja de prueba social en la home.
 export const clientBrands = [
-  'LOWCOST',
-  'SOEX 2',
-  'Autoil',
-  'Benzoil',
-  'Dieself',
-  'Gasoprix',
-  'Cooperativa Sant Josep',
+  'H2EXAGON',
+  'VILLAFAMES',
+  'AUTOIL',
+  'BENZOIL',
+  'DIESELF',
+  'GASOPRIX',
+  'ARTICO OIL',
+  'MORBYTER'
 ] as const;
+    

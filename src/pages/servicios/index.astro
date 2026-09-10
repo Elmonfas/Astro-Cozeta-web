@@ -9,10 +9,10 @@ import { productLinks } from '../../lib/site';
 
 const servicios = (await getCollection('servicios')).sort((a, b) => a.data.order - b.data.order);
 
-// PAYWAY y Netoil tienen página propia (ver productLinks); Mantenimiento
-// vuelve a ser un servicio más de la lista de arriba.
+// PAYWAY, Mantenimiento y Netoil tienen página propia (ver productLinks).
 const productIcons: Record<string, string> = {
   '/payway/': 'pago',
+  '/mantenimiento/': 'mantenimiento',
   '/netoil/': 'flota',
 };
 ---
@@ -54,7 +54,7 @@ const productIcons: Record<string, string> = {
     <div class="container">
       <div class="section-header">
         <h2 id="productos-heading">Productos propios</h2>
-        <p>PAYWAY y Netoil tienen página propia, con todo el detalle.</p>
+        <p>PAYWAY, Netoil y el contrato de mantenimiento tienen página propia, con todo el detalle.</p>
       </div>
       <ul class="products-list">
         {productLinks.map((p) => (
@@ -82,8 +82,7 @@ const productIcons: Record<string, string> = {
     margin: 0;
     padding: 0;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    max-width: 640px;
+    grid-template-columns: repeat(3, 1fr);
     gap: var(--space-4);
   }
 
@@ -117,6 +116,12 @@ const productIcons: Record<string, string> = {
     height: 26px;
     flex-shrink: 0;
     color: var(--color-secondary);
+  }
+
+  @media (max-width: 900px) {
+    .products-list {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 
   @media (max-width: 620px) {

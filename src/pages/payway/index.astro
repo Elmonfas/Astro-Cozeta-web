@@ -1,10 +1,15 @@
 ---
+import { Image } from 'astro:assets';
 import Layout from '../../layouts/Layout.astro';
 import Icon from '../../components/Icon.astro';
 import BlueprintMarks from '../../components/BlueprintMarks.astro';
 import CtaBanner from '../../components/CtaBanner.astro';
 import Product3DViewer from '../../components/Product3DViewer.astro';
 import { site } from '../../lib/site';
+import iconClassic from '../../assets/payway/modelo-classic.png';
+import iconEffective from '../../assets/payway/modelo-effective.png';
+import iconNear from '../../assets/payway/modelo-near.png';
+import iconEco from '../../assets/payway/modelo-eco.png';
 
 // Contenido real de PAYWAY (distribuido por COZETA en toda España), pasado
 // por el jefe desde el material de marca. Adaptado al tono del resto de la
@@ -16,18 +21,22 @@ const modelos = [
   {
     nombre: 'Classic',
     texto: 'Aceptador de pagos en caja de acero inoxidable, diseñado para trabajar ininterrumpidamente de forma intensiva.',
+    icon: iconClassic,
   },
   {
     nombre: 'Effective',
     texto: 'La solución para aceptar pagos en efectivo: los billetes se guardan en caja fuerte tradicional o automatizada, compatible con empresas de recogida de efectivo.',
+    icon: iconEffective,
   },
   {
     nombre: 'Near',
     texto: 'Sistema de pago integrado en los propios surtidores, para una operación de pago en pista más fluida.',
+    icon: iconNear,
   },
   {
     nombre: 'Eco',
     texto: 'Todas las capacidades de PAYWAY al mínimo coste: el equipo pensado para instalaciones lowcost.',
+    icon: iconEco,
   },
 ];
 
@@ -244,7 +253,7 @@ const serviceSchema = {
       <div class="grid grid-4 modelos-grid">
         {modelos.map((m) => (
           <div class="modelo-card card">
-            <span class="modelo-icon"><Icon name="pago" class="icon" /></span>
+            <span class="modelo-icon"><Image src={m.icon} alt="" width={56} height={56} /></span>
             <h3>{m.nombre}</h3>
             <p>{m.texto}</p>
           </div>
@@ -480,17 +489,13 @@ const serviceSchema = {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 56px;
-    height: 56px;
-    border-radius: var(--radius);
-    background: var(--color-bg-alt);
-    color: var(--color-secondary);
+    height: 72px;
     margin-bottom: var(--space-3);
   }
 
-  .modelo-icon :global(.icon) {
-    width: 28px;
-    height: 28px;
+  .modelo-icon :global(img) {
+    height: 100%;
+    width: auto;
   }
 
   .modelo-card h3 {

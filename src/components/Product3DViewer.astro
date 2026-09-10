@@ -22,6 +22,13 @@ interface Props {
   polar?: string;
   radius?: string;
   fov?: string;
+  // Iluminación: por defecto una sombra marcada (buena para geometría con
+  // relieve, como el terminal PAYWAY). Modelos con pantalla/texto legible
+  // suelen necesitar menos sombra y más exposición para no perder contraste.
+  shadowIntensity?: number;
+  shadowSoftness?: number;
+  exposure?: number;
+  environmentImage?: string;
 }
 
 const {
@@ -37,6 +44,10 @@ const {
   polar = '82deg',
   radius = '1.1m',
   fov = '28deg',
+  shadowIntensity = 1,
+  shadowSoftness = 0.8,
+  exposure = 1.05,
+  environmentImage = 'neutral',
 } = Astro.props;
 
 const azimuthMin = cameraCenter - cameraRange;
@@ -53,6 +64,10 @@ const azimuthMax = cameraCenter + cameraRange;
   data-polar={polar}
   data-radius={radius}
   data-fov={fov}
+  data-shadow-intensity={shadowIntensity}
+  data-shadow-softness={shadowSoftness}
+  data-exposure={exposure}
+  data-environment-image={environmentImage}
   style={`height:${height};`}
 >
   {poster ? (
@@ -121,7 +136,19 @@ const azimuthMax = cameraCenter + cameraRange;
 
     await import('@google/model-viewer');
 
-    const { modelSrc, modelAlt, cameraCenter, cameraRange, polar, radius, fov } = host.dataset;
+    const {
+      modelSrc,
+      modelAlt,
+      cameraCenter,
+      cameraRange,
+      polar,
+      radius,
+      fov,
+      shadowIntensity,
+      shadowSoftness,
+      exposure,
+      environmentImage,
+    } = host.dataset;
     const center = Number(cameraCenter ?? '-25');
     const range = Number(cameraRange ?? '20');
     const azimuthMin = center - range;
@@ -136,10 +163,10 @@ const azimuthMax = cameraCenter + cameraRange;
     viewer.setAttribute('min-camera-orbit', `${azimuthMin}deg 65deg auto`);
     viewer.setAttribute('max-camera-orbit', `${azimuthMax}deg 95deg auto`);
     viewer.setAttribute('field-of-view', fov ?? '28deg');
-    viewer.setAttribute('shadow-intensity', '1');
-    viewer.setAttribute('shadow-softness', '0.8');
-    viewer.setAttribute('exposure', '1.05');
-    viewer.setAttribute('environment-image', 'neutral');
+    viewer.setAttribute('shadow-intensity', shadowIntensity ?? '1');
+    viewer.setAttribute('shadow-softness', shadowSoftness ?? '0.8');
+    viewer.setAttribute('exposure', exposure ?? '1.05');
+    viewer.setAttribute('environment-image', environmentImage ?? 'neutral');
     viewer.setAttribute('interaction-prompt', 'none');
     // Nuestro propio IntersectionObserver ya espera a que esté en pantalla
     // antes de crear el elemento; sin "eager" model-viewer vuelve a evaluar

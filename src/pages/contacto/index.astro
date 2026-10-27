@@ -22,23 +22,22 @@ const graciasAbsoluteUrl = new URL(graciasPath, Astro.site).toString();
 ---
 
 <Layout
-  title="Contacto: presupuesto para vuestra instalación"
-  description="Pedid presupuesto sin compromiso para vuestra instalación de carburantes. Teléfono, email y dirección de COZETA en Bétera (Valencia). Respondemos en 24-48 h."
+  title="Contacto: pida información sobre su instalación"
+  description="Pida información sin compromiso sobre su instalación de carburantes. Teléfono, email y dirección de COZETA en Bétera (Valencia)."
   breadcrumbs={[{ name: 'Contacto', path: '/contacto/' }]}
 >
   <PageHero
     eyebrow="Contacto"
-    title="Hablemos de vuestro proyecto"
-    intro="Explicadnos qué instalación necesitáis y os respondemos con una propuesta técnica y económica. Si preferís hablarlo directamente, el teléfono está siempre abierto en horario de oficina."
+    title="Contacta con nosotros"
+    intro="Envíenos un mensaje y le responderemos. Si prefiere hablarlo directamente, puede llamarnos en horario de oficina."
   />
 
   <section class="section">
     <div class="container two-col">
       <div class="contact-form-wrap card">
-        <h2>Solicitud de presupuesto</h2>
+        <h2>Enviar mensaje</h2>
         <p class="form-lead">
-          Cuantos más detalles nos deis (ubicación, tipo de instalación y plazo previsto), más
-          ajustada será la propuesta que os enviemos.
+          Cuéntenos qué instalación necesita y nos pondremos en contacto con usted.
         </p>
 
         <!--
@@ -52,14 +51,14 @@ const graciasAbsoluteUrl = new URL(graciasPath, Astro.site).toString();
           action={`https://formspree.io/f/${FORMSPREE_ID}`}
           novalidate
         >
-          <input type="hidden" name="_subject" value="Nueva solicitud de presupuesto — web COZETA" />
+          <input type="hidden" name="_subject" value="Nuevo mensaje — web COZETA" />
           <input type="hidden" name="_next" value={graciasAbsoluteUrl} />
           <p class="honeypot" aria-hidden="true">
             <label>No rellenar si eres humano: <input name="_gotcha" tabindex="-1" autocomplete="off" /></label>
           </p>
 
           <p id="form-error" class="form-msg form-msg-error" role="alert" hidden>
-            No hemos podido enviar el formulario. Volved a intentarlo o escribidnos a
+            No hemos podido enviar el formulario. Vuelva a intentarlo o escríbanos a
             {' '}<a href={`mailto:${site.email}`}>{site.email}</a>.
           </p>
 
@@ -68,7 +67,7 @@ const graciasAbsoluteUrl = new URL(graciasPath, Astro.site).toString();
               <div class="form-field">
                 <label for="nombre">Nombre <span class="required" aria-hidden="true">*</span></label>
                 <input type="text" id="nombre" name="nombre" required autocomplete="name" aria-describedby="nombre-error" />
-                <p class="field-error" id="nombre-error" hidden>Indicadnos vuestro nombre.</p>
+                <p class="field-error" id="nombre-error" hidden>Indíquenos su nombre.</p>
               </div>
               <div class="form-field">
                 <label for="empresa">Empresa</label>
@@ -80,7 +79,7 @@ const graciasAbsoluteUrl = new URL(graciasPath, Astro.site).toString();
               <div class="form-field">
                 <label for="email">Email <span class="required" aria-hidden="true">*</span></label>
                 <input type="email" id="email" name="email" required autocomplete="email" aria-describedby="email-error" />
-                <p class="field-error" id="email-error" hidden>Revisad el email: falta el formato nombre@dominio.</p>
+                <p class="field-error" id="email-error" hidden>Revise el email: falta el formato nombre@dominio.</p>
               </div>
               <div class="form-field">
                 <label for="telefono">Teléfono</label>
@@ -91,10 +90,12 @@ const graciasAbsoluteUrl = new URL(graciasPath, Astro.site).toString();
             <div class="form-field">
               <label for="servicio">Servicio de interés</label>
               <select id="servicio" name="servicio">
-                <option value="">Seleccionad un servicio</option>
+                <option value="">Seleccione un servicio</option>
                 {servicios.map((s) => (
                   <option value={s.data.shortTitle}>{s.data.shortTitle}</option>
                 ))}
+                <option value="PAYWAY">PAYWAY</option>
+                <option value="Netoil">Netoil</option>
                 <option value="Otro">Otro</option>
               </select>
             </div>
@@ -102,7 +103,7 @@ const graciasAbsoluteUrl = new URL(graciasPath, Astro.site).toString();
             <div class="form-field">
               <label for="mensaje">Mensaje <span class="required" aria-hidden="true">*</span></label>
               <textarea id="mensaje" name="mensaje" rows="5" required aria-describedby="mensaje-error"></textarea>
-              <p class="field-error" id="mensaje-error" hidden>Contadnos brevemente qué necesitáis.</p>
+              <p class="field-error" id="mensaje-error" hidden>Cuéntenos brevemente qué necesita.</p>
             </div>
 
             <div class="form-field form-check">
@@ -113,19 +114,19 @@ const graciasAbsoluteUrl = new URL(graciasPath, Astro.site).toString();
                 <span class="required" aria-hidden="true">*</span>
               </label>
             </div>
-            <p class="field-error" id="rgpd-error" hidden>Necesitamos vuestro consentimiento para poder responderos.</p>
+            <p class="field-error" id="rgpd-error" hidden>Necesitamos su consentimiento para poder responderle.</p>
 
-            <button type="submit" class="btn btn-primary btn-block" data-label="Enviar solicitud">
-              Enviar solicitud
+            <button type="submit" class="btn btn-primary btn-block" data-label="Enviar mensaje">
+              Enviar mensaje
             </button>
           </div>
 
           <div id="form-success" class="form-success" role="status" hidden>
             <Icon name="check" class="icon-check" />
-            <h3>Solicitud enviada</h3>
+            <h3>Mensaje enviado</h3>
             <p>
-              Hemos recibido vuestro mensaje y os respondemos en 24-48 horas laborables. Si es
-              urgente, llamadnos al <a href={`tel:+34${site.phone}`}>{site.phoneDisplay}</a>.
+              Hemos recibido su mensaje y le responderemos lo antes posible. Si es
+              urgente, llámenos al <a href={`tel:+34${site.phone}`}>{site.phoneDisplay}</a>.
             </p>
           </div>
         </form>
@@ -163,7 +164,7 @@ const graciasAbsoluteUrl = new URL(graciasPath, Astro.site).toString();
             <Icon name="pin" class="icon-pin" />
             <p>
               El mapa lo sirve Google Maps, que puede instalar cookies propias. Se carga solo si
-              lo autorizáis.
+              lo autoriza.
             </p>
             <button type="button" class="btn btn-outline btn-sm" id="map-load">Cargar el mapa</button>
             <a
@@ -240,7 +241,7 @@ const graciasAbsoluteUrl = new URL(graciasPath, Astro.site).toString();
       errorMsg?.removeAttribute('hidden');
       if (submitBtn) {
         submitBtn.disabled = false;
-        submitBtn.textContent = submitBtn.dataset.label ?? 'Enviar solicitud';
+        submitBtn.textContent = submitBtn.dataset.label ?? 'Enviar mensaje';
       }
     }
   });

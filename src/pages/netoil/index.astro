@@ -3,82 +3,22 @@ import Layout from '../../layouts/Layout.astro';
 import ServiceDetail from '../../components/ServiceDetail.astro';
 import Product3DViewer from '../../components/Product3DViewer.astro';
 
-const incluye = [
-  'Controlador de consumos instalable en equipos de bombeo o surtidores industriales',
-  'Reconocimiento de vehículos por llave de contacto o tarjeta de aproximación',
-  'Acceso a los datos desde cualquier ordenador o terminal móvil, sin instalar programas',
-  'Histórico de consumos y suministros siempre accesible, sin riesgo de pérdida de datos',
-  'Compatible con vuestro propio sistema o programa de gestión',
-  'Soporte para solicitar la devolución del Impuesto Especial de Hidrocarburos a minoristas',
-];
-
-const proceso = [
-  {
-    titulo: 'Estudio de la instalación',
-    texto: 'Revisamos el equipo de bombeo o los surtidores industriales donde va a instalarse el controlador.',
-  },
-  {
-    titulo: 'Instalación del controlador',
-    texto: 'Montamos Netoil en la bomba o el surtidor, integrado con el resto de vuestra instalación.',
-  },
-  {
-    titulo: 'Alta de vehículos y conductores',
-    texto: 'Configuramos el reconocimiento por llave de contacto o tarjeta de aproximación para cada vehículo.',
-  },
-  {
-    titulo: 'Formación y puesta en marcha',
-    texto: 'Os explicamos el acceso desde ordenador o móvil para que consultéis los consumos vosotros mismos.',
-  },
-];
-
-const faq = [
-  {
-    pregunta: '¿Necesito instalar algún programa para usar Netoil?',
-    respuesta: 'No. Se accede desde el navegador de cualquier ordenador o terminal móvil, sin instalar ni mantener software adicional.',
-  },
-  {
-    pregunta: '¿Sirve para pedir la devolución del Impuesto de Venta a Minoristas?',
-    respuesta: 'Sí, Netoil deja registrado el consumo de forma que facilita tramitar esa devolución ante la Agencia Tributaria.',
-  },
-  {
-    pregunta: '¿En qué equipos se puede instalar?',
-    respuesta: 'En equipos de bombeo con bomba y medidor, y en surtidores industriales.',
-  },
-];
-
-const aside = {
-  titulo: '¿Cuántos vehículos tenéis que controlar?',
-  texto: 'Con el número de vehículos y el tipo de equipo de suministro os decimos qué configuración de Netoil encaja.',
-  boton: 'Consultar mi flota',
-};
-
-const cta = {
-  titulo: 'Sabed en todo momento cuánto gasta cada vehículo',
-  texto: 'Netoil registra cada repostaje por llave o tarjeta y os deja los datos siempre accesibles, sin depender de programas complejos.',
-  boton: 'Pedir información',
-};
-
 const relacionados = [
   { href: '/servicios/consumos-propios/', icon: 'flota', label: 'Consumos propios' },
   { href: '/payway/', icon: 'pago', label: 'PAYWAY' },
-  { href: '/mantenimiento/', icon: 'mantenimiento', label: 'Mantenimiento' },
+  { href: '/servicios/mantenimiento/', icon: 'mantenimiento', label: 'Mantenimiento' },
 ];
 ---
 
 <Layout
   title="Netoil: control de consumos de combustible para flotas"
-  description="Netoil es el controlador de consumos de COZETA: gestionad el gasto de combustible de vuestra flota desde cualquier ordenador o móvil, sin instalar programas."
+  description="Con los controladores de consumos Netoil gestione y controle el consumo de combustible de sus vehículos desde cualquier ordenador o móvil."
   breadcrumbs={[{ name: 'Netoil', path: '/netoil/' }]}
 >
   <ServiceDetail
     eyebrow="Productos"
     title="Netoil"
-    intro="Controlador de consumos de combustible para empresas de transporte y flotas propias: gestionad y controlad el gasto de cada vehículo desde el navegador, sin instalar nada."
-    incluye={incluye}
-    proceso={proceso}
-    faq={faq}
-    aside={aside}
-    cta={cta}
+    intro="Con nuestros controladores de consumos NETOIL podrá gestionar y llevar un control absoluto del consumo de combustible de sus vehículos."
     relacionados={relacionados}
   >
     <Fragment slot="media">
@@ -92,15 +32,17 @@ const relacionados = [
       />
     </Fragment>
 
+    <p>Se trata de un sistema potente y económico, de fácil acceso mediante el navegador.</p>
+    <p>Se puede instalar tanto en equipos de bombeo como en surtidores industriales.</p>
+    <p>Netoil permite el reconocimiento de los vehículos tanto por llave de contacto como por tarjeta de aproximación.</p>
     <p>
-      Con Netoil lleváis un control absoluto del consumo de combustible de vuestros vehículos: un
-      sistema potente y económico, de fácil acceso mediante el navegador, que se instala tanto en
-      equipos de bombeo como en surtidores industriales.
+      Con Netoil podrá controlar sus consumos y suministros desde cualquier ordenador o terminal
+      móvil de una manera muy sencilla sin instalar programas complejos y caros de mantener.
     </p>
+    <p>Además tendrá sus datos siempre accesibles desde cualquier sistema o programa de su propiedad y evitará perderlos.</p>
     <p>
-      Netoil reconoce cada vehículo por llave de contacto o por tarjeta de aproximación, así que
-      podéis controlar consumos y suministros desde cualquier ordenador o terminal móvil sin
-      instalar ni mantener programas complejos, con vuestros datos siempre accesibles.
+      Con NETOIL podrá solicitar la devolución del Impuesto de Venta a Minoristas a la Agencia
+      Tributaria de una manera muy sencilla.
     </p>
   </ServiceDetail>
 </Layout>

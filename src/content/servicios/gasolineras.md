@@ -1,45 +1,19 @@
 ---
-title: "Gasolineras y estaciones de servicio"
+title: "Estaciones de servicio"
 shortTitle: "Gasolineras"
 seoTitle: "Construcción de gasolineras y estaciones de servicio"
-description: "Construimos estaciones de servicio completas: obra civil, tanques, surtidores y legalización ante industria. Entre 3 y 5 meses de obra. Pedid presupuesto."
-intro: "Diseño y construcción integral llave en mano de estaciones de servicio, desde el proyecto técnico hasta la puesta en marcha y la legalización ante industria."
+description: "Diseñamos, proyectamos y construimos su gasolinera «Low-Cost» o estación de servicio tradicional con servicio «llave en mano». COZETA, Bétera (Valencia)."
+intro: "Diseñamos, proyectamos y construimos su Gasolinera «Low-Cost» o Estación de Servicio tradicional ofreciendo un servicio «Llave en mano»"
 order: 1
 icon: "gasolinera"
-aside:
-  titulo: "¿Tenéis ya el solar?"
-  texto: "Con la ubicación y una idea del volumen de venta previsto podemos daros una primera estimación de plazo y coste."
-  boton: "Solicitar estimación"
-cta:
-  titulo: "De solar vacío a estación en servicio"
-  texto: "Nos ocupamos de la obra civil, los equipos y todo el papeleo con industria. Vosotros tenéis un único interlocutor de principio a fin."
-  boton: "Pedir presupuesto"
-incluye:
-  - "Obra civil completa: excavación, cubetos, soleras y urbanización del solar"
-  - "Suministro e instalación de tanques de doble pared homologados"
-  - "Tuberías, arquetas y sistemas de detección de fugas"
-  - "Surtidores, islas de repostaje y marquesina"
-  - "Instalación eléctrica en zona clasificada ATEX"
-  - "Sistema de recuperación de vapores (Fase I y Fase II)"
-  - "Legalización completa ante el organismo de industria competente"
-faq:
-  - pregunta: "¿Cuánto tiempo dura la construcción de una gasolinera nueva?"
-    respuesta: "Depende del alcance, pero una obra llave en mano completa suele requerir entre 3 y 5 meses desde el inicio de la obra civil hasta la puesta en marcha, sin contar los plazos administrativos previos de licencias."
-  - pregunta: "¿Os encargáis de toda la tramitación con industria?"
-    respuesta: "Sí. Preparamos la documentación técnica, presentamos el proyecto ante el organismo competente y acompañamos la instalación hasta obtener el acta de puesta en marcha."
-  - pregunta: "¿Trabajáis con cualquier marca de tanques y surtidores?"
-    respuesta: "Sí, instalamos equipos de los principales fabricantes del sector y os asesoramos sobre la opción más adecuada según presupuesto, volumen previsto y normativa aplicable."
-proceso:
-  - titulo: "Estudio y proyecto técnico"
-    texto: "Analizamos el solar, el volumen de venta previsto y redactamos el proyecto técnico conforme a la normativa vigente (ITC MI-IP04 y normativa autonómica)."
-  - titulo: "Tramitación y permisos"
-    texto: "Gestionamos las licencias municipales y la autorización de industria antes de iniciar cualquier obra."
-  - titulo: "Ejecución de la obra"
-    texto: "Construimos con equipo propio: obra civil, instalación de tanques, tuberías, surtidores y electricidad en zona clasificada."
-  - titulo: "Puesta en marcha y legalización"
-    texto: "Realizamos las pruebas de estanqueidad, tramitamos el acta de puesta en servicio y entregamos toda la documentación técnica."
 ---
 
-Construimos estaciones de servicio completas, desde cero o mediante ampliación de instalaciones existentes, cumpliendo la instrucción técnica complementaria MI-IP04 y la normativa autonómica de industria. Trabajamos con operadores petrolíferos, cooperativas y propietarios independientes que necesitan una instalación fiable, segura y lista para operar en el menor plazo posible.
+Nuestra principal actividad es la construcción de Estaciones de Servicio. Desde la fase de diseño hasta la entrega «llave en mano», nosotros nos ocupamos de todo.
 
-Nos encargamos de todo el proceso: proyecto técnico, obra civil, suministro e instalación de equipos, y legalización ante el organismo competente, con un único interlocutor durante toda la obra.
+Nuestro equipo de ingenieros le asesorará y le mostrará las mejores soluciones para su proyecto.
+
+Todos nuestros materiales son de la mejor calidad y cumplen con la reglamentación vigente.
+
+Los mejores acabados independientemente del tamaño del proyecto.
+
+*(Los modelos de marquesinas singulares están protegidos bajo patente)*

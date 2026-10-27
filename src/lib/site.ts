@@ -33,49 +33,26 @@ export const site = {
 export const fullAddress = `${site.address.line1}, ${site.address.line2}, ${site.address.postalCode} ${site.address.city} (${site.address.province})`;
 
 export const team = [
-  { name: 'Luis J. Cuenca', role: 'Gerente' },
-  { name: 'Daniel Laínez', role: 'Ejecución' },
-  { name: 'Luis Cuenca', role: 'Finanzas' },
-  { name: 'Mª Ángeles Ibáñez', role: 'Proyectos' },
+  { name: 'Luis J. Cuenca', role: 'Gerente', detail: 'Administrador y Responsable Técnico' },
+  { name: 'Daniel Laínez', role: 'Responsable de Ejecución', detail: 'Responsable de obras y técnico comercial' },
+  { name: 'Luis Cuenca', role: 'Responsable Financiero', detail: 'Responsable de Administración y Finanzas' },
+  { name: 'Mª Ángeles Ibáñez', role: 'Responsable de Proyectos', detail: 'Responsable de Tramitación y Proyectos' },
 ] as const;
 
 export const navLinks = [
   { href: '/', label: 'Inicio' },
-  { href: '/servicios/', label: 'Servicios' },
-  { href: '/proyectos/', label: 'Proyectos' },
+  { href: '/servicios/', label: 'Actividades' },
   { href: '/empresa/', label: 'Empresa' },
   { href: '/contacto/', label: 'Contacto' },
 ] as const;
 
-// Páginas independientes (fuera de la lista de servicios), agrupadas en el
-// desplegable "Productos" del menú. Netoil está pendiente de contenido real.
+// Páginas con ficha propia, agrupadas en el desplegable "Productos" del menú.
 export const productLinks = [
   { href: '/payway/', label: 'PAYWAY' },
-  { href: '/mantenimiento/', label: 'Mantenimiento' },
   { href: '/netoil/', label: 'Netoil' },
 ] as const;
 
-export const stats = [
-  { target: 30, suffix: '+', label: 'años de experiencia', icon: 'clock' },
-  { target: 55, suffix: '+', label: 'estaciones realizadas', icon: 'gasolinera' },
-  { target: 100, suffix: '%', label: 'instalaciones legalizadas', icon: 'shield' },
-] as const;
-
-// Se usa una sola vez, en la home (fusionado con los servicios). No repetir en /empresa/.
-export const whyCozeta = [
-  {
-    title: 'Cumplimiento normativo',
-    text: 'Proyectos y ejecución conforme a la ITC MI-IP04 y la normativa autonómica, con toda la documentación en regla desde el primer día.',
-  },
-  {
-    title: 'Plazos que se cumplen',
-    text: 'Planificamos cada obra con calendario cerrado y un único interlocutor, para que sepáis en todo momento en qué fase está vuestra instalación.',
-  },
-  {
-    title: 'Equipo técnico propio',
-    text: 'No subcontratamos la parte crítica de la obra: nuestros propios técnicos ejecutan la instalación y responden ante cualquier incidencia.',
-  },
-] as const;
+export const valores = ['Experiencia', 'Innovación', 'Eficiencia', 'Confianza'] as const;
 
 // Marcas reales para las que hemos construido instalaciones — franja de prueba social en la home.
 export const clientBrands = [

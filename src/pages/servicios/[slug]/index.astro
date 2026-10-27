@@ -1,7 +1,9 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { render } from 'astro:content';
 import Layout from '../../../layouts/Layout.astro';
 import ServiceDetail from '../../../components/ServiceDetail.astro';
+import { getCollection } from 'astro:content';
+import { getActividades } from '../../../lib/actividades';
 
 export async function getStaticPaths() {
   const servicios = await getCollection('servicios');
@@ -13,36 +15,22 @@ export async function getStaticPaths() {
 
 const { servicio } = Astro.props;
 const { Content } = await render(servicio);
-const { title, seoTitle, description, intro, icon, incluye, proceso, faq, aside, cta } = servicio.data;
+const { title, seoTitle, description, intro, icon } = servicio.data;
 
-// Enlaces a otros servicios: sin esto cada página de servicio solo recibía
-// enlaces desde la home y desde /servicios/.
-const relacionados = (await getCollection('servicios'))
-  .filter((s) => s.id !== servicio.id)
-  .sort((a, b) => a.data.order - b.data.order)
-  .slice(0, 3)
-  .map((s) => ({ href: `/servicios/${s.id}/`, icon: s.data.icon, label: s.data.title }));
+const relacionados = (await getActividades())
+  .filter((a) => a.href !== `/servicios/${servicio.id}/`)
+  .map((a) => ({ href: a.href, icon: a.icon, label: a.title }));
 ---
 
 <Layout
   title={seoTitle}
   description={description}
   breadcrumbs={[
-    { name: 'Servicios', path: '/servicios/' },
+    { name: 'Actividades', path: '/servicios/' },
     { name: title, path: `/servicios/${servicio.id}/` },
   ]}
 >
-  <ServiceDetail
-    title={title}
-    intro={intro}
-    icon={icon}
-    incluye={incluye}
-    proceso={proceso}
-    faq={faq}
-    aside={aside}
-    cta={cta}
-    relacionados={relacionados}
-  >
+  <ServiceDetail title={title} intro={intro} icon={icon} relacionados={relacionados}>
     <Content />
   </ServiceDetail>
 </Layout>

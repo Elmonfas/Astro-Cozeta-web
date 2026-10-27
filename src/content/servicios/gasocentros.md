@@ -1,44 +1,24 @@
 ---
 title: "Gasocentros"
 shortTitle: "Gasocentros"
-seoTitle: "Gasocentros: centros de carga para camiones cisterna"
-description: "Centros de carga para camiones cisterna con trasiego rápido, enclavamientos de seguridad y control de existencias. Dimensionamos según vuestro volumen real."
-intro: "Instalación y legalización de centros de carga de gasóleo para camiones cisterna, con capacidad de descarga rápida y control de existencias."
-order: 2
+seoTitle: "Construcción y legalización de gasocentros"
+description: "Legalización y construcción de gasocentros y centros de distribución de hidrocarburos, con décadas de experiencia. COZETA, Bétera (Valencia)."
+intro: "Tenemos una larga experiencia en la legalización y construcción de gasocentros."
+order: 6
 icon: "gasocentro"
-aside:
-  titulo: "¿Cuánto trasiego movéis al mes?"
-  texto: "Es el dato que marca todo lo demás: capacidad de los depósitos, caudal de las bombas y tiempo de cada carga."
-  boton: "Dimensionar mi instalación"
-cta:
-  titulo: "Instalaciones de gran capacidad, sin sobredimensionar"
-  texto: "Calculamos depósitos y caudal a partir de vuestro trasiego real, para que no paguéis por capacidad que no vais a usar."
-  boton: "Hablar con un técnico"
-incluye:
-  - "Diseño de la instalación según volumen de carga previsto"
-  - "Depósitos de gran capacidad y sistemas de trasiego rápido"
-  - "Zona de carga para camiones cisterna con enclavamientos de seguridad"
-  - "Sistemas antidesbordamiento y de puesta a tierra"
-  - "Instrumentación de medida y control de stock"
-  - "Legalización ante industria y coordinación con inspecciones periódicas"
-faq:
-  - pregunta: "¿Qué diferencia hay entre un gasocentro y una gasolinera convencional?"
-    respuesta: "El gasocentro está orientado a la carga a granel de camiones cisterna y grandes consumidores, con caudales de descarga muy superiores y una configuración de seguridad específica para ese uso."
-  - pregunta: "¿Podéis ampliar un gasocentro ya existente?"
-    respuesta: "Sí, adaptamos instalaciones existentes para aumentar capacidad de almacenamiento o caudal de carga, tramitando la modificación ante el organismo de industria."
-  - pregunta: "¿Qué mantenimiento requiere un gasocentro?"
-    respuesta: "Revisiones periódicas de tanques, sistemas de detección de fugas, instrumentación de medida y elementos de seguridad, conforme a los plazos que marca la reglamentación vigente."
-proceso:
-  - titulo: "Análisis de necesidades"
-    texto: "Estudiamos el volumen de carga y descarga previsto para dimensionar tanques, bombas y zona de trasiego."
-  - titulo: "Proyecto e ingeniería"
-    texto: "Redactamos el proyecto técnico con los sistemas de seguridad exigidos para instalaciones de gran capacidad."
-  - titulo: "Instalación"
-    texto: "Ejecutamos obra civil, montaje de tanques y equipos de bombeo, e instrumentación de control."
-  - titulo: "Legalización y puesta en marcha"
-    texto: "Tramitamos la autorización de industria y realizamos las pruebas exigidas antes de la entrada en servicio."
 ---
 
-Diseñamos e instalamos gasocentros para empresas que necesitan repostar su propia flota de camiones cisterna o suministrar a grandes consumidores, con caudales de carga elevados y sistemas de seguridad adaptados a ese tipo de operación.
+Los centros de distribución o gasocentros son una parte fundamental para el buen funcionamiento del sector de los hidrocarburos. Al ser una actividad muy especializada y poco común ha de contar con un equipo con décadas de experiencia en el sector.
 
-Cada proyecto se dimensiona según el volumen real de trasiego, evitando sobredimensionar la instalación y optimizando el tiempo de carga en cada operación.
+COZETA le ofrece esa experiencia para lograr su objetivo de forma eficiente.
+
+- Carga por el Fondo
+- Colectores
+- Equipamiento
+- Carga Superior
+- Depósitos Verticales
+- Cargaderos Especiales
+
+Nuestro departamento de ingeniería le asesorará y responderá a sus preguntas, asimismo le dará solución a los inconvenientes que se le presenten.
+
+Si desea información sobre Gasocentros, póngase en contacto con nosotros pulsando el botón.

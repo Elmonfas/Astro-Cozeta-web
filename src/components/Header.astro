@@ -11,7 +11,7 @@ function isActive(href: string) {
 
 const isProductActive = productLinks.some((p) => isActive(p.href));
 
-// El desplegable "Productos" se inserta entre Servicios y Proyectos. Se busca
+// El desplegable "Productos" se inserta entre Actividades y Empresa. Se busca
 // cada enlace por href (no por posición) para no depender del orden exacto
 // en que estén declarados en navLinks.
 const inicio = navLinks.find((l) => l.href === '/')!;
@@ -79,7 +79,7 @@ const resto = navLinks.filter((l) => l.href !== '/' && l.href !== '/servicios/')
       <a href={`tel:+34${site.phone}`} class="header-phone" aria-label={`Llamar al ${site.phoneDisplay}`}>
         <Icon name="phone" class="icon-sm" />
       </a>
-      <a href="/contacto/" class="btn btn-primary btn-sm header-cta">Pedir presupuesto</a>
+      <a href="/contacto/" class="btn btn-primary btn-sm header-cta">Pedir información</a>
       <button
         id="menu-toggle"
         class="menu-toggle"
@@ -126,7 +126,7 @@ const resto = navLinks.filter((l) => l.href !== '/' && l.href !== '/servicios/')
         </a>
       </li>
       <li>
-        <a href="/contacto/" class="btn btn-primary btn-sm">Pedir presupuesto</a>
+        <a href="/contacto/" class="btn btn-primary btn-sm">Pedir información</a>
       </li>
     </ul>
   </div>

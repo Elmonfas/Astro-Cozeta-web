@@ -3,7 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import { site } from '../lib/site';
 ---
 
-<Layout title="Página no encontrada" description="La página que buscáis no existe o ha cambiado de dirección. Desde aquí podéis ir a servicios, proyectos, empresa o contacto, o volver a la portada." noindex>
+<Layout title="Página no encontrada" description="La página que busca no existe o ha cambiado de dirección. Desde aquí puede ir a actividades, empresa o contacto, o volver a la portada." noindex>
   <section class="not-found section">
     <div class="container">
       <p class="eyebrow">Error 404</p>
@@ -13,16 +13,15 @@ import { site } from '../lib/site';
         sitios a los que suele ir todo el mundo:
       </p>
       <ul class="not-found-links">
-        <li><a href="/servicios/">Los servicios que ofrecemos</a></li>
-        <li><a href="/proyectos/">Instalaciones que hemos construido</a></li>
-        <li><a href="/empresa/">Quiénes somos y cómo trabajamos</a></li>
-        <li><a href="/contacto/">Pedir presupuesto</a></li>
+        <li><a href="/servicios/">Nuestras actividades</a></li>
+        <li><a href="/empresa/">Quiénes somos</a></li>
+        <li><a href="/contacto/">Contacto</a></li>
       </ul>
       <div class="not-found-actions">
         <a href="/" class="btn btn-primary">Volver al inicio</a>
       </div>
       <p class="not-found-phone">
-        ¿Preferís hablarlo directamente? Llamadnos al
+        ¿Prefiere hablarlo directamente? Llámenos al
         <a href={`tel:+34${site.phone}`}>{site.phoneDisplay}</a>
       </p>
     </div>

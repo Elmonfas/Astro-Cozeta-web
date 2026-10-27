@@ -3,7 +3,6 @@ import { Image } from 'astro:assets';
 import Layout from '../../layouts/Layout.astro';
 import Icon from '../../components/Icon.astro';
 import BlueprintMarks from '../../components/BlueprintMarks.astro';
-import CtaBanner from '../../components/CtaBanner.astro';
 import Product3DViewer from '../../components/Product3DViewer.astro';
 import { site } from '../../lib/site';
 import iconClassic from '../../assets/payway/modelo-classic.png';
@@ -11,11 +10,8 @@ import iconEffective from '../../assets/payway/modelo-effective.png';
 import iconNear from '../../assets/payway/modelo-near.png';
 import iconEco from '../../assets/payway/modelo-eco.png';
 
-// Contenido real de PAYWAY (distribuido por COZETA en toda España), pasado
-// por el jefe desde el material de marca. Adaptado al tono del resto de la
-// web (vosotros, sin frases de venta tipo "no quedará defraudado") y sin
-// repetir la comparación con los rovers de Marte del material original, que
-// no podemos verificar.
+// Contenido de PAYWAY: textos de la web actual de COZETA y material de marca
+// facilitado por la empresa. Sin añadidos propios.
 
 const modelos = [
   {
@@ -89,7 +85,7 @@ const tecnologia = [
   {
     icon: 'chart',
     titulo: 'Crédito centralizado',
-    texto: 'Si tenéis más de una estación, el crédito a clientes se gestiona de forma centralizada en toda la red.',
+    texto: 'Si tiene más de una estación, el crédito a clientes se gestiona de forma centralizada en toda la red.',
   },
   {
     icon: 'phone',
@@ -102,60 +98,6 @@ const tecnologia = [
     texto: 'Más de 15 años de experiencia del equipo de desarrollo en aplicaciones de alta disponibilidad para entornos industriales y de transporte.',
   },
 ];
-
-const proceso = [
-  {
-    titulo: 'Diagnóstico del punto de venta',
-    texto: 'Revisamos el sistema de gestión actual y el volumen de operaciones para elegir el modelo de PAYWAY adecuado.',
-  },
-  {
-    titulo: 'Instalación del hardware',
-    texto: 'Montamos los terminales en surtidor o en isla, con la protección adecuada para exterior.',
-  },
-  {
-    titulo: 'Integración de software',
-    texto: 'Conectamos el terminal con el sistema de gestión y facturación de la estación.',
-  },
-  {
-    titulo: 'Pruebas y formación',
-    texto: 'Verificamos el funcionamiento con distintos medios de pago y formamos al personal en su uso diario.',
-  },
-];
-
-const faq = [
-  {
-    pregunta: '¿Necesito instalar algún programa para gestionar PAYWAY?',
-    respuesta: 'No. Solo hace falta un navegador conectado a vuestro servidor: nada que instalar ni reinstalar cada vez que cambiéis de ordenador.',
-  },
-  {
-    pregunta: '¿Qué pasa si un dispositivo falla?',
-    respuesta: 'El sistema de autochequeo detecta el fallo y reinicia el dispositivo, o el equipo completo, sin intervención humana.',
-  },
-  {
-    pregunta: '¿Puedo dar crédito a mis clientes en varias estaciones?',
-    respuesta: 'Sí, si tenéis más de una estación el crédito se gestiona de forma centralizada en toda vuestra red.',
-  },
-  {
-    pregunta: '¿Es compatible con la tienda de mi estación?',
-    respuesta: 'Sí, también tenemos un ERP para tienda que se integra con PAYWAY. Pedidnos una demostración.',
-  },
-];
-
-const relacionados = [
-  { href: '/servicios/gasolineras/', icon: 'gasolinera', label: 'Gasolineras y estaciones de servicio' },
-  { href: '/mantenimiento/', icon: 'mantenimiento', label: 'Mantenimiento' },
-  { href: '/netoil/', icon: 'flota', label: 'Netoil' },
-];
-
-const faqSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: faq.map((item) => ({
-    '@type': 'Question',
-    name: item.pregunta,
-    acceptedAnswer: { '@type': 'Answer', text: item.respuesta },
-  })),
-};
 
 const serviceSchema = {
   '@context': 'https://schema.org',
@@ -173,8 +115,7 @@ const serviceSchema = {
   breadcrumbs={[{ name: 'PAYWAY', path: '/payway/' }]}
 >
   <script type="application/ld+json" set:html={JSON.stringify(serviceSchema)} />
-  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
-
+  
   <section class="service-hero">
     <BlueprintMarks />
     <div class="container service-hero-inner">
@@ -183,11 +124,12 @@ const serviceSchema = {
         <h1>PAYWAY</h1>
         <p class="hero-intro">
           COZETA distribuye en todo el territorio nacional la línea de terminales de cobro
-          automático PAYWAY. Permiten rentabilizar al máximo la inversión de una estación de
-          servicio y controlarla desde cualquier parte, con cualquier terminal móvil.
+          automático marca PAYWAY. Los medios de pago automático PAYWAY permiten al propietario de
+          una estación de servicio rentabilizar al máximo su inversión y, además, controlar la
+          estación desde cualquier parte con cualquier terminal móvil.
         </p>
         <div class="hero-actions">
-          <a href="/contacto/" class="btn btn-primary">Pedir presupuesto</a>
+          <a href="/contacto/" class="btn btn-primary">Pedir información</a>
           <a href={`tel:+34${site.phone}`} class="btn btn-secondary">
             <Icon name="phone" class="icon-sm" /> {site.phoneDisplay}
           </a>
@@ -207,19 +149,27 @@ const serviceSchema = {
   </section>
 
   <section class="section">
-    <div class="container two-col">
+    <div class="container">
       <div class="service-content">
         <p>
-          Con PAYWAY se cobra con tarjeta de crédito, tarjeta propia de fidelización, contactless y
-          efectivo (monedas y billetes). Lo que diferencia a estos terminales del resto es la
-          seguridad y la velocidad de cada operación de pago.
+          Entre las características que diferencian nuestros terminales del resto se encuentra la
+          seguridad y la velocidad. Con PAYWAY puede cobrar con tarjeta de crédito, propia de
+          fidelización, con contactless y efectivo (monedas y billetes).
         </p>
         <p>
-          El software es de los más versátiles del sector: permite conectarse a la estación desde
-          cualquier ordenador, tablet o smartphone, sin instalar ni mantener ningún programa
-          complejo — solo un navegador apuntando a vuestro servidor. El ERP de gestión de
-          hidrocarburos da control total de la estación, incluso para pedir un suministro o emitir
-          las facturas de fin de mes desde el móvil.
+          El software PAYWAY es el más versátil del mercado: le permite la conexión con la estación
+          desde cualquier ordenador, tablet o smartphone. Con PAYWAY no necesita tener instalado
+          ningún programa complejo que deba mantener o reinstalar cada vez que cambie de ordenador;
+          tan solo necesitará un navegador donde conectarse a su servidor.
+        </p>
+        <p>
+          El ERP de gestión de hidrocarburos PAYWAY le permite tener un control absoluto de la
+          estación incluso desde un smartphone. Podrá desde realizar un suministro desde cualquier
+          sitio, así como emitir las facturas a fin de mes con un solo click de su teléfono.
+          Controle su negocio desde cualquier parte y en cualquier momento.
+        </p>
+        <p>
+          Si dispone de tienda en su estación pídanos una demostración de nuestro ERP para tiendas.
         </p>
 
         <h2>Qué incluye</h2>
@@ -231,16 +181,12 @@ const serviceSchema = {
             </li>
           ))}
         </ul>
-      </div>
 
-      <aside class="service-aside card">
-        <h3>¿Qué sistema de gestión usáis?</h3>
-        <p>De eso depende qué modelo de PAYWAY encaja sin rehacer la integración de ventas y existencias que ya tenéis montada.</p>
-        <a href="/contacto/" class="btn btn-primary btn-block">Consultar compatibilidad</a>
-        <a href={`tel:+34${site.phone}`} class="aside-phone">
-          <Icon name="phone" class="icon-sm" /> {site.phoneDisplay}
-        </a>
-      </aside>
+        <p class="service-cta">
+          Si desea más información de nuestros medios de pago PAYWAY envíenos un mensaje pulsando el botón.
+        </p>
+        <p><a href="/contacto/" class="btn btn-primary">Pedir información</a></p>
+      </div>
     </div>
   </section>
 
@@ -297,65 +243,6 @@ const serviceSchema = {
       </div>
     </div>
   </section>
-
-  <section class="section section-alt" aria-labelledby="proceso-heading">
-    <div class="container">
-      <div class="section-header center">
-        <p class="eyebrow">Cómo trabajamos</p>
-        <h2 id="proceso-heading">Nuestro proceso</h2>
-      </div>
-      <ol class="process-list">
-        {proceso.map((paso, index) => (
-          <li>
-            <span class="process-number">{index + 1}</span>
-            <div>
-              <h3>{paso.titulo}</h3>
-              <p>{paso.texto}</p>
-            </div>
-          </li>
-        ))}
-      </ol>
-    </div>
-  </section>
-
-  <section class="section" aria-labelledby="faq-heading">
-    <div class="container">
-      <div class="section-header center">
-        <p class="eyebrow">Preguntas frecuentes</p>
-        <h2 id="faq-heading">Resolvemos vuestras dudas</h2>
-      </div>
-      <div class="faq-list">
-        {faq.map((item) => (
-          <details class="faq-item">
-            <summary>{item.pregunta}</summary>
-            <p>{item.respuesta}</p>
-          </details>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <section class="section" aria-labelledby="relacionados-heading">
-    <div class="container">
-      <h2 id="relacionados-heading" class="relacionados-title">Otros servicios que solemos combinar con este</h2>
-      <ul class="relacionados-list">
-        {relacionados.map((r) => (
-          <li>
-            <a href={r.href}>
-              <Icon name={r.icon} class="icon-rel" />
-              <strong>{r.label}</strong>
-            </a>
-          </li>
-        ))}
-      </ul>
-    </div>
-  </section>
-
-  <CtaBanner
-    title="Las horas en que la estación está cerrada también venden"
-    text="PAYWAY cobra de noche y en festivos, y sigue permitiendo atención manual en horario comercial."
-    cta="Ver opciones de cobro"
-  />
 </Layout>
 
 <style>
@@ -406,20 +293,8 @@ const serviceSchema = {
     height: 18px;
   }
 
-  .two-col {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: var(--space-7);
-    align-items: start;
-  }
 
-  .two-col > * {
-    min-width: 0;
-  }
 
-  .service-content :global(h2) {
-    margin-top: var(--space-6);
-  }
 
   .check-list {
     list-style: none;
@@ -445,36 +320,10 @@ const serviceSchema = {
     margin-top: 2px;
   }
 
-  .service-aside {
-    position: sticky;
-    top: calc(var(--header-height) + var(--space-4));
-  }
 
-  .service-aside h3 {
-    margin-bottom: var(--space-2);
-  }
 
-  .btn-block {
-    display: flex;
-    width: 100%;
-    margin-block: var(--space-3);
-  }
 
-  .aside-phone {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--space-2);
-    font-family: var(--font-body);
-    font-weight: 700;
-    color: var(--color-primary-dark);
-  }
 
-  .aside-phone :global(.icon-sm) {
-    width: 18px;
-    height: 18px;
-    color: var(--color-secondary);
-  }
 
   /* Modelos */
   .modelos-grid {
@@ -565,128 +414,40 @@ const serviceSchema = {
   }
 
   /* Proceso */
-  .process-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-5);
-  }
 
-  .process-list li {
-    display: flex;
-    gap: var(--space-4);
-  }
 
-  .process-number {
-    flex-shrink: 0;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: var(--color-primary);
-    color: #fff;
-    font-family: var(--font-body);
-    font-weight: 700;
-  }
 
-  .process-list h3 {
-    margin-bottom: var(--space-2);
-  }
 
-  .process-list p {
-    margin: 0;
-  }
 
   /* FAQ */
-  .faq-list {
-    max-width: 800px;
-    margin-inline: auto;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
-  }
 
-  .faq-item {
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
-    padding: var(--space-4);
-  }
 
-  .faq-item summary {
-    cursor: pointer;
-    font-family: var(--font-body);
-    font-weight: 700;
-    color: var(--color-primary-dark);
-  }
 
-  .faq-item p {
-    margin: var(--space-3) 0 0;
-  }
 
   /* Relacionados */
-  .relacionados-title {
-    font-size: 1.35rem;
-    margin-bottom: var(--space-5);
+
+
+
+
+
+
+  .service-content {
+    max-width: 72ch;
   }
 
-  .relacionados-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-4);
+  .service-content :global(h2) {
+    margin-top: var(--space-6);
+    margin-bottom: var(--space-3);
   }
 
-  .relacionados-list a {
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
-    height: 100%;
-    padding: var(--space-4);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
-    text-decoration: none;
-    color: inherit;
-    transition: border-color 0.2s ease;
-  }
-
-  .relacionados-list a:hover {
-    border-color: var(--color-secondary);
-    text-decoration: none;
-  }
-
-  .relacionados-list strong {
-    font-family: var(--font-heading);
-    font-size: 1rem;
-    color: var(--color-primary-dark);
-  }
-
-  .relacionados-list :global(.icon-rel) {
-    width: 26px;
-    height: 26px;
-    flex-shrink: 0;
-    color: var(--color-secondary);
+  .service-cta {
+    margin-top: var(--space-6);
   }
 
   @media (max-width: 900px) {
-    .two-col,
-    .process-list,
-    .relacionados-list {
-      grid-template-columns: 1fr;
-    }
-
     .modelos-grid,
     .pilares-grid {
       grid-template-columns: repeat(2, 1fr);
-    }
-
-    .service-aside {
-      position: static;
     }
 
     .service-hero-inner {

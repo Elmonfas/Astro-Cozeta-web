@@ -38,6 +38,7 @@ const { class: className = '' } = Astro.props;
     viewer.setAttribute('alt', 'Logotipo de COZETA en 3D. Arrastradlo para girarlo.');
     viewer.setAttribute('camera-controls', '');
     viewer.setAttribute('disable-pan', '');
+    viewer.setAttribute('disable-zoom', '');
     viewer.setAttribute('interaction-prompt', 'none');
     // Sin esto, model-viewer usa su loading="auto" por defecto y vuelve a
     // comprobar la visibilidad por su cuenta, quedándose a veces esperando

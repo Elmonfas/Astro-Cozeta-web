@@ -26,8 +26,8 @@
   --color-error: #C0392B;
 
   /* Tipografía: display + texto + datos técnicos */
-  --font-heading: 'Unbounded', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-heading: 'Sora', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-body: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
 
   /* Espaciado */
@@ -82,14 +82,14 @@ h1, h2, h3, h4 {
   font-family: var(--font-heading);
   font-weight: 700;
   color: var(--color-primary-dark);
-  line-height: 1.25;
-  letter-spacing: -0.01em;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
   margin: 0 0 var(--space-3);
 }
 
-h1 { font-size: clamp(2rem, 3.6vw, 3rem); font-weight: 600; line-height: 1.2; }
-h2 { font-size: clamp(1.5rem, 2.8vw, 2.2rem); }
-h3 { font-size: 1.25rem; }
+h1 { font-size: clamp(2.2rem, 4.6vw, 3.7rem); font-weight: 700; line-height: 1.08; letter-spacing: -0.03em; }
+h2 { font-size: clamp(1.6rem, 3vw, 2.4rem); line-height: 1.15; }
+h3 { font-size: 1.2rem; font-weight: 600; letter-spacing: -0.01em; }
 h4 { font-size: 1.1rem; }
 
 p {
